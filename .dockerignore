@@ -1,0 +1,7 @@
+.git
+.tor_runtime/data
+.tor_runtime/tor_bootstrap.log
+.tor_runtime/tor_info.log
+__pycache__
+*.pyc
+app/__pycache__

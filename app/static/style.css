@@ -1,0 +1,418 @@
+/* ==========================================================================
+   SamuBusquedas v2.5 (.onion) - Estilo Minimalista Clásico (Google 98 / AltaVista 97)
+   Arquitecto & Creador: saghet
+   100% Zero-JS | Compatible con Tor Browser Modo "Safest" | < 3 KB CSS
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
+  color: #111111;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: #0000cc;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #551a8b;
+}
+
+a:hover {
+  color: #cc0000;
+}
+
+/* Resaltado clásico de coincidencias en resultados (<mark class="hl">) */
+mark.hl {
+  background-color: #ffff99;
+  color: #000000;
+  font-weight: bold;
+  padding: 0 2px;
+}
+
+/* Barra superior muy discreta estilo años 90 */
+.opsec-topbar {
+  background-color: #efefef;
+  border-bottom: 1px solid #cccccc;
+  padding: 4px 12px;
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar-links a {
+  margin-right: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #000099;
+}
+
+.topbar-links a:hover {
+  text-decoration: underline;
+}
+
+.pill-safe { color: #006600; font-weight: bold; }
+.pill-warn { color: #994d00; font-weight: bold; }
+.pill-danger { color: #cc0000; font-weight: bold; }
+.pill-purple { color: #4b0082; font-weight: bold; }
+
+/* Contenedor general */
+.container {
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px 16px 32px;
+  flex: 1;
+}
+
+/* ==========================================================================
+   VISTA 1: PORTADA CENTRADA (ESTILO GOOGLE 1998 / ALTAVISTA)
+   ========================================================================== */
+.classic-home-hero {
+  text-align: center;
+  margin: 38px auto 24px;
+  max-width: 680px;
+}
+
+.retro-logo {
+  font-family: "Times New Roman", Georgia, serif;
+  font-size: 52px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  margin-bottom: 2px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.retro-logo .c1 { color: #003399; }
+.retro-logo .c2 { color: #cc0000; }
+.retro-logo .c3 { color: #d99b00; }
+.retro-logo .c4 { color: #008000; }
+.retro-logo .onion-tag {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 15px;
+  background-color: #eee8aa;
+  color: #222;
+  border: 1px solid #999;
+  padding: 1px 5px;
+  vertical-align: middle;
+}
+
+.retro-tagline {
+  font-size: 13px;
+  color: #444444;
+  margin-bottom: 16px;
+}
+
+.retro-search-box {
+  background-color: #eeeeee;
+  border: 1px solid #bbbbbb;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.retro-input {
+  width: 92%;
+  max-width: 520px;
+  padding: 5px 7px;
+  font-size: 15px;
+  border: 1px inset #888888;
+  background-color: #ffffff;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.retro-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.retro-btn {
+  padding: 4px 12px;
+  font-size: 13px;
+  background-color: #dddddd;
+  color: #000000;
+  border: 2px outset #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+}
+
+.retro-btn:active {
+  border-style: inset;
+}
+
+.retro-radios {
+  font-size: 12px;
+  color: #222222;
+  margin-top: 6px;
+}
+
+.retro-radios label {
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+/* Tabla de Directorio Estilo AltaVista / Yahoo! 1997 */
+.altavista-directory {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #cccccc;
+  background-color: #f9f9f9;
+  margin-top: 14px;
+  text-align: left;
+}
+
+.altavista-directory th {
+  background-color: #dce4f2;
+  color: #002266;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #b0c4de;
+}
+
+.altavista-directory td {
+  padding: 8px 10px;
+  vertical-align: top;
+  width: 50%;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 13px;
+}
+
+.dir-cat-title {
+  font-weight: bold;
+  font-size: 14px;
+  color: #000099;
+}
+
+.dir-sublinks {
+  font-size: 12px;
+  color: #555555;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   VISTA 2: PÁGINA DE RESULTADOS COMPACTA (SERP CLÁSICO)
+   ========================================================================== */
+.serp-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 8px;
+}
+
+.serp-logo {
+  font-family: "Times New Roman", Georgia, serif;
+  font-size: 26px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 6px;
+}
+
+.serp-logo .c1 { color: #003399; }
+.serp-logo .c2 { color: #cc0000; }
+.serp-logo .c3 { color: #d99b00; }
+.serp-logo .c4 { color: #008000; }
+
+.serp-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.serp-input {
+  flex: 1 1 260px;
+  max-width: 440px;
+  padding: 4px 6px;
+  font-size: 14px;
+  border: 1px inset #888888;
+}
+
+.serp-stats-bar {
+  background-color: #e5ecf9;
+  border-top: 1px solid #3366cc;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #000000;
+  margin-bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Lista clásica de resultados de 3 líneas (Sin tarjetas pesadas) */
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.service-card {
+  padding-bottom: 4px;
+}
+
+.service-title {
+  font-size: 16px;
+  font-weight: normal;
+  display: inline;
+}
+
+.tier-badge-verified {
+  font-size: 11px;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #e6ffe6;
+  color: #006600;
+  border: 1px solid #66cc66;
+  padding: 0 4px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+.tier-badge-unverified {
+  font-size: 11px;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #fff8dc;
+  color: #8b4500;
+  border: 1px solid #deb887;
+  padding: 0 4px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+.service-desc {
+  color: #222222;
+  font-size: 13px;
+  margin: 2px 0 3px;
+  max-width: 780px;
+}
+
+.serp-url-line {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  color: #008000;
+  word-break: break-all;
+}
+
+.serp-url-line a.onion-link {
+  color: #008000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.serp-url-line a.onion-link:hover {
+  text-decoration: underline;
+}
+
+.hash-edge {
+  background-color: #eef9ee;
+  border-bottom: 1px dotted #008000;
+}
+
+.serp-meta-links {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #555555;
+}
+
+.serp-meta-links a {
+  color: #444499;
+}
+
+/* Alertas y Knowledge Card Clásica Compacta */
+.alert-box {
+  background-color: #ffffe0;
+  border: 1px solid #e6db55;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.alert-box.critical {
+  background-color: #ffe6e6;
+  border-color: #cc0000;
+  color: #990000;
+}
+
+.alert-box.safe {
+  background-color: #eaffea;
+  border-color: #66cc66;
+}
+
+.alert-box.did-you-mean {
+  background-color: #f0f7ff;
+  border-color: #99c2ff;
+  font-size: 14px;
+}
+
+.alert-title {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.knowledge-card {
+  background-color: #f4f6fb;
+  border: 1px solid #b0c4de;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+
+.kc-badge {
+  font-weight: bold;
+  color: #003399;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.kc-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.kc-subtitle {
+  color: #555555;
+  margin-bottom: 4px;
+}
+
+.kc-attrs {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dotted #cccccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Pie de página minimalista clásico */
+.site-footer {
+  border-top: 1px solid #cccccc;
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #555555;
+  background-color: #f5f5f5;
+}

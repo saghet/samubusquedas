@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  samubusquedas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: samubusquedas_onion
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - PYTHONUNBUFFERED=1

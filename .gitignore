@@ -1,0 +1,5 @@
+.tor_runtime/data/
+.tor_runtime/*.log
+__pycache__/
+*.pyc
+app/__pycache__/

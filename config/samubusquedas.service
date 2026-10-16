@@ -1,0 +1,29 @@
+[Unit]
+Description=SamuBusquedas (.onion v3) - Motor de Busqueda Blindado Zero-JS
+After=network.target
+
+[Service]
+Type=simple
+User=samubusquedas
+Group=samubusquedas
+WorkingDirectory=/opt/samubusquedas
+ExecStart=/usr/bin/python3 /opt/samubusquedas/app/main.py 8080
+Restart=always
+RestartSec=3
+
+# Directivas de Endurecimiento y Aislamiento de Kernel (Systemd Sandboxing)
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target
