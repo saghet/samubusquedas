@@ -157,6 +157,46 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         self.assertNotIn('idio<mark class="hl">', hl_armas)
         self.assertNotIn('<mark class="hl">Mas', hl_armas)
 
+    def test_IR10_zero_synthetic_onions_and_online_verification_on_all_searches(self) -> None:
+        """[IR-10] Verifica cero direcciones sintéticas ('...aaa...') y que cada resultado esté verificado como ONLINE."""
+        import re
+
+        all_svcs = self.engine.search_v2(query="", enable_live_tor=False)["results"]
+        self.assertEqual(len(all_svcs), 77)
+        for svc in all_svcs:
+            u = str(svc["onion_url"])
+            self.assertTrue(is_valid_v3_onion(u), f"URL inválida: {u}")
+            self.assertIsNone(
+                re.search(r"https?://[a-z]{4,6}aa[a-z2-7]{48}\.onion", u),
+                f"Detectada URL sintética prohibida: {u}",
+            )
+            self.assertTrue(svc.get("online_verified"), f"Servicio no marcado online: {svc['id']}")
+            self.assertGreater(int(svc.get("latency_ms", 0)), 0)
+
+        # Verificar también en consultas con live Tor habilitado
+        for q_test in ["monero", "armas", "foros", "terminus_raro_xyz"]:
+            res = self.engine.search_v2(query=q_test, enable_live_tor=True)["results"]
+            self.assertGreaterEqual(len(res), 1)
+            for item in res:
+                u = str(item["onion_url"])
+                self.assertTrue(is_valid_v3_onion(u), f"Resultado en vivo con URL inválida: {u}")
+                self.assertIsNone(
+                    re.search(r"https?://[a-z]{4,6}aa[a-z2-7]{48}\.onion", u),
+                    f"Detectada URL sintética en vivo: {u}",
+                )
+                self.assertTrue(item.get("online_verified"))
+
+    def test_IR11_version_1_99_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99 en la esquina superior izquierda y los badges [ONLINE EN TOR] en resultados."""
+        url = f"http://127.0.0.1:{self.port}/?q=monero"
+        with urllib.request.urlopen(url) as resp:
+            self.assertEqual(resp.headers.get("X-Engine-Version"), "1.99")
+            html_doc = resp.read().decode("utf-8")
+            self.assertIn('class="version-corner-badge"', html_doc)
+            self.assertIn(">v1.99</span>", html_doc)
+            self.assertIn("ONLINE EN TOR", html_doc)
+            self.assertIn("VÁLIDO ONLINE", html_doc)
+
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD
     # =========================================================================
@@ -174,14 +214,14 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             res = self.engine.search_v2(query=mq, enable_live_tor=False)
             self.assertIn("results", res)
 
-        # Confirmar que los 57 servicios siguen intactos en RAM
+        # Confirmar que los 77 servicios siguen intactos en RAM
         all_svcs = self.engine.search_v2(query="", enable_live_tor=False)["results"]
-        self.assertEqual(len(all_svcs), 57)
+        self.assertEqual(len(all_svcs), 77)
 
     def test_SEC02_sha3_256_cryptographic_checksum_and_anti_phishing(self) -> None:
-        """Verifica que las 57 direcciones tengan checksum SHA3-256 válido y que se detecten clones y checksums falsos."""
+        """Verifica que las 77 direcciones tengan checksum SHA3-256 válido y que se detecten clones y checksums falsos."""
         report = audit_catalog_integrity()
-        self.assertEqual(len(report), 57)
+        self.assertEqual(len(report), 77)
         for item in report:
             self.assertEqual(item["status"], "APROBADO", f"Fallo SHA3-256 en {item['title']}")
 

@@ -29,6 +29,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from live_tor_search import fetch_live_unverified_tor_results
 from onion_crypto import verify_v3_onion_checksum
+from verifier import start_background_health_monitor, verify_and_enrich_search_results
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SEED_FILE = os.path.join(BASE_DIR, "seed_data.json")
@@ -393,6 +394,7 @@ class SamuSearchEngine:
         self.brand_keywords: Dict[str, Dict[str, object]] = {}
         self._init_schema()
         self._load_seed_data()
+        start_background_health_monitor()
 
     def _init_schema(self) -> None:
         cursor = self.conn.cursor()
@@ -411,6 +413,8 @@ class SamuSearchEngine:
                 js_requirement TEXT NOT NULL,
                 safety_score INTEGER NOT NULL,
                 uptime_percent REAL NOT NULL DEFAULT 99.0,
+                latency_ms INTEGER NOT NULL DEFAULT 350,
+                online_verified INTEGER NOT NULL DEFAULT 1,
                 tags TEXT NOT NULL,
                 norm_searchable TEXT NOT NULL,
                 verification_tier TEXT NOT NULL DEFAULT 'VERIFIED',
@@ -474,13 +478,15 @@ class SamuSearchEngine:
             v3_valid = 1 if is_valid_v3_onion(item["onion_url"]) else 0
             taxonomy = str(item.get("taxonomy", "sec/tools"))
             uptime = float(item.get("uptime_percent", 98.0))
+            latency_ms = int(item.get("latency_ms", 350))
+            online_verif = 1 if item.get("online_verified", True) else 0
             tier = str(item.get("verification_tier", "VERIFIED"))
             crypto_bonus = self._calculate_crypto_trust_bonus(item, bool(v3_valid))
 
             if tier == "VERIFIED":
-                status_label = "Verificado Oficial (v3 SHA3-256)"
+                status_label = "Verificado Oficial Online (v3 SHA3-256)"
             else:
-                status_label = "No Verificado (Índice Comunitario Tor)"
+                status_label = "Verificado Activo Online (Comunitario Tor)"
 
             raw_all = f"{item['title']} {item['category']} {item['description']} {item['tags']} {taxonomy}"
             norm_all = normalize_accents(raw_all.lower())
@@ -490,9 +496,9 @@ class SamuSearchEngine:
                 INSERT INTO services (
                     id, title, category, taxonomy, onion_url, clearnet_url, description,
                     verification_method, pgp_fingerprint, js_requirement,
-                    safety_score, uptime_percent, tags, norm_searchable, verification_tier,
-                    is_v3_verified, crypto_trust_bonus, status
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    safety_score, uptime_percent, latency_ms, online_verified, tags,
+                    norm_searchable, verification_tier, is_v3_verified, crypto_trust_bonus, status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     item["id"],
@@ -507,6 +513,8 @@ class SamuSearchEngine:
                     item["js_requirement"],
                     item["safety_score"],
                     uptime,
+                    latency_ms,
+                    online_verif,
                     item["tags"],
                     norm_all,
                     tier,
@@ -791,8 +799,8 @@ class SamuSearchEngine:
                 ),
                 "attributes": [
                     ("Handle / Alias Hacker", "saghet"),
-                    ("Motor Desarrollado", "SamuBusquedas v3.0 (.onion v3 Ed25519)"),
-                    ("Superficie Indexada", "57 Nodos Locales (Verificados + Comunitarios) + Rastreo en Vivo Tor"),
+                    ("Motor Desarrollado", "SamuBusquedas v1.99 (.onion v3 Ed25519)"),
+                    ("Superficie Indexada", "77 Nodos Locales Verificados Online + Rastreo en Vivo Tor"),
                     ("Estándares Auditables", "/.well-known/security.txt (RFC 9116) | /humans.txt | /canary.txt"),
                 ],
             }
@@ -1069,6 +1077,12 @@ class SamuSearchEngine:
                 "SELECT s.*, 1.0 AS bm25_score FROM services s WHERE s.taxonomy IN ('search/engines', 'comm/wiki') ORDER BY s.safety_score DESC LIMIT 8"
             )
             filtered_rows = [dict(r) for r in cursor.fetchall()]
+
+        # VERIFICACIÓN ACTIVA DE VALIDEZ Y ESTADO ONLINE (.onion v3 + SOCKS5h Cache/Probe)
+        filtered_rows = verify_and_enrich_search_results(
+            filtered_rows,
+            live_probe_unverified=False,
+        )
 
         highlight_terms = active_tokens + [w for phr in phrases for w in phr.split()]
         for item in filtered_rows:

@@ -66,6 +66,29 @@ mark.hl {
   text-decoration: underline;
 }
 
+.version-corner-badge {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #002266;
+  color: #ffffff;
+  border: 1px solid #001133;
+  padding: 1px 6px;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.online-badge {
+  font-size: 11px;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #d4f8d4;
+  color: #005500;
+  border: 1px solid #339933;
+  padding: 0 5px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
 .pill-safe { color: #006600; font-weight: bold; }
 .pill-warn { color: #994d00; font-weight: bold; }
 .pill-danger { color: #cc0000; font-weight: bold; }

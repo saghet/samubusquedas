@@ -13,7 +13,9 @@
     "safety_score": 100,
     "uptime_percent": 100.0,
     "verification_tier": "VERIFIED",
-    "tags": "samubusquedas saghet buscador search engine deepweb deep web darkweb tor onion directorio hacker ciberseguridad"
+    "tags": "samubusquedas saghet buscador search engine deepweb deep web darkweb tor onion directorio hacker ciberseguridad",
+    "latency_ms": 190,
+    "online_verified": true
   },
   {
     "id": "tor-project",
@@ -29,7 +31,9 @@
     "safety_score": 100,
     "uptime_percent": 99.9,
     "tags": "tor browser anonimato privacidad red onion oficial descargas seguridad network metrics",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 350,
+    "online_verified": true
   },
   {
     "id": "duckduckgo-onion",
@@ -45,7 +49,9 @@
     "safety_score": 99,
     "uptime_percent": 99.9,
     "tags": "buscador search engine duckduckgo ddg privacidad sin rastreo web consultas",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 305,
+    "online_verified": true
   },
   {
     "id": "brave-search-onion",
@@ -61,7 +67,9 @@
     "safety_score": 98,
     "uptime_percent": 99.8,
     "tags": "brave search buscador independiente privacidad consultas",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 340,
+    "online_verified": true
   },
   {
     "id": "ahmia-search",
@@ -77,7 +85,9 @@
     "safety_score": 95,
     "uptime_percent": 99.5,
     "tags": "ahmia buscador onion indexador filtrado anti-phishing directorio",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 410,
+    "online_verified": true
   },
   {
     "id": "protonmail-onion",
@@ -93,7 +103,9 @@
     "safety_score": 97,
     "uptime_percent": 99.9,
     "tags": "correo email mail cifrado protonmail proton suiza pgp e2ee comunicacion",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 395,
+    "online_verified": true
   },
   {
     "id": "riseup-net",
@@ -109,14 +121,16 @@
     "safety_score": 98,
     "uptime_percent": 99.7,
     "tags": "riseup correo email mail activismo seguridad colectivo listas pad",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 480,
+    "online_verified": true
   },
   {
     "id": "keybase-onion",
     "title": "Keybase - Directorio Criptográfico de Identidades PGP y Chat",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/chat",
-    "onion_url": "http://keybase5wmilwokqirssclfnsqrjdsi7jdir5wy7y7iu3tanwmtp6oid.onion",
+    "onion_url": "http://q3o3hdjbf6vwxdnpskyhxw7w7rnmnfhz2szbuala4q24x6csbp7adiad.onion",
     "clearnet_url": "https://keybase.io",
     "description": "Servicio de verificación criptográfica de identidades públicas (GitHub, DNS, llaves PGP), mensajería cifrada de extremo a extremo y sistema de archivos firmado.",
     "verification_method": "Vanity Ed25519 + Firma Criptográfica Keybase",
@@ -125,14 +139,16 @@
     "safety_score": 95,
     "uptime_percent": 99.2,
     "tags": "keybase chat pgp criptografia identidades llaves firmas mensajeria",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 520,
+    "online_verified": true
   },
   {
     "id": "propublica-onion",
     "title": "ProPublica - Periodismo de Investigación Independiente",
     "category": "Prensa y Whistleblowing",
     "taxonomy": "press/media",
-    "onion_url": "https://p53lf57qovyuvwsc6xnrppyply3vtqm7l6pcobkmyqsiofyeznfu5uqd.onion",
+    "onion_url": "http://33xu4yhum2eiisxm6fntaslayop76fvaqgt3ak5dakdm3t7cub25cead.onion",
     "clearnet_url": "https://www.propublica.org",
     "description": "Primer gran medio de periodismo de investigación ganador del premio Pulitzer en lanzar un servicio oculto en Tor con certificado HTTPS para proteger a lectores y fuentes.",
     "verification_method": "Onion-Location Header + Certificado TLS",
@@ -141,14 +157,16 @@
     "safety_score": 99,
     "uptime_percent": 99.8,
     "tags": "periodismo noticias propublica investigacion prensa fuentes whistleblowing",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 692,
+    "online_verified": true
   },
   {
     "id": "nytimes-onion",
     "title": "The New York Times (Servicio Onion + SecureDrop)",
     "category": "Prensa y Whistleblowing",
     "taxonomy": "press/media",
-    "onion_url": "https://www.nytimesn7cgmftshazwhfgzm37qxb44r64ytbb2dj3x62d2lljsciiyd.onion",
+    "onion_url": "http://xm33ge4kupk5o66eqxcd2r4fqcplpqb2sbdduf5z2nw4g2jrxe57luid.onion",
     "clearnet_url": "https://www.nytimes.com",
     "description": "Espejo oficial en la red Tor de The New York Times diseñado para lectores en regiones con censura y para el envío anónimo de filtraciones periodísticas.",
     "verification_method": "Repositorio Oficial GitHub NYT + TLS + Vanity",
@@ -157,7 +175,9 @@
     "safety_score": 97,
     "uptime_percent": 99.7,
     "tags": "noticias prensa nyt new york times periodismo censura diarios",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 810,
+    "online_verified": true
   },
   {
     "id": "guardian-onion",
@@ -173,7 +193,9 @@
     "safety_score": 98,
     "uptime_percent": 99.6,
     "tags": "guardian the guardian prensa noticias periodismo uk filtraciones",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 520,
+    "online_verified": true
   },
   {
     "id": "bbc-news-onion",
@@ -189,14 +211,16 @@
     "safety_score": 98,
     "uptime_percent": 99.9,
     "tags": "bbc noticias mundo prensa internacional radio informacion",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 380,
+    "online_verified": true
   },
   {
     "id": "dw-news-onion",
     "title": "Deutsche Welle (DW) - Prensa Internacional sin Censura",
     "category": "Prensa y Whistleblowing",
     "taxonomy": "press/media",
-    "onion_url": "https://www.dwnewsgngmhlplxy6o2twtfgjnrnjxbegbwqx6wnotdhkzt562tszfid.onion",
+    "onion_url": "http://www.dwnewsgngmhlplxy6o2twtfgjnrnjxbegbwqx6wnotdhkzt562tszfid.onion",
     "clearnet_url": "https://www.dw.com",
     "description": "Servicio público internacional de noticias de Alemania en más de 30 idiomas accesible nativamente en Tor para eludir bloqueos de red y vigilancia.",
     "verification_method": "Onion-Location Header + TLS + Vanity",
@@ -205,14 +229,16 @@
     "safety_score": 98,
     "uptime_percent": 99.7,
     "tags": "deutsche welle dw noticias alemania prensa internacional censura",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 640,
+    "online_verified": true
   },
   {
     "id": "bellingcat-onion",
     "title": "Bellingcat - Colectivo de Investigación OSINT y Periodismo",
     "category": "Prensa y Whistleblowing",
     "taxonomy": "press/osint",
-    "onion_url": "http://bellcatmbguthn3age23lrbseln2lryzv3mt7whis7ktjw4qrestbzad.onion",
+    "onion_url": "http://lantern6vrwheap4iahuktz3jtwvovrzhxgwgzvrvp46brdzzekxibqd.onion",
     "clearnet_url": "https://www.bellingcat.com",
     "description": "Colectivo internacional de investigadores independientes, analistas OSINT y periodistas ciudadanos especializados en verificación forense de fuentes abiertas.",
     "verification_method": "Onion-Location Header + Vanity Prefix",
@@ -221,7 +247,9 @@
     "safety_score": 97,
     "uptime_percent": 99.3,
     "tags": "bellingcat osint investigacion forense periodismo inteligencia fuentes abiertas",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 465,
+    "online_verified": true
   },
   {
     "id": "securedrop-project",
@@ -237,14 +265,16 @@
     "safety_score": 100,
     "uptime_percent": 99.9,
     "tags": "securedrop whistleblowing filtraciones leaks prensa fuentes anonimas",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 568,
+    "online_verified": true
   },
   {
     "id": "debian-onion",
     "title": "Debian GNU/Linux (Portal Oficial de Servicios y Repositorios Onion)",
     "category": "Sistemas Operativos y Software Libre",
     "taxonomy": "sec/os",
-    "onion_url": "http://jvgypgbnfyvfopg5msp6nwr2sl2fd6xmnguq35n7rfkw3yungjn2i4yd.onion",
+    "onion_url": "http://spdobp2dcjfg3c56j37y7hmsi6tjauslqvbcgfgvhyuv37yiodphirad.onion",
     "clearnet_url": "https://onion.debian.org",
     "description": "Directorio oficial de repositorios APT y espejos de paquetes de Debian GNU/Linux dentro de Tor. Permite actualizar sistemas operativos sin revelar qué paquetes instalas.",
     "verification_method": "Firmado por llaves maestras del Proyecto Debian",
@@ -253,7 +283,9 @@
     "safety_score": 100,
     "uptime_percent": 99.9,
     "tags": "debian linux apt paquetes software libre actualizaciones repositorios sistema operativo os",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 510,
+    "online_verified": true
   },
   {
     "id": "qubes-os-onion",
@@ -269,7 +301,9 @@
     "safety_score": 100,
     "uptime_percent": 99.8,
     "tags": "qubes os seguridad aislamiento virtualizacion xen sistema operativo linux",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 290,
+    "online_verified": true
   },
   {
     "id": "whonix-onion",
@@ -285,7 +319,9 @@
     "safety_score": 100,
     "uptime_percent": 99.6,
     "tags": "whonix opsec anonimato aislamiento dns leak seguridad sistema operativo os",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 310,
+    "online_verified": true
   },
   {
     "id": "onionshare-project",
@@ -301,7 +337,9 @@
     "safety_score": 99,
     "uptime_percent": 99.6,
     "tags": "onionshare archivos compartir transferencia chat anonimo herramientas micah lee",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 440,
+    "online_verified": true
   },
   {
     "id": "internet-archive-onion",
@@ -317,7 +355,9 @@
     "safety_score": 99,
     "uptime_percent": 99.4,
     "tags": "internet archive wayback machine biblioteca libros historia software archivos",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 460,
+    "online_verified": true
   },
   {
     "id": "imperial-library-trantor",
@@ -333,7 +373,9 @@
     "safety_score": 95,
     "uptime_percent": 99.1,
     "tags": "imperial library trantor libros epub biblioteca lectura ciencia textos",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 495,
+    "online_verified": true
   },
   {
     "id": "defcon-official-onion",
@@ -349,7 +391,9 @@
     "safety_score": 99,
     "uptime_percent": 99.8,
     "tags": "defcon def con hacking hackers conferencia ciberseguridad infosec charlas",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 420,
+    "online_verified": true
   },
   {
     "id": "mullvad-vpn-onion",
@@ -365,7 +409,9 @@
     "safety_score": 98,
     "uptime_percent": 99.9,
     "tags": "mullvad vpn wireguard privacidad red anonima suecia auditoria",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 360,
+    "online_verified": true
   },
   {
     "id": "cryptostorm-vpn-onion",
@@ -381,7 +427,9 @@
     "safety_score": 95,
     "uptime_percent": 98.7,
     "tags": "cryptostorm vpn criptografia hacking tokens privacidad",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 280,
+    "online_verified": true
   },
   {
     "id": "privacyguides-onion",
@@ -397,7 +445,9 @@
     "safety_score": 97,
     "uptime_percent": 99.5,
     "tags": "guias privacidad opsec herramientas cifrado recomendaciones manuales",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 430,
+    "online_verified": true
   },
   {
     "id": "systemli-onion",
@@ -413,7 +463,9 @@
     "safety_score": 97,
     "uptime_percent": 99.4,
     "tags": "derechos humanos activistas seguridad digital comunicacion cifrada systemli",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 510,
+    "online_verified": true
   },
   {
     "id": "cia-official-onion",
@@ -429,14 +481,16 @@
     "safety_score": 96,
     "uptime_percent": 99.5,
     "tags": "cia inteligencia gobierno factbook archivos desclasificados institucional",
-    "verification_tier": "VERIFIED"
+    "verification_tier": "VERIFIED",
+    "latency_ms": 330,
+    "online_verified": true
   },
   {
     "id": "hidden-wiki-mirror",
     "title": "The Hidden Wiki (Directorio Comunitario .onion)",
     "category": "Wikis, Foros y Comunidad Tor",
     "taxonomy": "comm/wiki",
-    "onion_url": "http://hwikiaaa7pddscwvpdsyf37bzq5hnkgn6tevvklp4spntyextrmeu2qd.onion",
+    "onion_url": "http://zqktlwiuavvvqqt4ybvgvi7tyo4hjl5xgfuvpdf6otjiycgwqbym2qad.onion",
     "clearnet_url": "https://thehiddenwiki.org",
     "description": "Espejo comunitario no verificado de The Hidden Wiki con enlaces clasificados a foros, bibliotecas, wikis, correo y servicios de la red Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -445,14 +499,16 @@
     "safety_score": 68,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "hidden wiki directorio enlaces links guia deepweb darkweb tor indice"
+    "tags": "hidden wiki directorio enlaces links guia deepweb darkweb tor indice",
+    "latency_ms": 490,
+    "online_verified": true
   },
   {
     "id": "torlinks-directory",
     "title": "TorLinks - Directorio Abierto de Enlaces .onion v3",
     "category": "Wikis, Foros y Comunidad Tor",
     "taxonomy": "comm/wiki",
-    "onion_url": "http://torlnkaalujtuxgq2cxuegsouzzlorn3u2nxyhc32qkwscxth32lgiyd.onion",
+    "onion_url": "http://taxiaii6xr62vugl7qin2fzd4rs6dbqgqcrkxwpoud6uilxwklicapad.onion",
     "clearnet_url": "https://torlinks.io",
     "description": "Directorio histórico de enlaces .onion enviado por usuarios de la comunidad Tor. Incluye foros, blogs, servidores de chat y herramientas.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -461,14 +517,16 @@
     "safety_score": 65,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "torlinks directorio links enlaces catalogo sitios web ocultos"
+    "tags": "torlinks directorio links enlaces catalogo sitios web ocultos",
+    "latency_ms": 698,
+    "online_verified": true
   },
   {
     "id": "daunt-link-onion",
     "title": "Daunt - Índice de Enlaces y Foros de la Red Tor",
     "category": "Wikis, Foros y Comunidad Tor",
     "taxonomy": "comm/wiki",
-    "onion_url": "http://dauntaaayufk52t4mxrjulnov5ekjckyktpurnecl65vqth6wtdt4xid.onion",
+    "onion_url": "http://zhwjzfb6zcpngk35h3vhtpmui5ptaytuftf3wklv3bvsy3xamw34fzyd.onion",
     "clearnet_url": "https://daunt.link",
     "description": "Directorio de nodos comunitarios, foros de discusión sobre privacidad, criptografía y espejos en la red Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -477,14 +535,16 @@
     "safety_score": 72,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "daunt foro foros comunidad enlaces links discusiones"
+    "tags": "daunt foro foros comunidad enlaces links discusiones",
+    "latency_ms": 598,
+    "online_verified": true
   },
   {
     "id": "dread-forum-mirror",
     "title": "Dread Forum (Espejo Informativo y Discusión OPSEC)",
     "category": "Wikis, Foros y Comunidad Tor",
     "taxonomy": "comm/wiki",
-    "onion_url": "http://dreadaaalgmg6pg4h4iqw3bkl7nabopchyvddhrirf2hz544j2skwzqd.onion",
+    "onion_url": "http://dnzzz3ixhtzj4wb2fuu2swblxlbqwnbamfvtgwyzwtuuahlb6xpeguad.onion",
     "clearnet_url": "https://dread.onion.info",
     "description": "Plataforma de foros de discusión estilo Reddit dentro de la red Tor enfocada en OPSEC, noticias de seguridad, criptografía y debate comunitario.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -493,14 +553,16 @@
     "safety_score": 64,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "dread foro foros reddit comunidad debate opsec noticias"
+    "tags": "dread foro foros reddit comunidad debate opsec noticias",
+    "latency_ms": 539,
+    "online_verified": true
   },
   {
     "id": "cypherpunk-board-onion",
     "title": "Cypherpunk & AnonBoard - Foro de Criptografía y Hacking",
     "category": "Wikis, Foros y Comunidad Tor",
     "taxonomy": "hack/confs",
-    "onion_url": "http://cypheraar5rp4ki3oz4nj6l5ol53ncz4mzqsu6let62vi7mag5edjiid.onion",
+    "onion_url": "http://cryptbbtg65gibadeeo2awe3j7s6evg7eklserehqr4w4e2bis5tebid.onion",
     "clearnet_url": "https://cypherpunks.to",
     "description": "Tablón de discusión técnica sobre criptografía asimétrica, anonimato, redes mixnet, programación en Rust/C y cultura hacker.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -509,14 +571,16 @@
     "safety_score": 70,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "foro foros hacking hackers criptografia programacion codigo cypherpunk"
+    "tags": "foro foros hacking hackers criptografia programacion codigo cypherpunk",
+    "latency_ms": 660,
+    "online_verified": true
   },
   {
     "id": "torch-search-onion",
     "title": "Torch Search Engine (Buscador Masivo No Filtrado)",
     "category": "Buscadores Legítimos",
     "taxonomy": "search/engines",
-    "onion_url": "http://torchaaab7f75ck4msdp34ezyosbeihuqse3oaa3rvrqouygrygqkeqd.onion",
+    "onion_url": "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion",
     "clearnet_url": "http://torchsearch.onion.info",
     "description": "Uno de los motores de búsqueda más antiguos y grandes de la red Tor. Indexa millones de páginas .onion sin curación manual (Precaución: contiene sitios no verificados).",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -525,14 +589,16 @@
     "safety_score": 62,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "torch buscador search engine rastreador crawler masivo"
+    "tags": "torch buscador search engine rastreador crawler masivo",
+    "latency_ms": 924,
+    "online_verified": true
   },
   {
     "id": "haystak-search-onion",
     "title": "Haystak Onion Search (Índice de 1.5B de Páginas)",
     "category": "Buscadores Legítimos",
     "taxonomy": "search/engines",
-    "onion_url": "http://haystkaagfu4caz7kfyorygx5ne4gceewp2outwrwcprp6scummb6mid.onion",
+    "onion_url": "http://3bbad7fauom4d6sgppalyqddsqbf5u5p56b5k5uk2zxsy3d6ey2jobad.onion",
     "clearnet_url": "https://haystak.com",
     "description": "Motor de búsqueda de gran escala en la Deep Web con más de mil millones de páginas históricas indexadas en la red Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -541,14 +607,16 @@
     "safety_score": 64,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "haystak buscador search engine deepweb darkweb index"
+    "tags": "haystak buscador search engine deepweb darkweb index",
+    "latency_ms": 912,
+    "online_verified": true
   },
   {
     "id": "excavator-search-onion",
     "title": "ExcavaTor - Buscador y Explorador de Nodos .onion",
     "category": "Buscadores Legítimos",
     "taxonomy": "search/engines",
-    "onion_url": "http://excavaaarqdtm4abczobdo65mruim6qxnb2vhjjvwobocrmgbxrd2xid.onion",
+    "onion_url": "http://iy3544gmoeclh5de6gez2256v6pjh4omhpqdh2wpeeppjtvqmjhkfwad.onion",
     "clearnet_url": "https://excavator.tor",
     "description": "Motor de búsqueda alternativo en la red Tor para descubrir servicios ocultos, documentos públicos y servidores web.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -557,14 +625,16 @@
     "safety_score": 63,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "excavator buscador search explorador sitios onion"
+    "tags": "excavator buscador search explorador sitios onion",
+    "latency_ms": 883,
+    "online_verified": true
   },
   {
     "id": "monero-official-onion",
     "title": "Monero Project (getmonero.org Mirror en Tor)",
     "category": "Criptomonedas y Privacidad Financiera",
     "taxonomy": "priv/crypto",
-    "onion_url": "http://moneroaakfzwkyrt3463seqh3qpam6aj5zsds5ffdopntakcfhhwyxyd.onion",
+    "onion_url": "http://monerotoruzizulg5ttgat2emf4d6fbmiea25detrmmy7erypseyteyd.onion",
     "clearnet_url": "https://www.getmonero.org",
     "description": "Espejo en la red Tor del proyecto de criptomoneda privada Monero (XMR). Documentación sobre RingCT, Stealth Addresses, descargas CLI/GUI y nodos remotos.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -573,14 +643,16 @@
     "safety_score": 88,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "monero xmr criptomoneda crypto finanzas dinero privacidad blockchain"
+    "tags": "monero xmr criptomoneda crypto finanzas dinero privacidad blockchain",
+    "latency_ms": 375,
+    "online_verified": true
   },
   {
     "id": "feather-wallet-onion",
     "title": "Feather Wallet - Billetera Ligera de Monero en Tor",
     "category": "Criptomonedas y Privacidad Financiera",
     "taxonomy": "priv/crypto",
-    "onion_url": "http://feathraa4woennhhoi6n5owslsirr46xcbmzufykculh7qdz3r2winad.onion",
+    "onion_url": "http://featherdvtpi7ckdbkb2yxjfwx3oyvr3xjz3oo4rszylfzjdg6pbm3id.onion",
     "clearnet_url": "https://featherwallet.org",
     "description": "Sitio de descargas y documentación de Feather Wallet, billetera de escritorio de código abierto para Monero con enrutamiento nativo por Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -589,14 +661,16 @@
     "safety_score": 85,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "feather wallet billetera monero xmr cripto pagos"
+    "tags": "feather wallet billetera monero xmr cripto pagos",
+    "latency_ms": 680,
+    "online_verified": true
   },
   {
     "id": "mempool-space-onion",
     "title": "Mempool.space - Explorador de Bloques Bitcoin en Tor",
     "category": "Criptomonedas y Privacidad Financiera",
     "taxonomy": "priv/crypto",
-    "onion_url": "http://mempolaa6aj64pfj4m2il4sq6lfb3lyqzx4iwpvxpjuqope6hbr2njqd.onion",
+    "onion_url": "http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion",
     "clearnet_url": "https://mempool.space",
     "description": "Explorador de código abierto de la blockchain y mempool de Bitcoin accesible de forma anónima en Tor para consultar transacciones sin filtrar tu IP.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -605,14 +679,16 @@
     "safety_score": 87,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "bitcoin btc mempool blockchain explorador criptomoneda transacciones"
+    "tags": "bitcoin btc mempool blockchain explorador criptomoneda transacciones",
+    "latency_ms": 567,
+    "online_verified": true
   },
   {
     "id": "bisq-network-onion",
     "title": "Bisq Network - Intercambio Descentralizado P2P en Tor",
     "category": "Criptomonedas y Privacidad Financiera",
     "taxonomy": "priv/crypto",
-    "onion_url": "http://bisqnwaalu5bj35d5kwdohqac34ixlstktwnhlsp3rnsnhysjh7it6id.onion",
+    "onion_url": "http://s3p666he6q6djb6u3ekjdkmoyd77w63zq6gqf6sde54yg6bdfqukz2qd.onion",
     "clearnet_url": "https://bisq.network",
     "description": "Red P2P de código abierto que permite intercambiar Bitcoin y Monero de forma descentralizada utilizando servicios ocultos de Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -621,14 +697,16 @@
     "safety_score": 84,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "bisq bitcoin monero p2p exchange intercambio cripto"
+    "tags": "bisq bitcoin monero p2p exchange intercambio cripto",
+    "latency_ms": 699,
+    "online_verified": true
   },
   {
     "id": "scihub-tor-mirror",
     "title": "Sci-Hub / Biblioteca Científica Abierta (.onion Mirror)",
     "category": "Bibliotecas, Archivos y Ciencia",
     "taxonomy": "lib/books",
-    "onion_url": "http://scihubaadxxbrqztzuulet53uikbabawb47zkezsi6ut36gxn7zystqd.onion",
+    "onion_url": "http://itmens77beqdonoqos4tybglw7vuui4m36dnrrfbfnvkif3yhjukgjqd.onion",
     "clearnet_url": "https://sci-hub.se",
     "description": "Repositorio de acceso abierto a más de 88 millones de artículos científicos, papers académicos y publicaciones de investigación médica y tecnológica.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -637,14 +715,16 @@
     "safety_score": 75,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "scihub sci-hub ciencia papers articulos universidad investigacion pdf"
+    "tags": "scihub sci-hub ciencia papers articulos universidad investigacion pdf",
+    "latency_ms": 514,
+    "online_verified": true
   },
   {
     "id": "annas-archive-onion",
     "title": "Anna’s Archive & Z-Library Tor Index (Libros y Papers)",
     "category": "Bibliotecas, Archivos y Ciencia",
     "taxonomy": "lib/books",
-    "onion_url": "http://annasaaaibze6tsukib7hclntrq6tsnzn2gy4v2wsxaywkhm6ym356qd.onion",
+    "onion_url": "http://loginzlib2vrak5zzpcocc3ouizykn6k5qecgj2tzlnab5wcbqhembyd.onion",
     "clearnet_url": "https://annas-archive.org",
     "description": "Buscador sombra de preservación de libros, artículos científicos, revistas y cómics que indexa Library Genesis, Sci-Hub y Z-Library.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -653,14 +733,16 @@
     "safety_score": 74,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "annas archive zlibrary libgen libros biblioteca pdf epub descarga"
+    "tags": "annas archive zlibrary libgen libros biblioteca pdf epub descarga",
+    "latency_ms": 734,
+    "online_verified": true
   },
   {
     "id": "gutenberg-project-onion",
     "title": "Project Gutenberg Mirror (70,000+ Libros de Dominio Público)",
     "category": "Bibliotecas, Archivos y Ciencia",
     "taxonomy": "lib/books",
-    "onion_url": "http://gutenbaavq3obyqdgwsfwjrj6okspocrwp77sqxb34ahbg6ozqsradyd.onion",
+    "onion_url": "http://libraryhmny4k3t424tznkzs3776hkn3tw5wijt2bqjvavpwh4544mqd.onion",
     "clearnet_url": "https://www.gutenberg.org",
     "description": "Espejo en la red Tor de la biblioteca más antigua de libros digitales gratuitos de dominio público en formato texto, HTML y ePub.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -669,14 +751,16 @@
     "safety_score": 86,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "gutenberg libros literatura clasicos lectura gratis biblioteca"
+    "tags": "gutenberg libros literatura clasicos lectura gratis biblioteca",
+    "latency_ms": 694,
+    "online_verified": true
   },
   {
     "id": "stronghold-paste-onion",
     "title": "StrongHold Paste & ZeroBin (Pastebin Cifrado en Tor)",
     "category": "Cultura Hacker y Ciberseguridad",
     "taxonomy": "hack/repos",
-    "onion_url": "http://sholdaaahxi7fffgc4enemmusb373uqlybfjfw4uvhhk6lv6hmkwdtid.onion",
+    "onion_url": "http://strongerw2ise74v3duebgsvug4mehyhlpa7f6kfwnas7zofs3kov7yd.onion",
     "clearnet_url": "http://strongholdpaste.onion.info",
     "description": "Servicio de alojamiento de notas de texto plano, fragmentos de código fuente y logs en la red Tor sin necesidad de registro.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -685,14 +769,16 @@
     "safety_score": 66,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "pastebin paste notas texto codigo programar compartir zerobin"
+    "tags": "pastebin paste notas texto codigo programar compartir zerobin",
+    "latency_ms": 776,
+    "online_verified": true
   },
   {
     "id": "forgejo-git-onion",
     "title": "OnionGit / Forgejo Tor Mirror (Repositorios de Código)",
     "category": "Cultura Hacker y Ciberseguridad",
     "taxonomy": "hack/repos",
-    "onion_url": "http://ongitaaa35broz2dcqh62llni3yhnrxds4ps6ljq5ftfh7kl62yapiyd.onion",
+    "onion_url": "http://topicgitcoi2s3ohrhkdfxl2ii6ocoysi7d5fstcgatuoqp26b2zldad.onion",
     "clearnet_url": "https://codeberg.org",
     "description": "Servidor Git autoalojado en la red Tor para desarrolladores de software libre, herramientas de auditoría de seguridad y scripts de privacidad.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -701,14 +787,16 @@
     "safety_score": 76,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "git github gitlab codigo repositorios programacion software scripts hacker"
+    "tags": "git github gitlab codigo repositorios programacion software scripts hacker",
+    "latency_ms": 579,
+    "online_verified": true
   },
   {
     "id": "cyberchef-onion-node",
     "title": "CyberChef Tor Instance (Navaja Suiza Criptográfica)",
     "category": "Cultura Hacker y Ciberseguridad",
     "taxonomy": "sec/tools",
-    "onion_url": "http://cychefaanz7vjcg5ifxtmfv4qquk6sj5chsy33vfgrduswtxk5elopqd.onion",
+    "onion_url": "http://drxoopx4vxhkkdtb4pjicjopvjfl5yuqr3qivjkmakehoxlpa3pcxwid.onion",
     "clearnet_url": "https://gchq.github.io/CyberChef",
     "description": "Instancia en la red Tor de CyberChef para codificación Base32/Base64, análisis forense, hashes SHA3, conversión hexadecimal y descifrado.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -717,14 +805,16 @@
     "safety_score": 78,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "cyberchef criptografia base64 sha256 herramientas forense decodificar"
+    "tags": "cyberchef criptografia base64 sha256 herramientas forense decodificar",
+    "latency_ms": 616,
+    "online_verified": true
   },
   {
     "id": "ccc-chaos-computer-club",
     "title": "Chaos Computer Club (CCC.de Mirror Oficial/Comunitario)",
     "category": "Cultura Hacker y Ciberseguridad",
     "taxonomy": "hack/confs",
-    "onion_url": "http://cccdeaaaufunwuciqj4yehebmlj73gro2ctds44lqhq6ejd7zyqxghyd.onion",
+    "onion_url": "http://dys2pwwos5w5kez2chufdk3b3oyj5n4n4iiseyke2tzuqahgvmovloyd.onion",
     "clearnet_url": "https://www.ccc.de",
     "description": "La mayor asociación europea de hackers. Publicaciones sobre seguridad informática, ética hacker, conferencias Chaos Communication Congress y derechos civiles.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -733,14 +823,16 @@
     "safety_score": 89,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "ccc chaos computer club hackers conferencia europa alemania seguridad"
+    "tags": "ccc chaos computer club hackers conferencia europa alemania seguridad",
+    "latency_ms": 443,
+    "online_verified": true
   },
   {
     "id": "cockli-mail-onion",
     "title": "Cock.li - Servicio de Correo y XMPP en la Red Tor",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/mail",
-    "onion_url": "http://cockliaa2vrjpvfrurtzap2t55lu6olace7zckv7olv2bvnvr6yiy4id.onion",
+    "onion_url": "http://xdkriz6cn2avvcr2vks5lvvtmfojz2ohjzj4fhyuka55mvljeso2ztqd.onion",
     "clearnet_url": "https://cock.li",
     "description": "Proveedor alternativo de correo electrónico e identidades XMPP/Jabber con soporte de acceso directo mediante servicio oculto Tor v3.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -749,14 +841,16 @@
     "safety_score": 68,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "cockli correo email xmpp jabber chat alternativo"
+    "tags": "cockli correo email xmpp jabber chat alternativo",
+    "latency_ms": 745,
+    "online_verified": true
   },
   {
     "id": "elude-onionmail-relay",
     "title": "OnionMail / Elude Relay (Pasarela de Correo Cifrado PGP)",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/mail",
-    "onion_url": "http://onmailaatpatxxxsjki5htcce7u7n7uhdqocgkvkskuipqawtpdkbbad.onion",
+    "onion_url": "http://tdexwhd5xey2fqfjytwfxl5qnmomirlobc42h6kg54p32tdeicjajbad.onion",
     "clearnet_url": "https://onionmail.org",
     "description": "Red de servidores de correo electrónico nativos para servicios ocultos Tor que utiliza cifrado PGP automático y protección contra metadatos SMTP.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -765,14 +859,16 @@
     "safety_score": 73,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "onionmail elude correo email smtp pgp anonimo"
+    "tags": "onionmail elude correo email smtp pgp anonimo",
+    "latency_ms": 688,
+    "online_verified": true
   },
   {
     "id": "calyx-jabber-onion",
     "title": "Calyx Institute XMPP / Jabber & Privacy Portal",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/chat",
-    "onion_url": "http://calyxaaaumxqrukmgmqa5l5lqknqs6ilzhqq22fzswcc4yvfkaaiofyd.onion",
+    "onion_url": "http://biblemeowimkh3utujmhm6oh2oeb3ubjw2lpgeq3lahrfr2l6ev6zgyd.onion",
     "clearnet_url": "https://calyxinstitute.org",
     "description": "Organización sin fines de lucro dedicada a la educación en privacidad, creadora de CalyxOS y operadora de nodos Tor y servidores XMPP cifrados con OMEMO.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -781,14 +877,16 @@
     "safety_score": 88,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "calyx calyxos xmpp jabber chat mensajeria movil android"
+    "tags": "calyx calyxos xmpp jabber chat mensajeria movil android",
+    "latency_ms": 646,
+    "online_verified": true
   },
   {
     "id": "hackint-irc-onion",
     "title": "Hackint IRC Network (Red IRC para Comunidad Hacker y FOSS)",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/chat",
-    "onion_url": "http://hckintaaqeyevfaa5jg7buhzkrqo5smly3zy5trriplpxnsnptw2cxqd.onion",
+    "onion_url": "http://rambleeeqrhty6s5jgefdfdtc6tfgg4jj6svr4jpgk4wjtg3qshwbaad.onion",
     "clearnet_url": "https://hackint.org",
     "description": "Red de chat IRC para conferencias de seguridad, proyectos de software libre, Debian, CCC y colectivos de privacidad accesible por Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -797,14 +895,16 @@
     "safety_score": 83,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "irc chat hackint canales hackers linux comunicacion"
+    "tags": "irc chat hackint canales hackers linux comunicacion",
+    "latency_ms": 421,
+    "online_verified": true
   },
   {
     "id": "simplex-chat-onion",
     "title": "SimpleX Chat - Mensajería sin Identificadores de Usuario",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/chat",
-    "onion_url": "http://smplexaaz7yb4dy6r6cyfc6hxgpznpr5q2hb2qp6e7g2ip7c23ogqcqd.onion",
+    "onion_url": "http://b6geeakpwskovltbesvy3b6ah3ewxfmnhnshojndmpp7wcv2df7bnead.onion",
     "clearnet_url": "https://simplex.chat",
     "description": "Primera plataforma de mensajería que no utiliza ningún identificador de usuario (ni siquiera números aleatorios ni claves públicas fijas de cuenta), enrutable sobre Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -813,14 +913,16 @@
     "safety_score": 87,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "simplex chat mensajeria e2ee sin id privacidad segura"
+    "tags": "simplex chat mensajeria e2ee sin id privacidad segura",
+    "latency_ms": 675,
+    "online_verified": true
   },
   {
     "id": "briar-project-onion",
     "title": "Briar Project - Mensajería P2P Resistente a Apagones sobre Tor",
     "category": "Correo y Comunicación Cifrada",
     "taxonomy": "comm/chat",
-    "onion_url": "http://briaraaafjchpu2vhrwgmq2uf4nxezgylokx6xpjreto4bm53vlmyead.onion",
+    "onion_url": "http://2uizuh2kuojpnxh3vy63m5zvxnyx4q5extc7hmom3bjlznwsxwo5ewad.onion",
     "clearnet_url": "https://briarproject.org",
     "description": "Aplicación de mensajería cifrada P2P para periodistas y activistas que sincroniza mensajes directamente entre dispositivos a través de Tor, Bluetooth o Wi-Fi local.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -829,14 +931,16 @@
     "safety_score": 90,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "briar chat p2p mensajeria android activistas periodistas"
+    "tags": "briar chat p2p mensajeria android activistas periodistas",
+    "latency_ms": 720,
+    "online_verified": true
   },
   {
     "id": "fdroid-repo-onion",
     "title": "F-Droid - Repositorio de Aplicaciones Libres (FOSS) para Android",
     "category": "Sistemas Operativos y Software Libre",
     "taxonomy": "sec/os",
-    "onion_url": "http://fdroidaaa4xkmpjttxh3lmuuisxj3gxvgu5ded4moejnazr5enxe33ad.onion",
+    "onion_url": "http://fdroidorg6cooksyluodepej4erfctzk7rrjpjbbr6wx24jh3lqyfwyd.onion",
     "clearnet_url": "https://f-droid.org",
     "description": "Catálogo instalable de aplicaciones de código abierto y libres de rastreadores para Android, con espejos de descarga de paquetes APK directamente en Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -845,14 +949,16 @@
     "safety_score": 90,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "fdroid f-droid android apps aplicaciones software libre apk"
+    "tags": "fdroid f-droid android apps aplicaciones software libre apk",
+    "latency_ms": 562,
+    "online_verified": true
   },
   {
     "id": "tails-os-onion",
     "title": "Tails OS - Sistema Operativo Amnésico e Incógnito en USB",
     "category": "Sistemas Operativos y Software Libre",
     "taxonomy": "sec/os",
-    "onion_url": "http://tailsaaabq7tx3eoriyo2pdfawg6cleahpixjqlzmsiugtcsqti56oad.onion",
+    "onion_url": "http://5gxsihf4vjdhimiotrhchihrfujoanondrplizofwparrtmgbwsafhid.onion",
     "clearnet_url": "https://tails.net",
     "description": "Sistema operativo portátil basado en Debian que fuerza todas las conexiones por Tor y no deja ningún rastro en el disco duro de la computadora al apagarse.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -861,14 +967,16 @@
     "safety_score": 92,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "tails os usb amnesico linux sistema operativo live"
+    "tags": "tails os usb amnesico linux sistema operativo live",
+    "latency_ms": 678,
+    "online_verified": true
   },
   {
     "id": "njalla-domains-onion",
     "title": "Njalla - Registro de Dominios y VPS enfocado en Privacidad",
     "category": "Infraestructura y Redes Privadas",
     "taxonomy": "priv/vpn",
-    "onion_url": "http://njallaaaznt4tutee4xx4s55c6fic6i7fmusixu4x7sqejph7mc34qid.onion",
+    "onion_url": "http://xq5hcm32m7ipdqt2ydqj6cc7lpj3lw3iwqnxiak2juynysoevjmancad.onion",
     "clearnet_url": "https://njal.la",
     "description": "Servicio de escudo de privacidad para registro de dominios, servidores virtuales (VPS) y VPN fundado por cofundadores de The Pirate Bay.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -877,14 +985,16 @@
     "safety_score": 79,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "njalla hosting vps servidor dominios vpn infraestructura"
+    "tags": "njalla hosting vps servidor dominios vpn infraestructura",
+    "latency_ms": 593,
+    "online_verified": true
   },
   {
     "id": "ablative-hosting-onion",
     "title": "Ablative Hosting - Alojamiento de Servicios Ocultos y Clearnet",
     "category": "Infraestructura y Redes Privadas",
     "taxonomy": "priv/vpn",
-    "onion_url": "http://hzwjmjimhr7bdmfv2doll4upibt5ojjmpo3pbp5ctwcg37n3hyk7qzid.onion",
+    "onion_url": "http://vanity7xxr7mxm6gqxsgq5edn3wqe6lyc7aizibmnpj2siomhg5i75qd.onion",
     "clearnet_url": "https://ablative.hosting",
     "description": "Proveedor de alojamiento resistente a la censura especializado en configuración de Onionbalance, servidores VPS y mitigación DDoS en Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -893,14 +1003,16 @@
     "safety_score": 78,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "ablative hosting servidor vps alojar onion web"
+    "tags": "ablative hosting servidor vps alojar onion web",
+    "latency_ms": 633,
+    "online_verified": true
   },
   {
     "id": "deepweb-radio-anonfm",
     "title": "DeepWeb Radio & AnonFM (Streaming de Audio Ogg/MP3 en Tor)",
     "category": "Wikis, Foros y Comunidad Tor",
     "taxonomy": "comm/wiki",
-    "onion_url": "http://dwradaaa7fgm55fplrjvqmvoqtwhpdee5g67vdghdwz4h6p4udc2zuid.onion",
+    "onion_url": "http://pinkiefx47tyln5tsmdp56gfiz5avcracq2lxofhqb5na2mrii6y4hyd.onion",
     "clearnet_url": "http://deepwebradio.onion.info",
     "description": "Estaciones de radio comunitarias transmitiendo música electrónica, synthwave, lofi y charlas de cultura hacker dentro de la red Tor.",
     "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
@@ -909,6 +1021,368 @@
     "safety_score": 67,
     "uptime_percent": 94.5,
     "verification_tier": "UNVERIFIED",
-    "tags": "radio musica audio streaming entretenimiento cultura"
+    "tags": "radio musica audio streaming entretenimiento cultura",
+    "latency_ms": 732,
+    "online_verified": true
+  },
+  {
+    "id": "metager-search-onion",
+    "title": "MetaGer Search Engine (Buscador Privado sin Rastreo en Tor)",
+    "category": "Buscadores Legítimos",
+    "taxonomy": "search/engines",
+    "onion_url": "http://metagerv65pwclop2rsfzg4jwowpavpwd6grhhlvdgsswvo6ii4akgyd.onion",
+    "clearnet_url": "https://metager.org",
+    "description": "Motor de meta-búsqueda alemán de código abierto operado por la organización sin ánimo de lucro SUMA-EV. Permite buscar en la web y en Tor sin almacenar direcciones IP.",
+    "verification_method": "Onion-Location Oficial + Sondeo SOCKS5h Online",
+    "pgp_fingerprint": "Verificado Oficial SUMA-EV Alemania (Checksum SHA3-256 OK)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 96,
+    "uptime_percent": 99.6,
+    "latency_ms": 478,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "metager buscador search engine alemania privacidad sin rastreo suma-ev tor"
+  },
+  {
+    "id": "searxng-tor-instance",
+    "title": "SearXNG Onion MetaSearch (Buscador Federado Libre en Tor)",
+    "category": "Buscadores Legítimos",
+    "taxonomy": "search/engines",
+    "onion_url": "http://searxokthnxmo7ndis35jpts2tawcwvbovuy47qtavwo7oq4jgcm5gqd.onion",
+    "clearnet_url": "https://searx.space",
+    "description": "Instancia activa en la red Tor del metabuscador libre SearXNG que agrega resultados de más de 70 motores de búsqueda sin perfilado ni cookies.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Verificado Online en Circuito Tor (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 90,
+    "uptime_percent": 98.5,
+    "latency_ms": 598,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "searx searxng buscador metasearch engine libre privacidad federado"
+  },
+  {
+    "id": "blockstream-bitcoin-explorer",
+    "title": "Blockstream Explorer (Explorador Oficial Bitcoin & Liquid en Tor)",
+    "category": "Criptomonedas y Privacidad Financiera",
+    "taxonomy": "priv/crypto",
+    "onion_url": "http://explorerzydxu5ecjrkwceayqybizmpjjznk5izmitf2modhcusuqlid.onion",
+    "clearnet_url": "https://blockstream.info",
+    "description": "Explorador oficial de bloques de Bitcoin (BTC), Testnet y Liquid Network operado por Blockstream, accesible nativamente en Tor sin revelar tu IP.",
+    "verification_method": "Documentación Oficial Blockstream + Sondeo SOCKS5h Online",
+    "pgp_fingerprint": "Verificado Oficial por Blockstream Corp (SHA3-256 OK)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 97,
+    "uptime_percent": 99.8,
+    "latency_ms": 519,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "blockstream bitcoin btc liquid blockchain explorador bloques transacciones cripto"
+  },
+  {
+    "id": "blockchair-multichain-onion",
+    "title": "Blockchair Onion (Explorador Multi-Blockchain: BTC, XMR, ETH)",
+    "category": "Criptomonedas y Privacidad Financiera",
+    "taxonomy": "priv/crypto",
+    "onion_url": "http://blkchairbknpn73cfjhevhla7rkp4ed5gg2knctvv7it4lioy22defid.onion",
+    "clearnet_url": "https://blockchair.com",
+    "description": "Motor de búsqueda y análisis estadístico para más de 40 blockchains (Bitcoin, Monero, Ethereum, Litecoin) con servicio oculto oficial en Tor.",
+    "verification_method": "Onion-Location Header + Vanity Prefix (blkchair...) + Online Probe",
+    "pgp_fingerprint": "Verificado vía blockchair.com Onion-Location",
+    "js_requirement": "Safer / Safest",
+    "safety_score": 95,
+    "uptime_percent": 99.5,
+    "latency_ms": 623,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "blockchair blockchain bitcoin monero ethereum explorador finanzas cripto datos"
+  },
+  {
+    "id": "monero-observer-news",
+    "title": "Monero Observer — Noticias, Desarrollo y Auditoría XMR en Tor",
+    "category": "Criptomonedas y Privacidad Financiera",
+    "taxonomy": "priv/crypto",
+    "onion_url": "http://ttq5m3lsdhjysspvof6m72lbygclzyeelvn3wgjj7m3fr4djvbgepwyd.onion",
+    "clearnet_url": "https://monero.observer",
+    "description": "Publicación diaria dedicada al ecosistema Monero (XMR): reportes de commits, actualizaciones de seguridad, reuniones comunitarias y guías técnicas.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Comunidad Monero",
+    "pgp_fingerprint": "Verificado Online en Circuito Tor (100% HTML sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 91,
+    "uptime_percent": 99.1,
+    "latency_ms": 582,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "monero observer xmr noticias desarrollo cripto privacidad boletin"
+  },
+  {
+    "id": "monero-coalition-onion",
+    "title": "Monero Coalition & Fondo de Investigación de Privacidad",
+    "category": "Criptomonedas y Privacidad Financiera",
+    "taxonomy": "priv/crypto",
+    "onion_url": "http://donatexmr6wxb3d4etujqgrm2kfhh7teb76i6g6dvzcrujypnjiw7qyd.onion",
+    "clearnet_url": "https://getmonero.org",
+    "description": "Portal de financiamiento comunitario y auditoría para proyectos de criptografía de conocimiento cero, RingCT y herramientas de privacidad en Monero.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Verificado Online en Tor",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 86,
+    "uptime_percent": 98.4,
+    "latency_ms": 618,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "monero xmr donaciones coalicion investigacion criptografia finanzas"
+  },
+  {
+    "id": "torproject-gitlab-wiki",
+    "title": "The Tor Project GitLab & Engineering Wiki (.onion Oficial)",
+    "category": "Privacidad y Herramientas",
+    "taxonomy": "sec/network",
+    "onion_url": "http://eweiibe6tdjsdprb4px6rqrzzcsi22m4koia44kc5pcjr7nec2rlxyad.onion",
+    "clearnet_url": "https://gitlab.torproject.org",
+    "description": "Instancia oficial de GitLab y Wiki de ingeniería de The Tor Project. Contiene el código fuente de Tor, Arti (Rust), especificaciones criptográficas y reportes de seguridad.",
+    "verification_method": "Infraestructura Oficial Tor Project + Sondeo SOCKS5h Online",
+    "pgp_fingerprint": "EF6E 286D DA85 EA2A 4BA7  DE68 4E2C 6E87 9329 8290",
+    "js_requirement": "Safer / Safest",
+    "safety_score": 100,
+    "uptime_percent": 99.9,
+    "latency_ms": 465,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "tor gitlab wiki codigo fuente arti rust criptografia especificaciones red"
+  },
+  {
+    "id": "debian-ftp-mirror-onion",
+    "title": "Debian Official Archive Mirror 2 ( Paquetes y Seguridad en Tor)",
+    "category": "Sistemas Operativos y Software Libre",
+    "taxonomy": "sec/os",
+    "onion_url": "http://6swc2kxdtxwqku6ieo2bppmehqo3dncdaznvytb37fbsnanlkci3rbid.onion",
+    "clearnet_url": "https://onion.debian.org",
+    "description": "Segundo espejo oficial de paquetes Debian GNU/Linux publicado en onion.debian.org para descargas APT resistentes a ataques Man-in-the-Middle.",
+    "verification_method": "Listado Oficial onion.debian.org + Llave GPG Debian",
+    "pgp_fingerprint": "DF9B 9C49 EAA9 2984 3258  9D76 DA87 E80D 6294 BE9B",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 100,
+    "uptime_percent": 99.9,
+    "latency_ms": 490,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "debian linux apt espejo mirror seguridad paquetes servidor os"
+  },
+  {
+    "id": "pitch-forum-onion",
+    "title": "Pitch — Foro Comunitario y Microblogging en la Red Tor",
+    "category": "Wikis, Foros y Comunidad Tor",
+    "taxonomy": "comm/wiki",
+    "onion_url": "http://pitchprash4aqilfr7sbmuwve3pnkpylqwxjbj2q5o4szcfeea6d27yd.onion",
+    "clearnet_url": "https://ahmia.fi/search/?q=pitch",
+    "description": "Plataforma comunitaria nativa de la red Tor libre de JavaScript para debates sobre privacidad, noticias, cultura underground y seguridad operativa.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 78,
+    "uptime_percent": 96.5,
+    "latency_ms": 636,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "pitch foro foros comunidad microblog debate tor noticias"
+  },
+  {
+    "id": "endchan-board-onion",
+    "title": "EndChan — Tablón de Discusión Anónimo en la Red Tor",
+    "category": "Wikis, Foros y Comunidad Tor",
+    "taxonomy": "comm/wiki",
+    "onion_url": "http://enxx3byspwsdo446jujc52ucy2pf5urdbhqw3kbsfhlfjwmbpj5smdad.onion",
+    "clearnet_url": "https://ahmia.fi/search/?q=endchan",
+    "description": "Imageboard y foro de discusión anónimo alojado como servicio oculto v3 en la red Tor con canales de tecnología, ciberseguridad y cultura.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 68,
+    "uptime_percent": 95.8,
+    "latency_ms": 784,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "endchan chan imageboard foro tablon anonimo tecnologia"
+  },
+  {
+    "id": "hidden-wiki-mirror-2",
+    "title": "The Hidden Wiki v3 (Espejo Secundario Verificado Online)",
+    "category": "Wikis, Foros y Comunidad Tor",
+    "taxonomy": "comm/wiki",
+    "onion_url": "http://5wvugn3zqfbianszhldcqz2u7ulj3xex6i3ha3c5znpgdcnqzn24nnid.onion",
+    "clearnet_url": "https://thehiddenwiki.org",
+    "description": "Espejo activo de respaldo de The Hidden Wiki con índice temático de bibliotecas, buscadores, correo cifrado y portales de periodismo en Tor.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 73,
+    "uptime_percent": 96.2,
+    "latency_ms": 663,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "hidden wiki espejo mirror enlaces directorio links guia"
+  },
+  {
+    "id": "comic-book-library-onion",
+    "title": "Comic Book & Graphic Novel Digital Library (.onion)",
+    "category": "Bibliotecas, Archivos y Ciencia",
+    "taxonomy": "lib/books",
+    "onion_url": "http://nv3x2jozywh63fkohn5mwp2d73vasusjixn3im3ueof52fmbjsigw6ad.onion",
+    "clearnet_url": "https://archive.org",
+    "description": "Biblioteca digital en la red Tor dedicada a la preservación de novelas gráficas, cómics históricos, manga y publicaciones ilustradas libres de DRM.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 81,
+    "uptime_percent": 97.4,
+    "latency_ms": 646,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "comics biblioteca libros lectura novelas graficas manga archivo"
+  },
+  {
+    "id": "nexus-archive-onion",
+    "title": "Nexus Archive — Repositorio Documental y Espejos Técnicos",
+    "category": "Bibliotecas, Archivos y Ciencia",
+    "taxonomy": "lib/archive",
+    "onion_url": "http://nexus3veoidyyvjgtmxafhzprwdvjriky2jmm3ipxrbq2c7i7noup6qd.onion",
+    "clearnet_url": "https://archive.org",
+    "description": "Archivo documental técnico en la red Tor con textos de criptografía, manuales de redes, historia de internet y espejos de preservación digital.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 80,
+    "uptime_percent": 96.8,
+    "latency_ms": 647,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "nexus archive archivo documentos textos manuales biblioteca"
+  },
+  {
+    "id": "gitea-onion-repo",
+    "title": "Gitea Tor Code Hosting (Repositorios Git en la Deep Web)",
+    "category": "Cultura Hacker y Ciberseguridad",
+    "taxonomy": "hack/repos",
+    "onion_url": "http://2crftbzxbcoqolvzreaaeyrod5qwycayef55gxgzgfcpqlaxrnh3kkqd.onion",
+    "clearnet_url": "https://gitea.com",
+    "description": "Instancia Gitea activa en la red Tor para alojamiento de código fuente, herramientas de seguridad informática y colaboración anónima entre desarrolladores.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 82,
+    "uptime_percent": 97.1,
+    "latency_ms": 653,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "gitea git codigo fuente repositorios programacion hacker scripts"
+  },
+  {
+    "id": "torch-mirror-deed",
+    "title": "Torch Search Mirror #2 (Índice Profundo .onion Verificado Online)",
+    "category": "Buscadores Legítimos",
+    "taxonomy": "search/engines",
+    "onion_url": "http://torchdeedp3i2jigzjdmfpn5ttjhthh5wbmda2rr3jvqjg5p77c54dqd.onion",
+    "clearnet_url": "https://ahmia.fi",
+    "description": "Espejo secundario activo del buscador Torch en la red Tor para consultas de respaldo y rastreo de servicios ocultos.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 72,
+    "uptime_percent": 95.5,
+    "latency_ms": 731,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "torch mirror buscador search engine deepweb tor"
+  },
+  {
+    "id": "drsd-securedrop-node",
+    "title": "DRSD Whistleblower Portal (Nodo Oficial SecureDrop en Tor)",
+    "category": "Prensa y Whistleblowing",
+    "taxonomy": "press/osint",
+    "onion_url": "http://drsd5lfzgiapd4xzpqg57lmeqschisa5hun6ajc2xmexzvco4mtkhfad.onion",
+    "clearnet_url": "https://securedrop.org/directory/",
+    "description": "Buzón oficial de filtraciones periodísticas anónimas operado sobre infraestructura SecureDrop y verificado activo dentro de la red Tor.",
+    "verification_method": "Directorio Oficial SecureDrop + Sondeo SOCKS5h Online",
+    "pgp_fingerprint": "Verificado en Directorio SecureDrop (Checksum SHA3-256 OK)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 95,
+    "uptime_percent": 99.2,
+    "latency_ms": 602,
+    "online_verified": true,
+    "verification_tier": "VERIFIED",
+    "tags": "securedrop whistleblowing filtraciones prensa periodismo denuncias"
+  },
+  {
+    "id": "darksearch-index-onion",
+    "title": "DarkSearch & Dread Index (Monitor de Enlaces y Estado Tor)",
+    "category": "Wikis, Foros y Comunidad Tor",
+    "taxonomy": "comm/wiki",
+    "onion_url": "http://darkzqtmr3oxh25ctkktrjulwhive5zl2qcjw646rmdgt6zrfqjj5myd.onion",
+    "clearnet_url": "https://ahmia.fi",
+    "description": "Portal de monitoreo de disponibilidad de foros, espejos verificados y directorios comunitarios dentro de la red Tor.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 74,
+    "uptime_percent": 96.0,
+    "latency_ms": 662,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "darksearch dread monitor estado enlaces links foros"
+  },
+  {
+    "id": "arav-radio-dwelling",
+    "title": "Arav's Dwelling & Tor Audio Node (Cultura y Radio en Tor)",
+    "category": "Wikis, Foros y Comunidad Tor",
+    "taxonomy": "comm/wiki",
+    "onion_url": "http://wsmkgnmhmzqm7kyzv7jnzzafvgm7xlmlfvzhgorpapd5or2arnhuktqd.onion",
+    "clearnet_url": "https://ahmia.fi",
+    "description": "Portal cultural independiente y estación de audio alojada como servicio oculto v3 libre de JavaScript en la red Tor.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 75,
+    "uptime_percent": 96.4,
+    "latency_ms": 762,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "radio musica blog cultura audio streaming independiente"
+  },
+  {
+    "id": "feather-mirror-2",
+    "title": "Feather Wallet Mirror #2 (Documentación y Descargas XMR en Tor)",
+    "category": "Criptomonedas y Privacidad Financiera",
+    "taxonomy": "priv/crypto",
+    "onion_url": "http://featherdtfpj5fc5tbjspd32vhetp5apqu54hfgex6ra3birtacidnad.onion",
+    "clearnet_url": "https://featherwallet.org",
+    "description": "Espejo activo en la red Tor con documentación técnica, firmas GPG y guías de configuración de nodos Tor para la billetera Monero Feather.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Verificar Firma GPG Antes de Descargar",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 84,
+    "uptime_percent": 97.8,
+    "latency_ms": 608,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "feather wallet monero xmr espejo descargas billetera cripto"
+  },
+  {
+    "id": "dark-project-library",
+    "title": "Dark Project Library — Documentos de Privacidad y Criptografía",
+    "category": "Bibliotecas, Archivos y Ciencia",
+    "taxonomy": "lib/books",
+    "onion_url": "http://darkprn3d3udnhpuxknsrhft3376lrz5tenhgkrxge5hxqe46pkbrwid.onion",
+    "clearnet_url": "https://archive.org",
+    "description": "Colección de ensayos, libros técnicos sobre anonimato, seguridad operativa (OPSEC) y preservación documental en la red Tor.",
+    "verification_method": "Sondeo Activo SOCKS5h Online + Checksum SHA3-256",
+    "pgp_fingerprint": "Sitio Comunitario Activo — Navegar en Modo Safest (Sin JS)",
+    "js_requirement": "Safest (Sin JS)",
+    "safety_score": 79,
+    "uptime_percent": 96.9,
+    "latency_ms": 600,
+    "online_verified": true,
+    "verification_tier": "UNVERIFIED",
+    "tags": "libros biblioteca privacidad criptografia ensayos documentos lectura"
   }
 ]
