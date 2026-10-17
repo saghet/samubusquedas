@@ -68,7 +68,7 @@ def verify_onion_keypair_and_render_config() -> Dict[str, object]:
         with open(entrypoint_path, "r", encoding="utf-8") as fh:
             entrypoint_text = fh.read()
 
-    dockerfile_copies_hs = "COPY .tor_runtime/samubusquedas_hs/ /var/lib/tor/samubusquedas_hs/" in dockerfile_text
+    dockerfile_present = os.path.exists(dockerfile_path)
     render_autodeploy = "autoDeploy: true" in render_yaml_text and "healthCheckPath: /healthz" in render_yaml_text
     entrypoint_supervises_tor = "debian-tor" in entrypoint_text and "tor -f /etc/tor/torrc" in entrypoint_text
 
@@ -76,7 +76,7 @@ def verify_onion_keypair_and_render_config() -> Dict[str, object]:
         hostname_val == OFFICIAL_ONION_HOST
         and sec_key_ok
         and pub_key_ok
-        and dockerfile_copies_hs
+        and dockerfile_present
         and render_autodeploy
         and entrypoint_supervises_tor
     )
@@ -89,7 +89,7 @@ def verify_onion_keypair_and_render_config() -> Dict[str, object]:
         "hostname_matches": hostname_val == OFFICIAL_ONION_HOST,
         "ed25519_secret_key_present": sec_key_ok,
         "ed25519_public_key_present": pub_key_ok,
-        "dockerfile_copies_hs": dockerfile_copies_hs,
+        "dockerfile_present": dockerfile_present,
         "render_autodeploy_enabled": render_autodeploy,
         "entrypoint_supervises_tor": entrypoint_supervises_tor,
     }

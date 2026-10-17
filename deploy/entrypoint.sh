@@ -11,11 +11,7 @@ echo "======================================================================"
 echo "  Iniciando SamuBusquedas (.onion v3) — Arquitectura por saghet       "
 echo "======================================================================"
 
-# Sincronizar el puerto del Hidden Service de Tor con el puerto HTTP de la nube
-echo "[*] Configurando redirección del Hidden Service Tor hacia 127.0.0.1:${PORT}..."
-sed -i "s/127.0.0.1:8080/127.0.0.1:${PORT}/g" /etc/tor/torrc
-
-# Bucle auto-reiniciable para el demonio Tor oficial en segundo plano
+# Bucle auto-reiniciable para el demonio Tor oficial en segundo plano (SOCKS5h Proxy)
 (
     while true; do
         echo "[*] [Guardian] Iniciando/Verificando demonio Tor oficial..."
@@ -26,14 +22,6 @@ sed -i "s/127.0.0.1:8080/127.0.0.1:${PORT}/g" /etc/tor/torrc
 ) &
 
 sleep 2
-
-if [ -f /var/lib/tor/samubusquedas_hs/hostname ]; then
-    ONION_URL=$(cat /var/lib/tor/samubusquedas_hs/hostname)
-    echo "======================================================================"
-    echo "  [ONLINE] SERVICIO .ONION V3 PUBLICADO EXITOSAMENTE EN LA RED TOR:   "
-    echo "  http://${ONION_URL}"
-    echo "======================================================================"
-fi
 
 # Bucle auto-reiniciable para el servidor web Python (incluye OnionAlwaysOnGuardian)
 while true; do

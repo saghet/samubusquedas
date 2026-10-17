@@ -82,10 +82,11 @@ class OnionAlwaysOnGuardian:
     def ensure_tor_daemon_running(self, force_restart: bool = False) -> bool:
         """
         Verifica si el puerto SOCKS5h de Tor (`127.0.0.1:19050`) está abierto.
-        Si está cerrado (o `force_restart=True`) y existe `tor.exe` en Windows,
-        inicia o reinicia automáticamente el demonio Tor con `torrc.windows.conf`.
+        Si ya está abierto, NUNCA lo mata ni reinicia para preservar la estabilidad de
+        los Introduction Points y los descriptores ya propagados en HSDir.
+        Solo si está caído lo inicia de forma limpia con `torrc.windows.conf`.
         """
-        if not force_restart and is_local_port_open(TOR_SOCKS_HOST, TOR_SOCKS_PORT):
+        if is_local_port_open(TOR_SOCKS_HOST, TOR_SOCKS_PORT):
             return True
 
         tor_exe = find_tor_executable()
@@ -93,14 +94,6 @@ class OnionAlwaysOnGuardian:
             return is_local_port_open(TOR_SOCKS_HOST, TOR_SOCKS_PORT)
 
         with _GUARDIAN_LOCK:
-            if force_restart and self._tor_proc is not None:
-                try:
-                    self._tor_proc.terminate()
-                    self._tor_proc.wait(timeout=3)
-                except Exception:
-                    pass
-                self._tor_proc = None
-
             if not is_local_port_open(TOR_SOCKS_HOST, TOR_SOCKS_PORT):
                 os.makedirs(os.path.join(PROJECT_ROOT, ".tor_runtime", "data"), exist_ok=True)
                 os.makedirs(os.path.join(PROJECT_ROOT, ".tor_runtime", "samubusquedas_hs"), exist_ok=True)
@@ -124,11 +117,12 @@ class OnionAlwaysOnGuardian:
             time.sleep(0.5)
         return is_local_port_open(TOR_SOCKS_HOST, TOR_SOCKS_PORT)
 
-    def run_self_onion_heartbeat(self, timeout: float = 8.0) -> Dict[str, object]:
+    def run_self_onion_heartbeat(self, timeout: float = 25.0) -> Dict[str, object]:
         """
         Ejecuta un auto-ping real a través de SOCKS5h (`127.0.0.1:19050`) hacia
         `http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion/healthz`
         para mantener vivos los circuitos de Rendezvous e Introduction Points.
+        NUNCA mata el proceso Tor en caso de timeout; preserva la estabilidad de la red.
         """
         socks_open = self.ensure_tor_daemon_running(force_restart=False)
         now = time.time()
@@ -151,10 +145,10 @@ class OnionAlwaysOnGuardian:
             self.last_self_probe_ok = False
             self.consecutive_failures += 1
             self.last_self_probe_reason = str(probe.get("reason", "Sonda .onion en progreso"))
-            # Si acumula 3 fallos seguidos tras más de 90s, reiniciar Tor para republicar descriptor HSDir
-            if self.consecutive_failures >= 3:
-                self.ensure_tor_daemon_running(force_restart=True)
-                self.consecutive_failures = 0
+            # Si el puerto 19050 sigue abierto, dejamos a Tor continuar sin matarlo
+            # para no destruir los Introduction Points ni los circuitos activos.
+            if not is_local_port_open(TOR_SOCKS_HOST, TOR_SOCKS_PORT):
+                self.ensure_tor_daemon_running(force_restart=False)
 
         return self.get_status()
 

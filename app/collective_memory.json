@@ -1,5 +1,5 @@
 {
-  "version": "1.99.6",
+  "version": "1.99.7",
   "architect": "saghet",
   "queries": {
     "tor": {
@@ -3725,7 +3725,7 @@
     "gustavo petro": {
       "query": "gustavo petro",
       "display_query": "gustavo petro",
-      "hits": 6,
+      "hits": 8,
       "result_count": 10,
       "updated_epoch": 1792270800,
       "results": [
@@ -3742,11 +3742,11 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 95,
           "uptime_percent": 99.4,
-          "latency_ms": 2969,
+          "latency_ms": 3324,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (2969 ms)",
+          "online_status": "ONLINE EN TOR (3324 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-archive-gustavo-petro",
@@ -3780,11 +3780,11 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 93,
           "uptime_percent": 99.4,
-          "latency_ms": 3264,
+          "latency_ms": 5904,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3264 ms)",
+          "online_status": "ONLINE EN TOR (5904 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-nytimes-gustavo-petro",
@@ -3799,9 +3799,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 93,
           "uptime_percent": 99.4,
-          "latency_ms": 4518,
+          "latency_ms": 698,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (4518 ms)",
+          "online_status": "ONLINE EN TOR (698 ms)",
           "verification_tier": "LIVE_TOR",
           "tags": "gustavo petro gustavo petro"
         },
@@ -3818,11 +3818,11 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 95,
           "uptime_percent": 99.4,
-          "latency_ms": 3867,
+          "latency_ms": 4239,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3867 ms)",
+          "online_status": "ONLINE EN TOR (4239 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-bellingcat-gustavo-petro",
@@ -3837,11 +3837,11 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 92,
           "uptime_percent": 99.4,
-          "latency_ms": 3420,
+          "latency_ms": 3570,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3420 ms)",
+          "online_status": "ONLINE EN TOR (3570 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-metager-gustavo-petro",
@@ -3860,7 +3860,7 @@
           "online_verified": true,
           "online_status": "ONLINE EN TOR (2765 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-ahmia-gustavo-petro",
@@ -3875,11 +3875,11 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 88,
           "uptime_percent": 99.4,
-          "latency_ms": 3081,
+          "latency_ms": 700,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3081 ms)",
+          "online_status": "ONLINE EN TOR (700 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-torch-gustavo-petro",
@@ -3898,7 +3898,7 @@
           "online_verified": true,
           "online_status": "ONLINE EN TOR (2557 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         },
         {
           "id": "live-jump-brave-gustavo-petro",
@@ -3913,18 +3913,18 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 94,
           "uptime_percent": 99.4,
-          "latency_ms": 2359,
+          "latency_ms": 703,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (2359 ms)",
+          "online_status": "ONLINE EN TOR (703 ms)",
           "verification_tier": "LIVE_TOR",
-          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
+          "tags": "gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro gustavo petro"
         }
       ]
     },
     "libertad de prensa": {
       "query": "libertad de prensa",
       "display_query": "libertad de prensa",
-      "hits": 6,
+      "hits": 8,
       "result_count": 24,
       "updated_epoch": 1792270800,
       "results": [
@@ -4389,7 +4389,7 @@
     "exploits seguridad": {
       "query": "exploits seguridad",
       "display_query": "exploits seguridad",
-      "hits": 6,
+      "hits": 8,
       "result_count": 24,
       "updated_epoch": 1792270800,
       "results": [
@@ -4691,9 +4691,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 99,
           "uptime_percent": 99.8,
-          "latency_ms": 3373,
+          "latency_ms": 420,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3373 ms)",
+          "online_status": "ONLINE EN TOR (420 ms)",
           "verification_tier": "VERIFIED",
           "tags": "defcon def con hacking hackers conferencia ciberseguridad infosec charlas"
         },
@@ -4805,9 +4805,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 100,
           "uptime_percent": 99.8,
-          "latency_ms": 290,
+          "latency_ms": 589,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (290 ms)",
+          "online_status": "ONLINE EN TOR (589 ms)",
           "verification_tier": "VERIFIED",
           "tags": "qubes os seguridad aislamiento virtualizacion xen sistema operativo linux"
         },
@@ -4824,9 +4824,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 100,
           "uptime_percent": 99.6,
-          "latency_ms": 310,
+          "latency_ms": 908,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (310 ms)",
+          "online_status": "ONLINE EN TOR (908 ms)",
           "verification_tier": "VERIFIED",
           "tags": "whonix opsec anonimato aislamiento dns leak seguridad sistema operativo os"
         },
@@ -4843,9 +4843,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 100,
           "uptime_percent": 99.9,
-          "latency_ms": 3415,
+          "latency_ms": 632,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3415 ms)",
+          "online_status": "ONLINE EN TOR (632 ms)",
           "verification_tier": "VERIFIED",
           "tags": "tor browser anonimato privacidad red onion oficial descargas seguridad network metrics"
         }
@@ -4854,7 +4854,7 @@
     "filtraciones periodismo": {
       "query": "filtraciones periodismo",
       "display_query": "filtraciones periodismo",
-      "hits": 6,
+      "hits": 9,
       "result_count": 24,
       "updated_epoch": 1792270800,
       "results": [
@@ -4871,9 +4871,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 99,
           "uptime_percent": 99.8,
-          "latency_ms": 3867,
+          "latency_ms": 4239,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (3867 ms)",
+          "online_status": "ONLINE EN TOR (4239 ms)",
           "verification_tier": "VERIFIED",
           "tags": "periodismo noticias propublica investigacion prensa fuentes whistleblowing"
         },
@@ -4890,9 +4890,9 @@
           "js_requirement": "Safer / Safest",
           "safety_score": 97,
           "uptime_percent": 99.7,
-          "latency_ms": 810,
+          "latency_ms": 698,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (810 ms)",
+          "online_status": "ONLINE EN TOR (698 ms)",
           "verification_tier": "VERIFIED",
           "tags": "noticias prensa nyt new york times periodismo censura diarios"
         },
@@ -4909,9 +4909,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 98,
           "uptime_percent": 99.6,
-          "latency_ms": 520,
+          "latency_ms": 534,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (520 ms)",
+          "online_status": "ONLINE EN TOR (534 ms)",
           "verification_tier": "VERIFIED",
           "tags": "guardian the guardian prensa noticias periodismo uk filtraciones"
         },
@@ -4928,9 +4928,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 97,
           "uptime_percent": 99.3,
-          "latency_ms": 465,
+          "latency_ms": 3570,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (465 ms)",
+          "online_status": "ONLINE EN TOR (3570 ms)",
           "verification_tier": "VERIFIED",
           "tags": "bellingcat osint investigacion forense periodismo inteligencia fuentes abiertas"
         },
@@ -4966,9 +4966,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 97,
           "uptime_percent": 99.6,
-          "latency_ms": 2550,
+          "latency_ms": 437,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (2550 ms)",
+          "online_status": "ONLINE EN TOR (437 ms)",
           "verification_tier": "VERIFIED",
           "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing the globe and mail"
         },
@@ -5061,9 +5061,9 @@
           "js_requirement": "Safest (Sin JS)",
           "safety_score": 97,
           "uptime_percent": 99.6,
-          "latency_ms": 2643,
+          "latency_ms": 535,
           "online_verified": true,
-          "online_status": "ONLINE EN TOR (2643 ms)",
+          "online_status": "ONLINE EN TOR (535 ms)",
           "verification_tier": "VERIFIED",
           "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing the economist"
         },
@@ -5315,6 +5315,537 @@
           "tags": "filtraciones periodismo securedrop prensa noticias periodismo filtraciones whistleblowing forbes"
         }
       ]
+    },
+    "fraude brasil": {
+      "query": "fraude brasil",
+      "display_query": "fraude brasil",
+      "hits": 1,
+      "result_count": 17,
+      "updated_epoch": 1792270800,
+      "results": [
+        {
+          "id": "defcon-official-onion",
+          "title": "DEF CON Hacking Conference (Portal y Archivo Media Oficial)",
+          "category": "Cultura Hacker y Ciberseguridad",
+          "taxonomy": "hack/confs",
+          "onion_url": "http://g7ejphhubv5idbbu3hb3wawrs5adw7tkx7yjabnf65xtzztgg4hcsqqd.onion",
+          "clearnet_url": "https://defcon.org",
+          "description": "Servicio oculto oficial de DEF CON, la conferencia de hackers y ciberseguridad más grande del mundo. Incluye acceso a foros, charlas históricas, presentaciones y avisos de The Dark Tangent.",
+          "verification_method": "Firmado por The Dark Tangent (Jeff Moss) + real-world-onion-sites",
+          "pgp_fingerprint": "Verificado en defcon.org y repositorio Alec Muffett",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 99,
+          "uptime_percent": 99.8,
+          "latency_ms": 992,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (992 ms)",
+          "verification_tier": "VERIFIED",
+          "tags": "defcon def con hacking hackers conferencia ciberseguridad infosec charlas"
+        },
+        {
+          "id": "ccc-chaos-computer-club",
+          "title": "Chaos Computer Club (CCC.de Mirror Oficial/Comunitario)",
+          "category": "Cultura Hacker y Ciberseguridad",
+          "taxonomy": "hack/confs",
+          "onion_url": "http://dys2pwwos5w5kez2chufdk3b3oyj5n4n4iiseyke2tzuqahgvmovloyd.onion",
+          "clearnet_url": "https://www.ccc.de",
+          "description": "La mayor asociación europea de hackers. Publicaciones sobre seguridad informática, ética hacker, conferencias Chaos Communication Congress y derechos civiles.",
+          "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
+          "pgp_fingerprint": "Sitio No Verificado — Navegar en Modo Safest (Sin JS)",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 89,
+          "uptime_percent": 94.5,
+          "latency_ms": 301,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (301 ms)",
+          "verification_tier": "UNVERIFIED",
+          "tags": "ccc chaos computer club hackers conferencia europa alemania seguridad"
+        },
+        {
+          "id": "cypherpunk-board-onion",
+          "title": "Cypherpunk & AnonBoard - Foro de Criptografía y Hacking",
+          "category": "Wikis, Foros y Comunidad Tor",
+          "taxonomy": "hack/confs",
+          "onion_url": "http://cryptbbtg65gibadeeo2awe3j7s6evg7eklserehqr4w4e2bis5tebid.onion",
+          "clearnet_url": "https://cypherpunks.to",
+          "description": "Tablón de discusión técnica sobre criptografía asimétrica, anonimato, redes mixnet, programación en Rust/C y cultura hacker.",
+          "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
+          "pgp_fingerprint": "Sitio No Verificado — Navegar en Modo Safest (Sin JS)",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 70,
+          "uptime_percent": 94.5,
+          "latency_ms": 812,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (812 ms)",
+          "verification_tier": "UNVERIFIED",
+          "tags": "foro foros hacking hackers criptografia programacion codigo cypherpunk"
+        },
+        {
+          "id": "cyberchef-onion-node",
+          "title": "CyberChef Tor Instance (Navaja Suiza Criptográfica)",
+          "category": "Cultura Hacker y Ciberseguridad",
+          "taxonomy": "sec/tools",
+          "onion_url": "http://drxoopx4vxhkkdtb4pjicjopvjfl5yuqr3qivjkmakehoxlpa3pcxwid.onion",
+          "clearnet_url": "https://gchq.github.io/CyberChef",
+          "description": "Instancia en la red Tor de CyberChef para codificación Base32/Base64, análisis forense, hashes SHA3, conversión hexadecimal y descifrado.",
+          "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
+          "pgp_fingerprint": "Sitio No Verificado — Navegar en Modo Safest (Sin JS)",
+          "js_requirement": "Standard (Aplicación Local)",
+          "safety_score": 78,
+          "uptime_percent": 94.5,
+          "latency_ms": 619,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (619 ms)",
+          "verification_tier": "UNVERIFIED",
+          "tags": "cyberchef criptografia base64 sha256 herramientas forense decodificar"
+        },
+        {
+          "id": "forgejo-git-onion",
+          "title": "OnionGit / Forgejo Tor Mirror (Repositorios de Código)",
+          "category": "Cultura Hacker y Ciberseguridad",
+          "taxonomy": "hack/repos",
+          "onion_url": "http://topicgitcoi2s3ohrhkdfxl2ii6ocoysi7d5fstcgatuoqp26b2zldad.onion",
+          "clearnet_url": "https://codeberg.org",
+          "description": "Servidor Git autoalojado en la red Tor para desarrolladores de software libre, herramientas de auditoría de seguridad y scripts de privacidad.",
+          "verification_method": "Índice Abierto Comunitario Tor (No Verificado por PGP)",
+          "pgp_fingerprint": "Sitio No Verificado — Navegar en Modo Safest (Sin JS)",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 76,
+          "uptime_percent": 94.5,
+          "latency_ms": 644,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (644 ms)",
+          "verification_tier": "UNVERIFIED",
+          "tags": "git github gitlab codigo repositorios programacion software scripts hacker"
+        },
+        {
+          "id": "qubes-os-onion",
+          "title": "Qubes OS (Un Sistema Operativo Razonablemente Seguro)",
+          "category": "Sistemas Operativos y Software Libre",
+          "taxonomy": "sec/os",
+          "onion_url": "http://qubesosfasa4zl44o4tws22di6kepyzfeqv3tg4e3ztknltfxqrymdad.onion",
+          "clearnet_url": "https://www.qubes-os.org",
+          "description": "Sitio web y documentación oficial de Qubes OS, sistema operativo enfocado en seguridad por compartimentación mediante virtualización Xen e integración nativa con Whonix.",
+          "verification_method": "Firmado en Qubes Security Pack (qubes-secpack) + Vanity",
+          "pgp_fingerprint": "427F 11FD 0FAA 4B08 0123  F01C DDFA 1A3E 3687 9494",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 100,
+          "uptime_percent": 99.8,
+          "latency_ms": 589,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (589 ms)",
+          "verification_tier": "VERIFIED",
+          "tags": "qubes os seguridad aislamiento virtualizacion xen sistema operativo linux"
+        },
+        {
+          "id": "whonix-onion",
+          "title": "Whonix - Sistema Operativo Anónimo Basado en Tor",
+          "category": "Sistemas Operativos y Software Libre",
+          "taxonomy": "sec/os",
+          "onion_url": "http://dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion",
+          "clearnet_url": "https://www.whonix.org",
+          "description": "Documentación, wiki y descargas oficiales de Whonix. Divide el entorno en Gateway y Workstation para impedir fugas de IP y DNS incluso ante malware rootkit.",
+          "verification_method": "Onion-Location Header + Firma PGP Patrick Schleizer",
+          "pgp_fingerprint": "916B 8D99 C38E AF5E 8ADC  7A2A 8D66 066A 2EEA CCDA",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 100,
+          "uptime_percent": 99.6,
+          "latency_ms": 908,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (908 ms)",
+          "verification_tier": "VERIFIED",
+          "tags": "whonix opsec anonimato aislamiento dns leak seguridad sistema operativo os"
+        },
+        {
+          "id": "live-jump-ddg-fraude-brasil",
+          "title": "DuckDuckGo Onion v3: Búsqueda profunda de 'fraude brasil' en Tor",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/?q=%22fraude+brasil%22",
+          "clearnet_url": "https://duckduckgo.com/?q=%22fraude+brasil%22",
+          "description": "Ejecuta la búsqueda compuesta exacta de 'fraude brasil' (\"fraude brasil\") sobre el servicio oculto oficial de DuckDuckGo v3 en la red Tor.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 95,
+          "uptime_percent": 99.4,
+          "latency_ms": 3324,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (3324 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-brave-fraude-brasil",
+          "title": "Brave Search Onion v3: Resultados y noticias sobre 'fraude brasil'",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "https://search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/search?q=%22fraude+brasil%22",
+          "clearnet_url": "https://search.brave.com/search?q=%22fraude+brasil%22",
+          "description": "Explora resultados independientes, artículos y referencias sobre 'fraude brasil' (fraude brasil) usando el nodo .onion v3 oficial de Brave Search.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 94,
+          "uptime_percent": 99.4,
+          "latency_ms": 703,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (703 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-archive-fraude-brasil",
+          "title": "Internet Archive & Wayback Machine (.onion v3): Hemeroteca y textos sobre 'fraude brasil'",
+          "category": "Hemeroteca y Archivo Documental en Tor (Verificado PGP)",
+          "taxonomy": "comm/wiki",
+          "onion_url": "http://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/search?query=fraude+brasil",
+          "clearnet_url": "https://archive.org/search?query=fraude+brasil",
+          "description": "Consulta libros, documentos históricos, capturas web y hemeroteca pública sobre 'fraude brasil' (fraude brasil) en el espejo .onion v3 oficial de Internet Archive.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 94,
+          "uptime_percent": 99.4,
+          "latency_ms": 440,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (440 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-dw-fraude-brasil",
+          "title": "Deutsche Welle (DW Español .onion v3): Prensa internacional sobre 'fraude brasil'",
+          "category": "Prensa Internacional y Hemeroteca en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://www.dwnewsgngmhlplxy6o2twtfgjnrnjxbegbwqx6wnotdhkzt562tszfid.onion/es/buscar?q=fraude+brasil",
+          "clearnet_url": "https://www.dw.com/es/buscar?q=fraude+brasil",
+          "description": "Archivo periodístico internacional sin censura de Deutsche Welle (DW) en la red Tor para consultar noticias y reportajes sobre 'fraude brasil' (fraude brasil).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 93,
+          "uptime_percent": 99.4,
+          "latency_ms": 5904,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (5904 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-nytimes-fraude-brasil",
+          "title": "The New York Times (.onion v3 Oficial): Archivo periodístico sobre 'fraude brasil'",
+          "category": "Prensa Internacional y Hemeroteca en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://xm33ge4kupk5o66eqxcd2r4fqcplpqb2sbdduf5z2nw4g2jrxe57luid.onion/search?query=fraude+brasil",
+          "clearnet_url": "https://www.nytimes.com/search?query=fraude+brasil",
+          "description": "Consulta reportajes, crónicas e investigaciones internacionales sobre 'fraude brasil' (fraude brasil) directamente en el servicio oculto .onion v3 de The New York Times.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 93,
+          "uptime_percent": 99.4,
+          "latency_ms": 698,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (698 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-propublica-fraude-brasil",
+          "title": "ProPublica (.onion v3 Oficial): Periodismo de investigación sobre 'fraude brasil'",
+          "category": "Periodismo Investigativo en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://33xu4yhum2eiisxm6fntaslayop76fvaqgt3ak5dakdm3t7cub25cead.onion/search?qss=fraude+brasil",
+          "clearnet_url": "https://www.propublica.org/search?qss=fraude+brasil",
+          "description": "Portal .onion v3 ganador del premio Pulitzer para consultar investigaciones de interés público y expedientes relacionados con 'fraude brasil' (fraude brasil).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 95,
+          "uptime_percent": 99.4,
+          "latency_ms": 4239,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (4239 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-bellingcat-fraude-brasil",
+          "title": "Bellingcat OSINT (.onion v3 Oficial): Investigación abierta sobre 'fraude brasil'",
+          "category": "Investigación OSINT y Prensa en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://lantern6vrwheap4iahuktz3jtwvovrzhxgwgzvrvp46brdzzekxibqd.onion/?s=fraude+brasil",
+          "clearnet_url": "https://www.bellingcat.com/?s=fraude+brasil",
+          "description": "Colectivo internacional de investigadores OSINT y verificación documental accesible vía Tor para consultar análisis sobre 'fraude brasil' (fraude brasil).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 92,
+          "uptime_percent": 99.4,
+          "latency_ms": 3570,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (3570 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-metager-fraude-brasil",
+          "title": "MetaGer Onion Search (.onion v3): Meta-búsqueda anónima de 'fraude brasil'",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "http://metagerv65pwclop2rsfzg4jwowpavpwd6grhhlvdgsswvo6ii4akgyd.onion/meta/meta.ger3?eingabe=%22fraude+brasil%22",
+          "clearnet_url": "https://metager.org/meta/meta.ger3?eingabe=%22fraude+brasil%22",
+          "description": "Motor de meta-búsqueda alemán sin ánimo de lucro accesible nativamente en Tor para consultar 'fraude brasil' (fraude brasil) sin registros de IP.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 90,
+          "uptime_percent": 99.4,
+          "latency_ms": 485,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (485 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-ahmia-fraude-brasil",
+          "title": "Índice Tor Ahmia.fi (.onion v3): Búsqueda de nodos ocultos para 'fraude brasil'",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/search/?q=fraude+brasil",
+          "clearnet_url": "https://ahmia.fi/search/?q=fraude+brasil",
+          "description": "Consulta directa en el índice de servicios ocultos Ahmia.fi dentro de la red Tor para 'fraude brasil' (fraude brasil). Dominio .onion v3 verificado ONLINE.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 88,
+          "uptime_percent": 99.4,
+          "latency_ms": 700,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (700 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        },
+        {
+          "id": "live-jump-torch-fraude-brasil",
+          "title": "Torch Search Engine (.onion v3): Rastreador profundo para 'fraude brasil'",
+          "category": "Meta-Búsqueda en Vivo Tor (Comunitario Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion",
+          "clearnet_url": "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion",
+          "description": "Acceso verificado ONLINE al motor de búsqueda sin filtro Torch en la red Tor para explorar documentos y menciones sobre 'fraude brasil' (fraude brasil).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 80,
+          "uptime_percent": 99.4,
+          "latency_ms": 958,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (958 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "fraude brasil fraude brasil fraude brasil"
+        }
+      ]
+    },
+    "lula presidente": {
+      "query": "lula presidente",
+      "display_query": "lula presidente",
+      "hits": 1,
+      "result_count": 10,
+      "updated_epoch": 1792270800,
+      "results": [
+        {
+          "id": "live-jump-ddg-lula",
+          "title": "DuckDuckGo Onion v3: Búsqueda profunda de 'lula presidente' en Tor",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "https://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/?q=lula+presidente",
+          "clearnet_url": "https://duckduckgo.com/?q=lula+presidente",
+          "description": "Ejecuta la búsqueda compuesta exacta de 'lula presidente' (lula presidente) sobre el servicio oculto oficial de DuckDuckGo v3 en la red Tor.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 95,
+          "uptime_percent": 99.4,
+          "latency_ms": 3324,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (3324 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula presidente lula"
+        },
+        {
+          "id": "live-jump-brave-lula",
+          "title": "Brave Search Onion v3: Resultados y noticias sobre 'lula presidente'",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "https://search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/search?q=lula+presidente",
+          "clearnet_url": "https://search.brave.com/search?q=lula+presidente",
+          "description": "Explora resultados independientes, artículos y referencias sobre 'lula presidente' (lula) usando el nodo .onion v3 oficial de Brave Search.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 94,
+          "uptime_percent": 99.4,
+          "latency_ms": 703,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (703 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula presidente lula"
+        },
+        {
+          "id": "live-jump-archive-lula",
+          "title": "Internet Archive & Wayback Machine (.onion v3): Hemeroteca y textos sobre 'lula'",
+          "category": "Hemeroteca y Archivo Documental en Tor (Verificado PGP)",
+          "taxonomy": "comm/wiki",
+          "onion_url": "http://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/search?query=lula",
+          "clearnet_url": "https://archive.org/search?query=lula",
+          "description": "Consulta libros, documentos históricos, capturas web y hemeroteca pública sobre 'lula presidente' (lula) en el espejo .onion v3 oficial de Internet Archive.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 94,
+          "uptime_percent": 99.4,
+          "latency_ms": 440,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (440 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula"
+        },
+        {
+          "id": "live-jump-dw-lula",
+          "title": "Deutsche Welle (DW Español .onion v3): Prensa internacional sobre 'lula'",
+          "category": "Prensa Internacional y Hemeroteca en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://www.dwnewsgngmhlplxy6o2twtfgjnrnjxbegbwqx6wnotdhkzt562tszfid.onion/es/buscar?q=lula",
+          "clearnet_url": "https://www.dw.com/es/buscar?q=lula",
+          "description": "Archivo periodístico internacional sin censura de Deutsche Welle (DW) en la red Tor para consultar noticias y reportajes sobre 'lula presidente' (lula).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 93,
+          "uptime_percent": 99.4,
+          "latency_ms": 5904,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (5904 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula"
+        },
+        {
+          "id": "live-jump-nytimes-lula",
+          "title": "The New York Times (.onion v3 Oficial): Archivo periodístico sobre 'lula'",
+          "category": "Prensa Internacional y Hemeroteca en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://xm33ge4kupk5o66eqxcd2r4fqcplpqb2sbdduf5z2nw4g2jrxe57luid.onion/search?query=lula",
+          "clearnet_url": "https://www.nytimes.com/search?query=lula",
+          "description": "Consulta reportajes, crónicas e investigaciones internacionales sobre 'lula presidente' (lula) directamente en el servicio oculto .onion v3 de The New York Times.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 93,
+          "uptime_percent": 99.4,
+          "latency_ms": 698,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (698 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula"
+        },
+        {
+          "id": "live-jump-propublica-lula",
+          "title": "ProPublica (.onion v3 Oficial): Periodismo de investigación sobre 'lula'",
+          "category": "Periodismo Investigativo en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://33xu4yhum2eiisxm6fntaslayop76fvaqgt3ak5dakdm3t7cub25cead.onion/search?qss=lula",
+          "clearnet_url": "https://www.propublica.org/search?qss=lula",
+          "description": "Portal .onion v3 ganador del premio Pulitzer para consultar investigaciones de interés público y expedientes relacionados con 'lula presidente' (lula).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 95,
+          "uptime_percent": 99.4,
+          "latency_ms": 4239,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (4239 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula"
+        },
+        {
+          "id": "live-jump-bellingcat-lula",
+          "title": "Bellingcat OSINT (.onion v3 Oficial): Investigación abierta sobre 'lula'",
+          "category": "Investigación OSINT y Prensa en Tor (Verificado PGP)",
+          "taxonomy": "news/media",
+          "onion_url": "http://lantern6vrwheap4iahuktz3jtwvovrzhxgwgzvrvp46brdzzekxibqd.onion/?s=lula",
+          "clearnet_url": "https://www.bellingcat.com/?s=lula",
+          "description": "Colectivo internacional de investigadores OSINT y verificación documental accesible vía Tor para consultar análisis sobre 'lula presidente' (lula).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 92,
+          "uptime_percent": 99.4,
+          "latency_ms": 3570,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (3570 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula"
+        },
+        {
+          "id": "live-jump-metager-lula",
+          "title": "MetaGer Onion Search (.onion v3): Meta-búsqueda anónima de 'lula presidente'",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "http://metagerv65pwclop2rsfzg4jwowpavpwd6grhhlvdgsswvo6ii4akgyd.onion/meta/meta.ger3?eingabe=lula+presidente",
+          "clearnet_url": "https://metager.org/meta/meta.ger3?eingabe=lula+presidente",
+          "description": "Motor de meta-búsqueda alemán sin ánimo de lucro accesible nativamente en Tor para consultar 'lula presidente' (lula) sin registros de IP.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 90,
+          "uptime_percent": 99.4,
+          "latency_ms": 485,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (485 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula presidente lula"
+        },
+        {
+          "id": "live-jump-ahmia-lula",
+          "title": "Índice Tor Ahmia.fi (.onion v3): Búsqueda de nodos ocultos para 'lula presidente'",
+          "category": "Meta-Búsqueda Exacta en Vivo Tor (Verificado Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "http://juhanurmihxlp77nkq76byazcldy2hlmovfu2epvl5ankdibsot4csyd.onion/search/?q=lula+presidente",
+          "clearnet_url": "https://ahmia.fi/search/?q=lula+presidente",
+          "description": "Consulta directa en el índice de servicios ocultos Ahmia.fi dentro de la red Tor para 'lula presidente' (lula). Dominio .onion v3 verificado ONLINE.",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 88,
+          "uptime_percent": 99.4,
+          "latency_ms": 700,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (700 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula presidente lula"
+        },
+        {
+          "id": "live-jump-torch-lula",
+          "title": "Torch Search Engine (.onion v3): Rastreador profundo para 'lula presidente'",
+          "category": "Meta-Búsqueda en Vivo Tor (Comunitario Online)",
+          "taxonomy": "search/engines",
+          "onion_url": "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion",
+          "clearnet_url": "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion",
+          "description": "Acceso verificado ONLINE al motor de búsqueda sin filtro Torch en la red Tor para explorar documentos y menciones sobre 'lula presidente' (lula).",
+          "verification_method": "Nodo .onion v3 Real Verificado ONLINE vía Circuito Tor SOCKS5h",
+          "pgp_fingerprint": "VERIFICADO ONLINE — Checksum Ed25519 SHA3-256 Válido",
+          "js_requirement": "Safest (Sin JS)",
+          "safety_score": 80,
+          "uptime_percent": 99.4,
+          "latency_ms": 958,
+          "online_verified": true,
+          "online_status": "ONLINE EN TOR (958 ms)",
+          "verification_tier": "LIVE_TOR",
+          "tags": "lula presidente lula presidente lula"
+        }
+      ]
     }
   },
   "discovered_nodes": {
@@ -5442,7 +5973,7 @@
       "verification_tier": "VERIFIED",
       "tags": "tor tor browser anonimato privacidad red onion oficial descargas seguridad network metrics",
       "learned_from_query": "tor",
-      "collective_discoveries": 8
+      "collective_discoveries": 10
     },
     "duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion": {
       "id": "duckduckgo-onion",
@@ -5526,7 +6057,7 @@
       "verification_tier": "VERIFIED",
       "tags": "periodismo noticias propublica investigacion prensa fuentes whistleblowing",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 13
+      "collective_discoveries": 18
     },
     "xm33ge4kupk5o66eqxcd2r4fqcplpqb2sbdduf5z2nw4g2jrxe57luid.onion": {
       "id": "nytimes-onion",
@@ -5547,7 +6078,7 @@
       "verification_tier": "VERIFIED",
       "tags": "tor noticias prensa nyt new york times periodismo censura diarios",
       "learned_from_query": "tor",
-      "collective_discoveries": 12
+      "collective_discoveries": 15
     },
     "www.guardian2zotagl6tmjucg3lrhxdk4dw3lhbqnkvvkywawy3oqfoprid.onion": {
       "id": "guardian-onion",
@@ -5568,7 +6099,7 @@
       "verification_tier": "VERIFIED",
       "tags": "tor guardian the guardian prensa noticias periodismo uk filtraciones",
       "learned_from_query": "tor",
-      "collective_discoveries": 9
+      "collective_discoveries": 12
     },
     "bbcnewsd73hkzno2ini43t4gblxvycyac5aw4gnv7t2rccijh7745uqd.onion": {
       "id": "bbc-news-onion",
@@ -5652,7 +6183,7 @@
       "verification_tier": "VERIFIED",
       "tags": "tor whonix opsec anonimato aislamiento dns leak seguridad sistema operativo os",
       "learned_from_query": "tor",
-      "collective_discoveries": 9
+      "collective_discoveries": 12
     },
     "lldan5gahapx5k7iafb3s4ikijc4ni7gx5iywdflkba5y2ezyg6sjgyd.onion": {
       "id": "onionshare-project",
@@ -5841,7 +6372,7 @@
       "verification_tier": "UNVERIFIED",
       "tags": "foro foros hacking hackers criptografia programacion codigo cypherpunk",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 8
+      "collective_discoveries": 11
     },
     "xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion": {
       "id": "torch-search-onion",
@@ -6072,7 +6603,7 @@
       "verification_tier": "UNVERIFIED",
       "tags": "tor pastebin paste notas texto codigo programar compartir zerobin",
       "learned_from_query": "tor",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "topicgitcoi2s3ohrhkdfxl2ii6ocoysi7d5fstcgatuoqp26b2zldad.onion": {
       "id": "forgejo-git-onion",
@@ -6093,7 +6624,7 @@
       "verification_tier": "UNVERIFIED",
       "tags": "tor git github gitlab codigo repositorios programacion software scripts hacker",
       "learned_from_query": "tor",
-      "collective_discoveries": 8
+      "collective_discoveries": 11
     },
     "drxoopx4vxhkkdtb4pjicjopvjfl5yuqr3qivjkmakehoxlpa3pcxwid.onion": {
       "id": "cyberchef-onion-node",
@@ -6114,7 +6645,7 @@
       "verification_tier": "UNVERIFIED",
       "tags": "tor cyberchef criptografia base64 sha256 herramientas forense decodificar",
       "learned_from_query": "tor",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "dys2pwwos5w5kez2chufdk3b3oyj5n4n4iiseyke2tzuqahgvmovloyd.onion": {
       "id": "ccc-chaos-computer-club",
@@ -6135,7 +6666,7 @@
       "verification_tier": "UNVERIFIED",
       "tags": "ccc chaos computer club hackers conferencia europa alemania seguridad",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "xdkriz6cn2avvcr2vks5lvvtmfojz2ohjzj4fhyuka55mvljeso2ztqd.onion": {
       "id": "cockli-mail-onion",
@@ -6681,7 +7212,7 @@
       "verification_tier": "VERIFIED",
       "tags": "tor securedrop whistleblowing filtraciones prensa periodismo denuncias",
       "learned_from_query": "tor",
-      "collective_discoveries": 12
+      "collective_discoveries": 17
     },
     "darkzqtmr3oxh25ctkktrjulwhive5zl2qcjw646rmdgt6zrfqjj5myd.onion": {
       "id": "darksearch-index-onion",
@@ -7269,7 +7800,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "correo correo mail email webmail",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 8
+      "collective_discoveries": 10
     },
     "goodtus2ssz75gt2uixwgqnd6kxhl4nuy2d262tcjpvxt6c2audftsid.onion": {
       "id": "live-goodtus2ssz7",
@@ -7563,7 +8094,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing the globe and mail",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 10
+      "collective_discoveries": 13
     },
     "nnmo57xxqhah6i2tydttlvjg7azar6ifek3odif2j5672mvhfq7ojnid.onion": {
       "id": "live-nnmo57xxqhah",
@@ -7689,7 +8220,7 @@
       "verification_tier": "VERIFIED",
       "tags": "noticias securedrop prensa noticias periodismo filtraciones whistleblowing new york times",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 14
+      "collective_discoveries": 19
     },
     "znqacmiqrq6vc55ddewoio4ovsqi5ypt2p4kemyccgustushy4gv66id.onion": {
       "id": "live-znqacmiqrq6v",
@@ -7710,7 +8241,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "noticias noticias news press journalism",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 13
+      "collective_discoveries": 18
     },
     "lantern6vrwheap4iahuktz3jtwvovrzhxgwgzvrvp46brdzzekxibqd.onion": {
       "id": "bellingcat-onion",
@@ -7731,7 +8262,7 @@
       "verification_tier": "VERIFIED",
       "tags": "bellingcat osint investigacion forense periodismo inteligencia fuentes abiertas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "sdolvtfhatvsysc6l34d65ymdwxcujausv7k5jk4cy5ttzhjoi6fzvyd.onion": {
       "id": "securedrop-project",
@@ -7752,7 +8283,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop whistleblowing filtraciones leaks prensa fuentes anonimas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 14
+      "collective_discoveries": 18
     },
     "dpsw5tvlh2pccviydqw2cz5tjszd34zcdj322oikydqvgsqwitxup7yd.onion": {
       "id": "sd-kenneth-r-rosen",
@@ -7773,7 +8304,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing kenneth r. rosen",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 9
     },
     "jatasaqcoe7lqdpcyxo7vl3e5tdvl5jgmtadfat77i25qdj6z6a4ulad.onion": {
       "id": "sd-greekleaks",
@@ -7794,7 +8325,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing greekleaks",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 10
+      "collective_discoveries": 13
     },
     "gppg43zz5d2yfuom3yfmxnnokn3zj4mekt55onlng3zs653ty4fio6qd.onion": {
       "id": "sd-cbc",
@@ -7815,7 +8346,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing cbc",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 13
+      "collective_discoveries": 18
     },
     "q6vdlj2ukulrqk37piqgxucpcwtxzdjhvjzqrfbevuhrzimsgjltmpqd.onion": {
       "id": "sd-der-spiegel",
@@ -7836,7 +8367,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing der spiegel",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 11
+      "collective_discoveries": 14
     },
     "mxmddqsh4jnr4gjan37ayin3fu5ecnejxge4wjhj4i45qq5djbxdjtad.onion": {
       "id": "sd-the-economist",
@@ -7857,7 +8388,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing the economist",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 12
+      "collective_discoveries": 17
     },
     "zuybtx2nop5cxfz4gyc7hzxpterf3pvf6zixe5cscajhlgqrexpkcoqd.onion": {
       "id": "sd-whistleblow-co",
@@ -7878,7 +8409,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing whistleblow.co",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "uhmj4j5pnwbpmkebfze3qgjmkum465fvok376nxtpku5yvyv5takz6qd.onion": {
       "id": "sd-news24",
@@ -7899,7 +8430,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing news24",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 13
+      "collective_discoveries": 18
     },
     "tiykfvhb562gheutfnedysnhrxpxoztyszkqyroloyepwzxmxien77id.onion": {
       "id": "sd-aftenposten-as",
@@ -7920,7 +8451,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing aftenposten as",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 10
+      "collective_discoveries": 13
     },
     "ogdwaroarq4p6rnfn2hl4crvldyruyc2g24435qtxmd3twhevg7dsqid.onion": {
       "id": "sd-bloomberg-news",
@@ -7941,7 +8472,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing bloomberg news",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "fg25fqpu2dnxp24xs3jlcley4hp2inshpzek44q3czkhq3zffoqk26id.onion": {
       "id": "sd-forbidden-stories",
@@ -7962,7 +8493,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing forbidden stories",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "kogbxf4ysay2qzozmg7ar45ijqmj2vxrwqa4upzqq2i7sqj7wv7wcdqd.onion": {
       "id": "sd-whistleblower-aid",
@@ -7983,7 +8514,7 @@
       "verification_tier": "VERIFIED",
       "tags": "securedrop prensa noticias periodismo filtraciones whistleblowing whistleblower aid",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "6lgapegkgqepaeh7s6mpxv4lvf7awabky7ginkaycfmq7eko66kivcyd.onion": {
       "id": "debian-official-dpl-debian-org",
@@ -8088,7 +8619,7 @@
       "verification_tier": "VERIFIED",
       "tags": "qubes os seguridad aislamiento virtualizacion xen sistema operativo linux",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 8
+      "collective_discoveries": 11
     },
     "n55kxqrra37apxjlqirvgxcodeq7q5vp7kez6d2cngeo2ksfo6yzn5qd.onion": {
       "id": "live-n55kxqrra37a",
@@ -8550,7 +9081,7 @@
       "verification_tier": "VERIFIED",
       "tags": "defcon def con hacking hackers conferencia ciberseguridad infosec charlas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "b63iq6es4biaawfilwftlfkw6a6putogxh4iakei2ioppb7dsfucekyd.onion": {
       "id": "tor-official-svn-archive-torproject-org",
@@ -8739,7 +9270,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "xp44cagis447k3lpb4wwhcqukix6cgqokbuys24vmxmbzmaq2gjvc2yd.onion": {
       "id": "live-xp44cagis447",
@@ -8760,7 +9291,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "yj3b7rgmglcocbbvzrwfbo4d6j2aa7thwupra4yqutbd27v3vxcpvgid.onion": {
       "id": "live-yj3b7rgmglco",
@@ -8781,7 +9312,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "udhauo3m3fh7v6yfiuornjzxn3fh6vlp4ooo3wogvghcnv5xik6mnayd.onion": {
       "id": "live-udhauo3m3fh7",
@@ -8802,7 +9333,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "537ztcntpbmspja4mkpxldpsoc46mqlssnsaklqnfw3gnlpj5glcjgid.onion": {
       "id": "sd-nrk",
@@ -8823,7 +9354,7 @@
       "verification_tier": "VERIFIED",
       "tags": "libertad prensa securedrop prensa noticias periodismo filtraciones whistleblowing nrk",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 13
+      "collective_discoveries": 18
     },
     "vfnmxpa6fo4jdpyq3yneqhglluweax2uclvxkytfpmpkp5rsl75ir5qd.onion": {
       "id": "sd-the-washington-post",
@@ -8844,7 +9375,7 @@
       "verification_tier": "VERIFIED",
       "tags": "libertad prensa securedrop prensa noticias periodismo filtraciones whistleblowing the washington post",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 13
+      "collective_discoveries": 18
     },
     "ydbpz5knb6ji3bdtahhm3wo7sed6lsy5vqnwfpnhpez4bquvoexbz7qd.onion": {
       "id": "live-ydbpz5knb6ji",
@@ -8865,7 +9396,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "hctxrvjzfpvmzh2jllqhgvvkoepxb4kfzdjm6h7egcwlumggtktiftid.onion": {
       "id": "tor-official-metrics-torproject-org",
@@ -8886,7 +9417,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor metrics torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "z7m7ogzdhu43nosvjtsuplfmuqa3ge5obahixydhmzdox6owwxfoxzid.onion": {
       "id": "tor-official-moat-torproject-org",
@@ -8907,7 +9438,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor moat torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "umj4zbqdfcyevlkgqgpq6foxk3z75zzxsbgt5jqmfxofrbrjh3crbnad.onion": {
       "id": "tor-official-nightlies-tbb-torproject-org",
@@ -8928,7 +9459,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor nightlies tbb torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "3ewfgrt4gzfccp6bnquhqb266r3zepiqpnsk3falwygkegtluwuyevid.onion": {
       "id": "tor-official-nyx-torproject-org",
@@ -8949,7 +9480,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor nyx torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 9
     },
     "j5kv55yiu3rneydqn4f35kyhejbq3fhkkm7glg5nbtvxgaxthou7g2ad.onion": {
       "id": "live-j5kv55yiu3rn",
@@ -8970,7 +9501,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "filtraciones periodismo filtraciones periodismo leaks whistleblower securedrop journalism whistleblower securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "nqu6crmtnzs2hs5abo2uqni53yqsnnwqnerdxuzyz5yxairxlzjzt6yd.onion": {
       "id": "sd-financial-times",
@@ -8991,7 +9522,7 @@
       "verification_tier": "VERIFIED",
       "tags": "filtraciones periodismo securedrop prensa noticias periodismo filtraciones whistleblowing financial times",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "jxsb4ovmavjy3r64bak4ha63xwggf3nzf3vikvs23r2avm5rhzmaqtqd.onion": {
       "id": "sd-stefania-maurizi",
@@ -9012,7 +9543,7 @@
       "verification_tier": "VERIFIED",
       "tags": "filtraciones periodismo securedrop prensa noticias periodismo filtraciones whistleblowing stefania maurizi",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "6zonlfhh7aqtfwoyvdlad3nxn6ljecx2k6tyyy3spt43nn54q6lvncid.onion": {
       "id": "sd-forbes",
@@ -9033,7 +9564,7 @@
       "verification_tier": "VERIFIED",
       "tags": "filtraciones periodismo securedrop prensa noticias periodismo filtraciones whistleblowing forbes",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 7
+      "collective_discoveries": 10
     },
     "2yldcptk56shc7lwieozoglw3t5ghty7m6mf2faysvfnzccqavbu2mad.onion": {
       "id": "tor-official-openpgpkey-torproject-org",
@@ -9117,7 +9648,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "vxemae5nujorg6hicdba5dzz6kxooler5e5wffd4hymrqd26yapc4oqd.onion": {
       "id": "live-vxemae5nujor",
@@ -9138,7 +9669,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "hpaauqmv2wegiu4cz6st6hty4s7gwqol272xhcu3xmh6azw2f2zffgid.onion": {
       "id": "live-hpaauqmv2weg",
@@ -9159,7 +9690,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "kt2bqe753wj6dgarak2ryj4d6a5tccrivbvod5ab3uxhug5fi624vsqd.onion": {
       "id": "live-kt2bqe753wj6",
@@ -9180,7 +9711,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "3qqupamfznjrai6p4td7epa6pvidpumas2xjsihat73z23f37l2y52id.onion": {
       "id": "sd-bloomberg-industry-group",
@@ -9201,7 +9732,7 @@
       "verification_tier": "VERIFIED",
       "tags": "libertad prensa securedrop prensa noticias periodismo filtraciones whistleblowing bloomberg industry group",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 11
+      "collective_discoveries": 16
     },
     "tthezy6mn2b4hjnimslevg7tyjtnm62wpegehasy3vu7xx3zerncxzqd.onion": {
       "id": "tor-official-prometheus-04-torproject-org",
@@ -9222,7 +9753,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor prometheus-04 torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "vyo6yrqhl3by7d6n5t6hjkflaqbarjpqjnvapr5u5rafk4imnfrmcjyd.onion": {
       "id": "tor-official-prometheus2-torproject-org",
@@ -9243,7 +9774,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor prometheus2 torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "nkuz2tpok7ctwd5ueer5bytj3bm42vp7lgjcsnznal3stotg6vyaakyd.onion": {
       "id": "tor-official-rbm-torproject-org",
@@ -9264,7 +9795,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor rbm torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 6
+      "collective_discoveries": 8
     },
     "xao2lxsmia2edq2n5zxg6uahx6xox2t7bfjw6b5vdzsxi7ezmqob6qid.onion": {
       "id": "tor-official-onion-torproject-org",
@@ -9285,7 +9816,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor onion torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "jcbdm4biw3aac57snk34brzc5fghbszrzde47idnlanj6kf6jmocdgqd.onion": {
       "id": "tor-official-rdsys-moat-torproject-org",
@@ -9432,7 +9963,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop mirror",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "kcfz5m3ipji262swznq2ybir3m4b5wwwd7zckhfashp6cuuwyr6ovnyd.onion": {
       "id": "live-kcfz5m3ipji2",
@@ -9453,7 +9984,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop mirror",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "3jx5drjbftsm3a7oubkxfah2dyfois46tuxwcavv6ionahc7nlv5lyqd.onion": {
       "id": "live-3jx5drjbftsm",
@@ -9474,7 +10005,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop mirror",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "i4pd4zpyhrojnyx5l3d2siauy4almteocqow4bp2lqxyocrfy6prycad.onion": {
       "id": "live-i4pd4zpyhroj",
@@ -9495,7 +10026,7 @@
       "verification_tier": "LIVE_TOR",
       "tags": "libertad prensa libertad prensa press journalism securedrop mirror",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "mf34jlghauz5pxjcmdymdqbe5pva4v24logeys446tdrgd5lpsrocmqd.onion": {
       "id": "tor-official-stem-torproject-org",
@@ -9537,7 +10068,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor styleguide torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "givpjczyrb5jjseful3o5tn3tg7tidbu4gydl4sa5ekpcipivqaqnpad.onion": {
       "id": "tor-official-submission-torproject-org",
@@ -9558,7 +10089,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor submission torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "eh5esdnd6fkbkapfc6nuyvkjgbtnzq2is72lmpwbdbxepd2z7zbgzsqd.onion": {
       "id": "tor-official-survey-torproject-org",
@@ -9579,7 +10110,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad tor survey torproject org privacidad red seguridad oficial herramientas",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 5
+      "collective_discoveries": 7
     },
     "dsbqrprgkqqifztta6h3w7i2htjhnq7d3qkh3c7gvc35e66rrcv66did.onion": {
       "id": "tor-official-tb-manual-torproject-org",
@@ -9789,7 +10320,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad debian linux micronews debian org software libre servidor paquetes os",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 4
+      "collective_discoveries": 6
     },
     "3dglwm65senudd7vqyn6wkwpj2wnwp2rfiw4lmbfa7j6as4b5ekix2id.onion": {
       "id": "debian-official-mirror-master-debian-org",
@@ -9810,7 +10341,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad debian linux mirror-master debian org software libre servidor paquetes os",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 4
+      "collective_discoveries": 6
     },
     "u27zcsfqdlspd5kkzumjxhmniyqpoa3gtdlp47g3tssivsjsea7gb3yd.onion": {
       "id": "debian-official-mon-debian-org",
@@ -9831,7 +10362,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad debian linux mon debian org software libre servidor paquetes os",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 4
+      "collective_discoveries": 6
     },
     "jvgypgbnfyvfopg5msp6nwr2sl2fd6xmnguq35n7rfkw3yungjn2i4yd.onion": {
       "id": "debian-official-onion-debian-org",
@@ -10041,7 +10572,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad debian linux www debian org software libre servidor paquetes os",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 3
+      "collective_discoveries": 5
     },
     "wzmhgtr235jahyxhrpj7wh675vrgouqhpyaecyn6x4r2menefypwyqad.onion": {
       "id": "debian-official-www-ports-debian-org",
@@ -10062,7 +10593,7 @@
       "verification_tier": "VERIFIED",
       "tags": "exploits seguridad debian linux www ports debian org software libre servidor paquetes os",
       "learned_from_query": "snowball_index",
-      "collective_discoveries": 3
+      "collective_discoveries": 5
     }
   }
 }
