@@ -191,11 +191,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_2_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.2 en la esquina superior izquierda y los badges [ONLINE EN TOR] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_3_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.3 en la esquina superior izquierda y los badges [ONLINE EN TOR] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.2")
+        self.assertEqual(ENGINE_VERSION, "1.99.3")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -256,6 +256,31 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         surface_3 = self.engine.get_total_indexed_count()
         self.assertGreater(surface_3, surface_2, "Una búsqueda repetida debe seguir ampliando la superficie con nodos inéditos")
         self.assertGreaterEqual(int(res_3.get("newly_indexed_count", 0)), 1)
+
+    def test_IR15_compound_query_precision_and_anti_scam_shield(self) -> None:
+        """[IR-15] Certifica que búsquedas compuestas ('gustavo petro', 'expresidente gustavo petro') devuelvan 100% resultados relevantes sin servidores inconexos ni spam/carding."""
+        forbidden_irrelevant_or_scam = (
+            "grafana2.torproject.org",
+            "ircbouncer.torproject.org",
+            "live credit card",
+            "darkvaultx",
+            "drugrush",
+            "cocaine",
+            "fentanyl",
+            "debconf4",
+            "website hack service",
+        )
+        for compound_q in ("gustavo petro", "expresidente gustavo petro"):
+            res = self.engine.search_v2(query=compound_q, enable_live_tor=True)["results"]
+            self.assertGreaterEqual(len(res), 6)
+            for item in res:
+                combined = f"{item['title']} {item['description']}".lower()
+                for bad in forbidden_irrelevant_or_scam:
+                    self.assertNotIn(bad, combined, f"Resultado contaminado o inconexo '{bad}' en consulta '{compound_q}'")
+                self.assertIn("gustavo", combined, f"El resultado '{item['title']}' no menciona 'gustavo'")
+                self.assertIn("petro", combined, f"El resultado '{item['title']}' no menciona 'petro'")
+                self.assertTrue(is_valid_v3_onion(str(item["onion_url"])))
+                self.assertTrue(item.get("online_verified"))
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD

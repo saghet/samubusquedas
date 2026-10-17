@@ -1004,11 +1004,26 @@ class SamuSearchEngine:
     ) -> List[Dict[str, object]]:
         cursor = self.conn.cursor()
 
+        generic_roles = {
+            "expresidente", "presidente", "senador", "ministro", "gobernador",
+            "alcalde", "candidato", "biografia", "historia", "informacion",
+            "buscar", "busqueda", "acerca",
+        }
+        core_tokens = [t for t in tokens if t not in generic_roles] if len(tokens) > 1 else list(tokens)
+        if not core_tokens:
+            core_tokens = list(tokens)
+
+        # Tokens específicos que no pertenecen al vocabulario técnico de Tor ni a SYNONYM_MAP
+        specific_tokens = [
+            t for t in core_tokens
+            if t not in SYNONYM_MAP and t not in self.vocabulary and t not in self.known_valid_words
+        ]
+
         fts_clauses: List[str] = []
         for phr in phrases:
             fts_clauses.append(f'"{phr}"')
 
-        for tok in tokens:
+        for tok in core_tokens:
             synonyms = SYNONYM_MAP.get(tok, [])
             if synonyms:
                 group = " OR ".join([f'"{tok}"*'] + [f'"{normalize_accents(s)}"*' for s in synonyms[:6]])
@@ -1031,21 +1046,31 @@ class SamuSearchEngine:
                 WHERE services_fts MATCH ?
                 {base_filters_sql}
             """
-            # Etapa 1: Precisión AND
+            # Etapa 1: Precisión AND sobre los tokens nucleares
             cursor.execute(fts_sql, [" AND ".join(fts_clauses)] + filter_params)
             rows = [dict(r) for r in cursor.fetchall()]
 
-            # Etapa 2: Amplitud OR si AND devolvió menos de 3 resultados y hay varios términos
+            # Etapa 2: Amplitud OR solo si NO es una consulta compuesta de entidad ajena a Tor
+            # (o verificando que el candidato cumpla todos los specific_tokens)
             if len(rows) < 3 and len(fts_clauses) > 1:
                 cursor.execute(fts_sql, [" OR ".join(fts_clauses)] + filter_params)
                 seen_ids = {r["id"] for r in rows}
                 for r in cursor.fetchall():
                     if r["id"] not in seen_ids:
-                        rows.append(dict(r))
+                        cand_dict = dict(r)
+                        if specific_tokens and len(core_tokens) >= 2:
+                            norm_text = str(cand_dict.get("norm_searchable", ""))
+                            req_spec = 2 if len(specific_tokens) == 2 else max(1, len(specific_tokens) - 1)
+                            matched_spec = sum(
+                                1 for st in specific_tokens if re.search(rf"\b{re.escape(st)}", norm_text)
+                            )
+                            if matched_spec < req_spec:
+                                continue
+                        rows.append(cand_dict)
                         seen_ids.add(r["id"])
 
             # Etapa 3: Subcadena con límite de palabra (\b) solo para tokens de >= 5 letras
-            long_tokens = [t for t in tokens if len(t) >= 5]
+            long_tokens = [t for t in core_tokens if len(t) >= 5]
             if not rows and long_tokens:
                 like_clauses = " OR ".join("s.norm_searchable LIKE ?" for _ in long_tokens)
                 like_params = [f"%{t}%" for t in long_tokens]
@@ -1054,6 +1079,13 @@ class SamuSearchEngine:
                 candidates = [dict(r) for r in cursor.fetchall()]
                 for cand in candidates:
                     norm_text = str(cand.get("norm_searchable", ""))
+                    if specific_tokens and len(core_tokens) >= 2:
+                        req_spec = 2 if len(specific_tokens) == 2 else max(1, len(specific_tokens) - 1)
+                        matched_spec = sum(
+                            1 for st in specific_tokens if re.search(rf"\b{re.escape(st)}", norm_text)
+                        )
+                        if matched_spec < req_spec:
+                            continue
                     if any(re.search(rf"\b{re.escape(t)}", norm_text) for t in long_tokens):
                         rows.append(cand)
         else:
@@ -1239,7 +1271,8 @@ class SamuSearchEngine:
                 if was_absorbed:
                     newly_indexed_count += 1
                     lv["newly_indexed"] = True
-                if lv_url not in known_urls:
+                    COLLECTIVE_MEMORY.record_discovered_node(lv, persist=False)
+                if lv.get("query_relevant", True) and lv_url not in known_urls:
                     lv["bm25_score"] = 6.5 if semantic_intent else 3.8
                     lv["crypto_trust_bonus"] = 14.0
                     filtered_rows.append(lv)
@@ -1286,19 +1319,31 @@ class SamuSearchEngine:
             uptime_val = float(item.get("uptime_percent", 95.0))
 
             title_norm = normalize_accents(str(item["title"]).lower())
+            desc_norm = normalize_accents(str(item["description"]).lower())
             exact_title_boost = sum(
                 35.0 for t in active_tokens if re.search(rf"\b{re.escape(t)}", title_norm)
             )
-            norm_search_str = str(item.get("norm_searchable", ""))
+            norm_search_str = str(item.get("norm_searchable", "")) or f"{title_norm} {desc_norm}"
             token_match_count = sum(
                 12.0 for t in active_tokens if re.search(rf"\b{re.escape(t)}", norm_search_str)
             )
+            compound_boost = 0.0
+            if len(active_tokens) >= 2:
+                combined_vis = f"{title_norm} {desc_norm}"
+                matched_vis = sum(1 for t in active_tokens if re.search(rf"\b{re.escape(t)}", combined_vis))
+                if matched_vis == len(active_tokens):
+                    compound_boost += 30.0
+                phrase_str = " ".join(active_tokens)
+                if phrase_str in combined_vis:
+                    compound_boost += 25.0
+
             collective_boost = 5.0 if item.get("collective_memory") else 0.0
 
             samu_rank = (
                 (bm25_val * 4.5)
                 + exact_title_boost
                 + token_match_count
+                + compound_boost
                 + (safety_val * 0.65)
                 + (crypto_val * 0.55)
                 + (uptime_val * 0.15)
