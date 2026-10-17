@@ -719,6 +719,11 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(ROBOTS_TXT.encode("utf-8"))
             return
 
+        if path in ("/health", "/healthz"):
+            self._send_hardened_headers(200, "application/json; charset=utf-8")
+            self.wfile.write(b'{"status":"ok","engine":"SamuBusquedas v2.5","architect":"saghet"}\n')
+            return
+
         req_headers = {k: v for k, v in self.headers.items()}
         security_eval = evaluate_client_connection_security(req_headers)
 
