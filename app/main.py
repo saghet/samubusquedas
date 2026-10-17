@@ -458,6 +458,8 @@ def render_serp_page(
     is_exploratory = bool(search_payload.get("is_exploratory_fallback"))
     collective_hit = bool(search_payload.get("collective_memory_hit"))
     collective_hits = int(search_payload.get("collective_hits", 0) or 0)
+    newly_indexed_count = int(search_payload.get("newly_indexed_count", 0) or 0)
+    total_indexed_surface = int(search_payload.get("total_indexed_surface", 112) or 112)
     k_card = search_payload.get("knowledge_card")  # type: ignore
     bang_info = search_payload.get("bang_info")  # type: ignore
     elapsed_ms = search_payload.get("elapsed_ms", 0.0)
@@ -523,7 +525,12 @@ def render_serp_page(
         online_badge_html = f'<span class="online-badge">[ONLINE EN TOR • {latency_ms} ms]</span>'
 
         collective_badge_html = ""
-        if svc.get("collective_memory"):
+        if svc.get("newly_indexed"):
+            collective_badge_html = (
+                '<span class="collective-badge" title="Nuevo sitio .onion v3 descubierto e indexado permanentemente en esta búsqueda">'
+                "[+NUEVO INDEXADO EN MOTOR]</span>"
+            )
+        elif svc.get("collective_memory"):
             c_hits = int(svc.get("collective_hits", collective_hits) or 1)
             collective_badge_html = (
                 f'<span class="collective-badge" title="Guardado en Memoria Colectiva ({c_hits} búsquedas exitosas)">'
@@ -567,11 +574,13 @@ def render_serp_page(
     checked_ver = "checked" if scope == "verified" else ""
     label_query = query if query else (category if category != "Todas" else taxonomy or "Todos")
 
-    collective_status_str = (
-        f' • <strong style="color:#4b0082;">⚡ Memoria Colectiva ({collective_hits}x)</strong>'
-        if (collective_hit or collective_hits > 0)
-        else ""
-    )
+    collective_status_str = ""
+    if newly_indexed_count > 0:
+        collective_status_str += (
+            f' • <strong style="color:#006600;">+{newly_indexed_count} nuevos nodos .onion indexados (Total Motor: {total_indexed_surface})</strong>'
+        )
+    if collective_hit or collective_hits > 0:
+        collective_status_str += f' • <strong style="color:#4b0082;">⚡ Memoria Colectiva ({collective_hits}x)</strong>'
 
     return f"""
     <header class="serp-header">
@@ -810,6 +819,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 "version": APP_VERSION,
                 "engine": f"SamuBusquedas v{APP_VERSION}",
                 "architect": "saghet",
+                "total_indexed_surface": search_engine.get_total_indexed_count(),
                 "collective_memory": COLLECTIVE_MEMORY.get_stats(),
             }
             self.wfile.write((json.dumps(payload) + "\n").encode("utf-8"))

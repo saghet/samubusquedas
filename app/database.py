@@ -597,36 +597,10 @@ class SamuSearchEngine:
 
         cursor = self.conn.cursor()
         cursor.execute(
-            "SELECT id, tags FROM services WHERE id = ? OR LOWER(onion_url) = LOWER(?)",
+            "SELECT id FROM services WHERE id = ? OR LOWER(onion_url) = LOWER(?)",
             (node_id, onion_url),
         )
-        existing = cursor.fetchone()
-        if existing:
-            # Si ya existe, enriquecer sus tags y norm_searchable con las nuevas palabras aprendidas
-            existing_id = str(existing["id"])
-            old_tags = str(existing["tags"] or "")
-            new_tags_in = str(item.get("tags", ""))
-            added_tokens = [
-                t for t in new_tags_in.split()
-                if t.lower() not in old_tags.lower() and len(t) >= 3
-            ]
-            if added_tokens:
-                merged_tags = f"{old_tags} {' '.join(added_tokens)}".strip()[:260]
-                cursor.execute("SELECT title, category, description, taxonomy FROM services WHERE id = ?", (existing_id,))
-                row_meta = cursor.fetchone()
-                if row_meta:
-                    raw_all = f"{row_meta['title']} {row_meta['category']} {row_meta['description']} {merged_tags} {row_meta['taxonomy']}"
-                    norm_all = normalize_accents(raw_all.lower())
-                    cursor.execute(
-                        "UPDATE services SET tags = ?, norm_searchable = ? WHERE id = ?",
-                        (merged_tags, norm_all, existing_id),
-                    )
-                    cursor.execute(
-                        "UPDATE services_fts SET tags = ?, norm_searchable = ? WHERE id = ?",
-                        (merged_tags, norm_all, existing_id),
-                    )
-                    if commit:
-                        self.conn.commit()
+        if cursor.fetchone():
             return False
 
         taxonomy = str(item.get("taxonomy", "tor/collective"))
@@ -698,13 +672,30 @@ class SamuSearchEngine:
                     norm_all,
                 ),
             )
-            for tok in re.findall(r"[a-z0-9]{3,}", norm_all):
-                self.known_valid_words.add(tok)
             if commit:
                 self.conn.commit()
             return True
         except Exception:
             return False
+
+    def get_known_onion_hosts(self) -> Set[str]:
+        """Devuelve el conjunto de todos los hosts .onion actualmente indexados en SQLite FTS5."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT onion_url FROM services")
+        hosts: Set[str] = set()
+        for row in cursor.fetchall():
+            u = str(row["onion_url"]).lower()
+            m = re.search(r"((?:[a-z0-9-]+\.)*[a-z2-7]{55}d\.onion)", u)
+            if m:
+                hosts.add(m.group(1))
+        return hosts
+
+    def get_total_indexed_count(self) -> int:
+        """Devuelve el número total actual de servicios .onion indexados en el motor FTS5."""
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT COUNT(*) AS cnt FROM services")
+        row = cursor.fetchone()
+        return int(row["cnt"]) if row else 0
 
     def get_categories(self) -> List[Dict[str, object]]:
         cursor = self.conn.cursor()
@@ -1227,26 +1218,32 @@ class SamuSearchEngine:
                     filtered_rows.append(cm_copy)
                     known_by_url[cm_url] = cm_copy
 
-        # AMPLIFICACIÓN EN VIVO EN LA RED TOR (Ahmia Bilingüe ES<->EN) si aún no está en Memoria Colectiva con suficientes nodos
-        if (
-            include_unverified
-            and enable_live_tor
-            and include_tokens
-            and (len(filtered_rows) < 10 or semantic_intent is not None)
-            and not (collective_memory_hit and len(filtered_rows) >= 8)
-        ):
-            live_q = " ".join(include_tokens)
-            live_items = fetch_live_unverified_tor_results(live_q, max_results=10, timeout=3.2)
+        # AMPLIFICACIÓN AUTO-EXPANSIVA "SNOWBALL" EN CADA BÚSQUEDA (v1.99.2):
+        # Cada búsqueda con enable_live_tor=True explora nuevos nodos .onion v3 no indexados aún
+        # y los absorbe de inmediato en SQLite FTS5 + Memoria Colectiva.
+        newly_indexed_count = 0
+        if include_unverified and enable_live_tor and active_tokens and not has_strict_filters:
+            live_q = " ".join(active_tokens)
+            known_hosts = self.get_known_onion_hosts()
+            live_items = fetch_live_unverified_tor_results(
+                live_q,
+                max_results=12,
+                timeout=2.8,
+                known_hosts=known_hosts,
+                new_discovery_quota=4,
+            )
             known_urls = {str(r["onion_url"]).lower().rstrip("/") for r in filtered_rows}
             for lv in live_items:
                 lv_url = str(lv["onion_url"]).lower().rstrip("/")
+                was_absorbed = self.absorb_discovered_node(lv, commit=False)
+                if was_absorbed:
+                    newly_indexed_count += 1
+                    lv["newly_indexed"] = True
                 if lv_url not in known_urls:
                     lv["bm25_score"] = 6.5 if semantic_intent else 3.8
                     lv["crypto_trust_bonus"] = 14.0
                     filtered_rows.append(lv)
                     known_urls.add(lv_url)
-                    # Auto-absorber el nodo descubierto dentro del índice SQLite FTS5 en RAM
-                    self.absorb_discovered_node(lv, commit=False)
             self.conn.commit()
 
         # Modo Exploratorio si el término es completamente inédito y no activó filtros restrictivos
@@ -1269,14 +1266,13 @@ class SamuSearchEngine:
             filtered_rows
             and not is_exploratory_fallback
             and query
-            and include_tokens
+            and active_tokens
             and not has_strict_filters
             and include_unverified
+            and (not did_you_mean or auto_corrected_from)
         ):
-            rec_Target = auto_corrected_from if auto_corrected_from else str(query)
-            rec_stats = COLLECTIVE_MEMORY.record_successful_search(rec_Target, filtered_rows)
-            if auto_corrected_from and did_you_mean:
-                COLLECTIVE_MEMORY.record_successful_search(did_you_mean, filtered_rows)
+            rec_target = str(did_you_mean) if (auto_corrected_from and did_you_mean) else str(query)
+            rec_stats = COLLECTIVE_MEMORY.record_successful_search(rec_target, filtered_rows)
             collective_hits_count = max(collective_hits_count, int(rec_stats.get("query_hits", 1)))
             for r_item in filtered_rows:
                 r_item["collective_memory"] = True
@@ -1327,6 +1323,8 @@ class SamuSearchEngine:
             "is_exploratory_fallback": is_exploratory_fallback,
             "collective_memory_hit": collective_memory_hit,
             "collective_hits": collective_hits_count,
+            "newly_indexed_count": newly_indexed_count,
+            "total_indexed_surface": self.get_total_indexed_count(),
             "knowledge_card": k_card,
             "parsed_query": q_info,
             "bang_info": bang_info,

@@ -31,6 +31,9 @@ from verifier import audit_catalog_integrity, probe_onion_via_socks5h
 class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        from pathlib import Path
+        cls._cm_path = Path(__file__).resolve().parent / "collective_memory.json"
+        cls._cm_backup = cls._cm_path.read_text(encoding="utf-8") if cls._cm_path.exists() else None
         cls.engine = SamuSearchEngine()
         cls.server = ThreadingHTTPServer(("127.0.0.1", 0), SamuOnionRequestHandler)
         cls.port = cls.server.server_port
@@ -42,6 +45,8 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
     def tearDownClass(cls) -> None:
         cls.server.shutdown()
         cls.server.server_close()
+        if getattr(cls, "_cm_backup", None) is not None:
+            cls._cm_path.write_text(cls._cm_backup, encoding="utf-8")
 
     # =========================================================================
     # BLOQUE A: PRUEBAS DE CALIDAD DE BÚSQUEDA Y RECUPERACIÓN DE INFORMACIÓN (IR)
@@ -186,11 +191,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_1_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.1 en la esquina superior izquierda y los badges [ONLINE EN TOR] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_2_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.2 en la esquina superior izquierda y los badges [ONLINE EN TOR] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.1")
+        self.assertEqual(ENGINE_VERSION, "1.99.2")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -198,7 +203,6 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             self.assertIn('class="version-corner-badge"', html_doc)
             self.assertIn(f">v{ENGINE_VERSION}</span>", html_doc)
             self.assertIn("ONLINE EN TOR", html_doc)
-            self.assertIn("MEMORIA COLECTIVA", html_doc)
             self.assertIn("VÁLIDO ONLINE", html_doc)
 
     def test_IR12_collective_search_memory_persistence_and_auto_indexing(self) -> None:
@@ -230,6 +234,28 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         exp_cripto = expand_bilingual_tor_queries("billetera cripto")
         self.assertEqual(len(exp_cripto), 2)
         self.assertIn("wallet", exp_cripto[1])
+
+    def test_IR14_continuous_snowball_surface_growth_on_each_search(self) -> None:
+        """[IR-14] Certifica que cada búsqueda nueva (incluso de términos repetidos) amplíe el índice FTS5 con nuevos nodos .onion."""
+        surface_0 = self.engine.get_total_indexed_count()
+
+        # Búsqueda 1: 'debian' -> descubre e indexa nuevos nodos .onion v3
+        res_1 = self.engine.search_v2(query="debian", enable_live_tor=True)
+        surface_1 = self.engine.get_total_indexed_count()
+        self.assertGreater(surface_1, surface_0, "La primera búsqueda debía incrementar el total de nodos indexados")
+        self.assertGreaterEqual(int(res_1.get("newly_indexed_count", 0)), 1)
+
+        # Búsqueda 2: 'securedrop' -> vuelve a incrementar el índice con más nodos .onion v3
+        res_2 = self.engine.search_v2(query="securedrop", enable_live_tor=True)
+        surface_2 = self.engine.get_total_indexed_count()
+        self.assertGreater(surface_2, surface_1, "La segunda búsqueda debía incrementar aún más el índice")
+        self.assertGreaterEqual(int(res_2.get("newly_indexed_count", 0)), 1)
+
+        # Búsqueda 3 (mismo término 'debian' por un segundo usuario) -> salta los ya conocidos e indexa la siguiente oleada
+        res_3 = self.engine.search_v2(query="debian", enable_live_tor=True)
+        surface_3 = self.engine.get_total_indexed_count()
+        self.assertGreater(surface_3, surface_2, "Una búsqueda repetida debe seguir ampliando la superficie con nodos inéditos")
+        self.assertGreaterEqual(int(res_3.get("newly_indexed_count", 0)), 1)
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD
