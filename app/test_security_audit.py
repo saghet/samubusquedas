@@ -162,7 +162,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         import re
 
         all_svcs = self.engine.search_v2(query="", enable_live_tor=False)["results"]
-        self.assertEqual(len(all_svcs), 77)
+        self.assertGreaterEqual(len(all_svcs), 112)
         for svc in all_svcs:
             u = str(svc["onion_url"])
             self.assertTrue(is_valid_v3_onion(u), f"URL inválida: {u}")
@@ -186,16 +186,50 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99 en la esquina superior izquierda y los badges [ONLINE EN TOR] en resultados."""
+    def test_IR11_version_1_99_1_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.1 en la esquina superior izquierda y los badges [ONLINE EN TOR] y [MEMORIA COLECTIVA]."""
+        from version import ENGINE_VERSION
+
+        self.assertEqual(ENGINE_VERSION, "1.99.1")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
-            self.assertEqual(resp.headers.get("X-Engine-Version"), "1.99")
+            self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
             html_doc = resp.read().decode("utf-8")
             self.assertIn('class="version-corner-badge"', html_doc)
-            self.assertIn(">v1.99</span>", html_doc)
+            self.assertIn(f">v{ENGINE_VERSION}</span>", html_doc)
             self.assertIn("ONLINE EN TOR", html_doc)
+            self.assertIn("MEMORIA COLECTIVA", html_doc)
             self.assertIn("VÁLIDO ONLINE", html_doc)
+
+    def test_IR12_collective_search_memory_persistence_and_auto_indexing(self) -> None:
+        """[IR-12] Verifica que búsquedas exitosas se guarden en Memoria Colectiva y sirvan al instante a otros usuarios."""
+        from collective_memory import COLLECTIVE_MEMORY
+
+        # Usuario 1 busca 'bibliotecas ciencia'
+        res_user1 = self.engine.search_v2(query="bibliotecas ciencia", enable_live_tor=False)
+        self.assertGreaterEqual(len(res_user1["results"]), 3)
+
+        # Usuario 2 busca 'Bibliótecas Ciencia' (con tilde y mayúsculas) -> Hit instantáneo en Memoria Colectiva
+        res_user2 = self.engine.search_v2(query="Bibliótecas Ciencia", enable_live_tor=False)
+        self.assertTrue(res_user2.get("collective_memory_hit"))
+        self.assertGreaterEqual(int(res_user2.get("collective_hits", 0)), 2)
+        self.assertTrue(any(r.get("collective_memory") for r in res_user2["results"]))
+
+        # Verificar que una consulta con datos sensibles (email) sea rechazada por higiene OPSEC
+        sec_check = COLLECTIVE_MEMORY.record_successful_search("usuario@secreto.com", res_user1["results"])
+        self.assertEqual(sec_check["saved_results"], 0)
+
+    def test_IR13_bilingual_tor_query_expansion(self) -> None:
+        """[IR-13] Verifica que el expansor bilingüe ES <-> EN traduzca consultas en español al vocabulario Tor en inglés."""
+        from live_tor_search import expand_bilingual_tor_queries
+
+        exp_bib = expand_bilingual_tor_queries("bibliotecas")
+        self.assertEqual(len(exp_bib), 2)
+        self.assertIn("library", exp_bib[1])
+
+        exp_cripto = expand_bilingual_tor_queries("billetera cripto")
+        self.assertEqual(len(exp_cripto), 2)
+        self.assertIn("wallet", exp_cripto[1])
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD
@@ -214,14 +248,14 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             res = self.engine.search_v2(query=mq, enable_live_tor=False)
             self.assertIn("results", res)
 
-        # Confirmar que los 77 servicios siguen intactos en RAM
+        # Confirmar que los >= 112 servicios siguen intactos en RAM
         all_svcs = self.engine.search_v2(query="", enable_live_tor=False)["results"]
-        self.assertEqual(len(all_svcs), 77)
+        self.assertGreaterEqual(len(all_svcs), 112)
 
     def test_SEC02_sha3_256_cryptographic_checksum_and_anti_phishing(self) -> None:
-        """Verifica que las 77 direcciones tengan checksum SHA3-256 válido y que se detecten clones y checksums falsos."""
+        """Verifica que las 112+ direcciones tengan checksum SHA3-256 válido y que se detecten clones y checksums falsos."""
         report = audit_catalog_integrity()
-        self.assertEqual(len(report), 77)
+        self.assertGreaterEqual(len(report), 112)
         for item in report:
             self.assertEqual(item["status"], "APROBADO", f"Fallo SHA3-256 en {item['title']}")
 

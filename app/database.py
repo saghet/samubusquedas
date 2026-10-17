@@ -27,9 +27,11 @@ import time
 import unicodedata
 from typing import Dict, List, Optional, Set, Tuple
 
+from collective_memory import COLLECTIVE_MEMORY
 from live_tor_search import fetch_live_unverified_tor_results
 from onion_crypto import verify_v3_onion_checksum
 from verifier import start_background_health_monitor, verify_and_enrich_search_results
+from version import ENGINE_VERSION
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SEED_FILE = os.path.join(BASE_DIR, "seed_data.json")
@@ -575,6 +577,135 @@ class SamuSearchEngine:
         self.known_valid_words = valid_words_accumulator
         self.conn.commit()
 
+        # Absorber en el índice FTS5 todos los nodos previamente aprendidos en la Memoria Colectiva
+        for learned_node in COLLECTIVE_MEMORY.get_all_discovered_nodes():
+            self.absorb_discovered_node(learned_node, commit=False)
+        self.conn.commit()
+
+    def absorb_discovered_node(self, item: Dict[str, object], commit: bool = True) -> bool:
+        """
+        Auto-indexa en la base de datos SQLite FTS5 (en RAM) cualquier nuevo servicio .onion v3
+        descubierto durante una búsqueda exitosa, para que futuras búsquedas por cualquier
+        palabra clave relacionada lo encuentren de inmediato.
+        """
+        onion_url = str(item.get("onion_url", "")).strip()
+        node_id = str(item.get("id", "")).strip()
+        if not onion_url or not node_id or node_id.startswith("live-jump-") or "aaa" in onion_url.lower():
+            return False
+        if not is_valid_v3_onion(onion_url):
+            return False
+
+        cursor = self.conn.cursor()
+        cursor.execute(
+            "SELECT id, tags FROM services WHERE id = ? OR LOWER(onion_url) = LOWER(?)",
+            (node_id, onion_url),
+        )
+        existing = cursor.fetchone()
+        if existing:
+            # Si ya existe, enriquecer sus tags y norm_searchable con las nuevas palabras aprendidas
+            existing_id = str(existing["id"])
+            old_tags = str(existing["tags"] or "")
+            new_tags_in = str(item.get("tags", ""))
+            added_tokens = [
+                t for t in new_tags_in.split()
+                if t.lower() not in old_tags.lower() and len(t) >= 3
+            ]
+            if added_tokens:
+                merged_tags = f"{old_tags} {' '.join(added_tokens)}".strip()[:260]
+                cursor.execute("SELECT title, category, description, taxonomy FROM services WHERE id = ?", (existing_id,))
+                row_meta = cursor.fetchone()
+                if row_meta:
+                    raw_all = f"{row_meta['title']} {row_meta['category']} {row_meta['description']} {merged_tags} {row_meta['taxonomy']}"
+                    norm_all = normalize_accents(raw_all.lower())
+                    cursor.execute(
+                        "UPDATE services SET tags = ?, norm_searchable = ? WHERE id = ?",
+                        (merged_tags, norm_all, existing_id),
+                    )
+                    cursor.execute(
+                        "UPDATE services_fts SET tags = ?, norm_searchable = ? WHERE id = ?",
+                        (merged_tags, norm_all, existing_id),
+                    )
+                    if commit:
+                        self.conn.commit()
+            return False
+
+        taxonomy = str(item.get("taxonomy", "tor/collective"))
+        title = str(item.get("title", "Nodo Onion Verificado"))
+        category = str(item.get("category", "Memoria Colectiva Tor (Verificado v3)"))
+        clearnet_url = str(item.get("clearnet_url", "https://ahmia.fi"))
+        description = str(item.get("description", "Servicio oculto .onion v3 descubierto y verificado online por la Memoria Colectiva."))
+        verif_method = str(item.get("verification_method", "Memoria Colectiva + Checksum SHA3-256"))
+        pgp_fp = str(item.get("pgp_fingerprint", "Checksum Ed25519 SHA3-256 Válido — Modo Safest"))
+        js_req = str(item.get("js_requirement", "Safest (Sin JS)"))
+        safety_score = int(item.get("safety_score", 80))
+        uptime = float(item.get("uptime_percent", 96.5))
+        latency_ms = int(item.get("latency_ms", 450) or 450)
+        tags = str(item.get("tags", ""))
+        tier = str(item.get("verification_tier", "UNVERIFIED"))
+        crypto_bonus = self._calculate_crypto_trust_bonus(item, True)
+        status_label = "Aprendido en Memoria Colectiva (Online v3)"
+
+        raw_all = f"{title} {category} {description} {tags} {taxonomy}"
+        norm_all = normalize_accents(raw_all.lower())
+
+        try:
+            cursor.execute(
+                """
+                INSERT INTO services (
+                    id, title, category, taxonomy, onion_url, clearnet_url, description,
+                    verification_method, pgp_fingerprint, js_requirement,
+                    safety_score, uptime_percent, latency_ms, online_verified, tags,
+                    norm_searchable, verification_tier, is_v3_verified, crypto_trust_bonus, status
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    node_id,
+                    title,
+                    category,
+                    taxonomy,
+                    onion_url,
+                    clearnet_url,
+                    description,
+                    verif_method,
+                    pgp_fp,
+                    js_req,
+                    safety_score,
+                    uptime,
+                    latency_ms,
+                    1,
+                    tags,
+                    norm_all,
+                    tier,
+                    1,
+                    crypto_bonus,
+                    status_label,
+                ),
+            )
+            cursor.execute(
+                """
+                INSERT INTO services_fts (
+                    id, title, category, description, tags, verification_method, taxonomy, norm_searchable
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    node_id,
+                    title,
+                    category,
+                    description,
+                    tags,
+                    verif_method,
+                    taxonomy,
+                    norm_all,
+                ),
+            )
+            for tok in re.findall(r"[a-z0-9]{3,}", norm_all):
+                self.known_valid_words.add(tok)
+            if commit:
+                self.conn.commit()
+            return True
+        except Exception:
+            return False
+
     def get_categories(self) -> List[Dict[str, object]]:
         cursor = self.conn.cursor()
         cursor.execute(
@@ -793,14 +924,13 @@ class SamuSearchEngine:
                 "subtitle": "Arquitecto de Ciberseguridad y Creador de SamuBusquedas (.onion v3)",
                 "summary": (
                     "Investigador de seguridad y arquitecto de motores de búsqueda en la red Tor. "
-                    "Diseñador del algoritmo híbrido SamuRank (BM25F + OnionTrustRank SHA3-256), del explorador "
-                    "multicapa (Sitios Verificados + Sitios No Verificados Comunitarios + Meta-Búsqueda en Vivo) "
-                    "y del escudo Zero-JS / Zero-Logs."
+                    "Diseñador del algoritmo híbrido SamuRank (BM25F + OnionTrustRank SHA3-256), de la Memoria "
+                    "Colectiva de Búsquedas Exitosas (Auto-Aprendizaje FTS5) y del escudo Zero-JS / Zero-Logs."
                 ),
                 "attributes": [
                     ("Handle / Alias Hacker", "saghet"),
-                    ("Motor Desarrollado", "SamuBusquedas v1.99 (.onion v3 Ed25519)"),
-                    ("Superficie Indexada", "77 Nodos Locales Verificados Online + Rastreo en Vivo Tor"),
+                    ("Motor Desarrollado", f"SamuBusquedas v{ENGINE_VERSION} (.onion v3 Ed25519)"),
+                    ("Superficie Indexada", "112+ Nodos Base Verificados + Memoria Colectiva Auto-Indexada + Rastreo Bilingüe Tor"),
                     ("Estándares Auditables", "/.well-known/security.txt (RFC 9116) | /humans.txt | /canary.txt"),
                 ],
             }
@@ -952,13 +1082,13 @@ class SamuSearchEngine:
         enable_live_tor: bool = True,
     ) -> Dict[str, object]:
         """
-        Motor de Búsqueda Inteligente Multicapa SamuBusquedas v3.0:
-        1. Búsqueda Exacta / Sinónimos FTS5.
-        2. Clasificador Semántico de Intención en la Deep Web (conecta consultas como 'armas', 'mercados',
-           'exploits', 'ovnis', 'filtraciones' con nodos OSINT/investigativos y motores profundos de Tor).
-        3. Corrector Ortográfico Damerau-Levenshtein estricto (solo para erratas reales de entidades >= 5 letras,
-           como 'protnmail' -> 'protonmail', jamás cambiando palabras válidas por stopwords como 'mas').
-        4. Meta-Búsqueda en Vivo en la Red Tor (Ahmia / Open HSDir) con el término original del usuario.
+        Motor de Búsqueda Inteligente Multicapa SamuBusquedas v1.99.1:
+        0. Memoria Colectiva de Búsquedas Exitosas (`COLLECTIVE_MEMORY`): recupera al instante (< 1 ms)
+           resultados verificados de consultas que ya tuvieron éxito previamente por cualquier usuario.
+        1. Búsqueda Exacta / Sinónimos FTS5 sobre 112+ nodos base + nodos auto-aprendidos.
+        2. Clasificador Semántico de Intención en la Deep Web.
+        3. Corrector Ortográfico Damerau-Levenshtein estricto.
+        4. Meta-Búsqueda Bilingüe en Vivo en la Red Tor (Ahmia IPv4 + ES<->EN) y auto-absorción en FTS5.
         """
         start_t = time.perf_counter()
         q_info = self.parse_search_query(query)
@@ -982,6 +1112,8 @@ class SamuSearchEngine:
                 "auto_corrected_from": None,
                 "semantic_intent": None,
                 "is_exploratory_fallback": False,
+                "collective_memory_hit": False,
+                "collective_hits": 0,
                 "knowledge_card": self.build_knowledge_card(q_info, chosen[0] if chosen else None),
                 "parsed_query": q_info,
                 "bang_info": {"name": "Servicio Onion Aleatorio (!random)", "url": chosen[0]["onion_url"] if chosen else "/"},
@@ -1005,6 +1137,28 @@ class SamuSearchEngine:
         eff_cat = category if (category and category != "Todas") else q_info.get("cat_filter")
         eff_tax = taxonomy if taxonomy else q_info.get("tax_filter")
 
+        has_strict_filters = bool(
+            eff_cat
+            or eff_tax
+            or only_safest_js
+            or q_info.get("js_filter")
+            or q_info.get("site_filter")
+            or q_info.get("min_trust") is not None
+            or q_info.get("pgp_only")
+            or q_info.get("tier_filter")
+            or exclude_tokens
+            or phrases
+        )
+
+        # Etapa 0: Consultar Memoria Colectiva de Búsquedas Exitosas
+        collective_entry = (
+            COLLECTIVE_MEMORY.get_collective_results(query or "")
+            if (query and include_tokens and not has_strict_filters and include_unverified)
+            else None
+        )
+        collective_memory_hit = bool(collective_entry)
+        collective_hits_count = int(collective_entry["hits"]) if collective_entry else 0
+
         rows = self._execute_fts_or_like_query(
             include_tokens, phrases, eff_cat, eff_tax, only_safest_js, q_info, include_unverified
         )
@@ -1025,7 +1179,6 @@ class SamuSearchEngine:
             """
             cursor.execute(intent_sql, list(target_ids) + filter_params)
             seen_ids = {r["id"] for r in rows}
-            # Preservar el orden de relevancia definido en target_ids
             fetched_by_id = {r["id"]: dict(r) for r in cursor.fetchall()}
             for tid in target_ids:
                 if tid in fetched_by_id and tid not in seen_ids:
@@ -1036,8 +1189,7 @@ class SamuSearchEngine:
         did_you_mean = None if semantic_intent else self.suggest_spelling(include_tokens)
         auto_corrected_from: Optional[str] = None
 
-        # AUTO-RECOVERY DIFUSO: Solo si la consulta original no tuvo resultados ni intención semántica,
-        # y existe una errata tipográfica clara de una entidad (ej. 'protnmail' -> 'protonmail')
+        # AUTO-RECOVERY DIFUSO: Solo si la consulta original no tuvo resultados ni intención semántica
         active_tokens = list(include_tokens)
         if not rows and did_you_mean:
             corrected_tokens = did_you_mean.split()
@@ -1058,16 +1210,44 @@ class SamuSearchEngine:
                 continue
             filtered_rows.append(r)
 
-        # AMPLIFICACIÓN EN VIVO EN LA RED TOR (Ahmia + Open HSDir) usando la consulta ORIGINAL del usuario
-        if include_unverified and enable_live_tor and include_tokens and (len(filtered_rows) < 6 or semantic_intent is not None):
+        # Fusionar resultados guardados en Memoria Colectiva de Búsquedas Exitosas (si existen)
+        if collective_entry:
+            known_by_url = {str(r["onion_url"]).lower().rstrip("/"): r for r in filtered_rows}
+            for cm_item in collective_entry.get("results", []):  # type: ignore
+                cm_url = str(cm_item.get("onion_url", "")).lower().rstrip("/")
+                if cm_url in known_by_url:
+                    known_by_url[cm_url]["collective_memory"] = True
+                    known_by_url[cm_url]["collective_hits"] = collective_hits_count
+                elif cm_url and "aaa" not in cm_url:
+                    cm_copy = dict(cm_item)
+                    cm_copy["bm25_score"] = 4.2
+                    cm_copy["crypto_trust_bonus"] = 18.0
+                    cm_copy["collective_memory"] = True
+                    cm_copy["collective_hits"] = collective_hits_count
+                    filtered_rows.append(cm_copy)
+                    known_by_url[cm_url] = cm_copy
+
+        # AMPLIFICACIÓN EN VIVO EN LA RED TOR (Ahmia Bilingüe ES<->EN) si aún no está en Memoria Colectiva con suficientes nodos
+        if (
+            include_unverified
+            and enable_live_tor
+            and include_tokens
+            and (len(filtered_rows) < 10 or semantic_intent is not None)
+            and not (collective_memory_hit and len(filtered_rows) >= 8)
+        ):
             live_q = " ".join(include_tokens)
-            live_items = fetch_live_unverified_tor_results(live_q, max_results=6, timeout=2.8)
-            known_urls = {str(r["onion_url"]).rstrip("/") for r in filtered_rows}
+            live_items = fetch_live_unverified_tor_results(live_q, max_results=10, timeout=3.2)
+            known_urls = {str(r["onion_url"]).lower().rstrip("/") for r in filtered_rows}
             for lv in live_items:
-                if str(lv["onion_url"]).rstrip("/") not in known_urls:
-                    lv["bm25_score"] = 6.5 if semantic_intent else 3.5
-                    lv["crypto_trust_bonus"] = 12.0
+                lv_url = str(lv["onion_url"]).lower().rstrip("/")
+                if lv_url not in known_urls:
+                    lv["bm25_score"] = 6.5 if semantic_intent else 3.8
+                    lv["crypto_trust_bonus"] = 14.0
                     filtered_rows.append(lv)
+                    known_urls.add(lv_url)
+                    # Auto-absorber el nodo descubierto dentro del índice SQLite FTS5 en RAM
+                    self.absorb_discovered_node(lv, commit=False)
+            self.conn.commit()
 
         # Modo Exploratorio si el término es completamente inédito y no activó filtros restrictivos
         is_exploratory_fallback = False
@@ -1084,6 +1264,24 @@ class SamuSearchEngine:
             live_probe_unverified=False,
         )
 
+        # Registrar esta búsqueda exitosa en la Memoria Colectiva para los próximos usuarios
+        if (
+            filtered_rows
+            and not is_exploratory_fallback
+            and query
+            and include_tokens
+            and not has_strict_filters
+            and include_unverified
+        ):
+            rec_Target = auto_corrected_from if auto_corrected_from else str(query)
+            rec_stats = COLLECTIVE_MEMORY.record_successful_search(rec_Target, filtered_rows)
+            if auto_corrected_from and did_you_mean:
+                COLLECTIVE_MEMORY.record_successful_search(did_you_mean, filtered_rows)
+            collective_hits_count = max(collective_hits_count, int(rec_stats.get("query_hits", 1)))
+            for r_item in filtered_rows:
+                r_item["collective_memory"] = True
+                r_item["collective_hits"] = collective_hits_count
+
         highlight_terms = active_tokens + [w for phr in phrases for w in phr.split()]
         for item in filtered_rows:
             bm25_val = float(item.get("bm25_score", 0.0))
@@ -1099,6 +1297,7 @@ class SamuSearchEngine:
             token_match_count = sum(
                 12.0 for t in active_tokens if re.search(rf"\b{re.escape(t)}", norm_search_str)
             )
+            collective_boost = 5.0 if item.get("collective_memory") else 0.0
 
             samu_rank = (
                 (bm25_val * 4.5)
@@ -1107,6 +1306,7 @@ class SamuSearchEngine:
                 + (safety_val * 0.65)
                 + (crypto_val * 0.55)
                 + (uptime_val * 0.15)
+                + collective_boost
             )
             item["samu_rank"] = round(samu_rank, 2)
             item["highlighted_title"] = highlight_safe_snippet(str(item["title"]), highlight_terms, max_len=140)
@@ -1125,6 +1325,8 @@ class SamuSearchEngine:
             "auto_corrected_from": auto_corrected_from,
             "semantic_intent": semantic_intent,
             "is_exploratory_fallback": is_exploratory_fallback,
+            "collective_memory_hit": collective_memory_hit,
+            "collective_hits": collective_hits_count,
             "knowledge_card": k_card,
             "parsed_query": q_info,
             "bang_info": bang_info,

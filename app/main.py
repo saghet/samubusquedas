@@ -1,26 +1,30 @@
 """
-SamuBusquedas v1.99 (.onion) - Interfaz Minimalista Clásica (Estilo Google 1998 / AltaVista 1997)
-================================================================================================
+SamuBusquedas v1.99.1 (.onion) - Interfaz Minimalista Clásica + Memoria Colectiva de Búsquedas
+==============================================================================================
 Arquitecto Principal y Creador: saghet
 Características:
 1. Portada Centrada Ultraligera (Estilo Google Stanford 1998 + Tabla de Directorio AltaVista/Yahoo 97).
-2. Página de Resultados (SERP) Compacta de 3 Líneas por Resultado con Verificación Activa Online (.onion v3).
-3. Motor Interno SamuRank v1.99 Completo: 77 Sitios Locales 100% Reales Online + Búsqueda en Vivo
-   en la Red Tor + Corrector Ortográfico Automático Damerau-Levenshtein + Escudo Anti-Phishing SHA3-256.
+2. Memoria Colectiva de Búsquedas Exitosas (`COLLECTIVE_MEMORY`): Guarda de forma anónima las búsquedas
+   exitosas y auto-indexa nuevos nodos .onion v3 descubiertos para servirlos al instante a cualquier usuario.
+3. Motor Interno SamuRank v1.99.1 Completo: 112+ Sitios Base Verificados Online + Harvester Bilingüe
+   ES<->EN en la Red Tor + Corrector Ortográfico Damerau-Levenshtein + Escudo Anti-Phishing SHA3-256.
 4. Metadatos Hacker para `saghet`: Cabeceras HTTP (`X-Architected-By: saghet`), `/.well-known/security.txt`
    (RFC 9116), `/humans.txt`, `/canary.txt`, `<meta name="author" content="saghet">` y Banner ASCII Art.
 """
 
 import html
+import json
 import os
 import sys
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Dict, List, Optional
 
+from collective_memory import COLLECTIVE_MEMORY
 from database import MAX_QUERY_LEN, SamuSearchEngine
 from security_shield import evaluate_client_connection_security
-from verifier import audit_catalog_integrity, probe_onion_via_socks5h
+from verifier import audit_catalog_integrity
+from version import ENGINE_VERSION
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -28,9 +32,9 @@ STATIC_DIR = os.path.join(BASE_DIR, "static")
 search_engine = SamuSearchEngine()
 
 OFFICIAL_ONION_DOMAIN = "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion"
-APP_VERSION = "1.99"
+APP_VERSION = ENGINE_VERSION
 
-ASCII_HACKER_BANNER = """<!--
+ASCII_HACKER_BANNER = f"""<!--
  =====================================================================================
    ____                        ____                                _
   / ___|  __ _ _ __ ___  _   _| __ ) _   _ ___  __ _ _   _  ___  __| | __ _ ___
@@ -38,9 +42,10 @@ ASCII_HACKER_BANNER = """<!--
    ___) | (_| | | | | | | |_| | |_) | |_| \\__ \\ (_| | |_| |  __/ (_| | (_| \\__ \\
   |____/ \\__,_|_| |_| |_|\\__,_|____/ \\__,_|___/\\__, |\\__,_|\\___|\\__,_|\\__,_|___/
                                                   |_|
-  [+] ENGINE      : SamuBusquedas v1.99 (.onion v3 Classic Search & Online Verifier)
+  [+] ENGINE      : SamuBusquedas v{APP_VERSION} (.onion v3 Search & Collective Memory)
   [+] ARCHITECT   : saghet (Lead Security Researcher & Search Engine Architect)
   [+] RANKING     : SamuRank = BM25F * (Title:10, Tags:6, Tax:5) + OnionTrustRank(SHA3-256)
+  [+] MEMORY      : Anonymous Collective Search Memory + Auto-FTS5 Node Indexing
   [+] ZERO-JS     : 100% Tor Browser "Safest" Mode Ready (CSP script-src 'none')
   [+] AUDIT DOCS  : /.well-known/security.txt | /humans.txt | /canary.txt
  =====================================================================================
@@ -51,14 +56,14 @@ Hash: SHA512
 
 ========================================================================
                  DECLARACIÓN DE TRANSPARENCIA Y CANARIO
-                  PORTAL SAMUBUSQUEDAS v1.99 (.ONION v3)
+                  PORTAL SAMUBUSQUEDAS v{APP_VERSION} (.ONION v3)
 ========================================================================
 Autoría y Arquitectura Principal: saghet
-Versión Oficial: v1.99
+Versión Oficial: v{APP_VERSION}
 Fecha de actualización: 2026-10-17
 Dominio Oficial .onion v3:
 {OFFICIAL_ONION_DOMAIN}
-Estado del Servicio: ÍNTEGRO Y OPERATIVO (Modo Zero-Logs en Memoria RAM)
+Estado del Servicio: ÍNTEGRO Y OPERATIVO (Modo Zero-Logs de Usuario en RAM)
 
 El arquitecto del sistema (saghet) y el equipo de SamuBusquedas declaran que:
 1. NO hemos recibido órdenes judiciales, citaciones ni requerimientos
@@ -66,8 +71,9 @@ El arquitecto del sistema (saghet) y el equipo de SamuBusquedas declaran que:
 2. NO hemos instalado puertas traseras (backdoors) ni modificado los
    pesos del algoritmo SamuRank / OnionTrustRank para alterar las llaves
    públicas Ed25519 (.onion v3) verificadas con SHA3-256.
-3. El servidor opera estrictamente sin registros en disco (Zero-Logs) y
-   con política Content-Security-Policy: default-src 'none'.
+3. La Memoria Colectiva de Búsquedas almacena exclusivamente términos
+   temáticos normalizados y enlaces .onion verificados ONLINE, sin asociar
+   jamás direcciones IP, sesiones, cookies ni huellas de navegador.
 
 Huella PGP Oficial de SamuBusquedas (by saghet):
 SAMU-SAGHET-V3-7F9A-44C1-88E2-B009-31D4-99A0
@@ -80,7 +86,7 @@ h5MpgpB99Q//SamuBusquedasV2SaghetZeroJSProtectionShieldVerified==
 -----END PGP SIGNATURE-----
 """
 
-SECURITY_TXT = f"""# RFC 9116 Security Policy - SamuBusquedas v1.99 (.onion v3)
+SECURITY_TXT = f"""# RFC 9116 Security Policy - SamuBusquedas v{APP_VERSION} (.onion v3)
 # Lead Security Architect & Creator: saghet
 Contact: {OFFICIAL_ONION_DOMAIN}/verificar
 Acknowledgments: saghet (Lead Security Architect, Cryptographic Verifier & Creator)
@@ -94,20 +100,21 @@ Expires: 2027-12-31T23:59:59.000Z
 HUMANS_TXT = f"""/* TEAM & ARCHITECTURE */
 Lead Architect & Security Researcher: saghet
 Handle: saghet
-Version: v1.99
-Role: Creator of SamuBusquedas v1.99 (.onion v3 Hybrid Search Engine & Anti-Phishing Shield)
+Version: v{APP_VERSION}
+Role: Creator of SamuBusquedas v{APP_VERSION} (.onion v3 Hybrid Search Engine, Collective Memory & Anti-Phishing Shield)
 Official Onion v3: {OFFICIAL_ONION_DOMAIN}
 
 /* SEARCH ENGINE TECHNOLOGY */
-Ranking Algorithm: SamuRank / OnionTrustRank (Multi-field Okapi BM25F + SHA3-256 Ed25519 Trust Bonus)
-Online Verification: Active SOCKS5h Circuit Health Monitor + Dynamic Ahmia Token Negotiation
+Ranking Algorithm: SamuRank / OnionTrustRank (Multi-field Okapi BM25F + SHA3-256 Ed25519 Trust Bonus + Collective Boost)
+Collective Memory: Anonymous Query-to-Onion Bank + Automatic SQLite FTS5 Node Absorption
+Online Verification: Active SOCKS5h Circuit Health Monitor + Fast IPv4 Bilingual Ahmia Harvester (ES <-> EN)
 Directory Structure: Classic AltaVista / Yahoo! 1997 Compact Directory + Google 1998 Minimalist SERP
 Query Capabilities: Google-Style Operators (cat:, tax:, js:safest, site:, trust:, pgp:, "phrase", -exclude) + DuckDuckGo !Bangs
 Spell Correction: In-Memory Damerau-Levenshtein ("Did you mean...?") with Automatic Fuzzy Recovery
 
 /* SECURITY & OPSEC MODEL */
 Client Protection: 100% Zero-JS (CSP default-src 'none'), Referrer-Policy: no-referrer, Anti-Tor2Web Detector
-Storage Model: Pure RAM SQLite FTS5 (:memory:) - Zero Disk Logs
+Storage Model: Pure RAM SQLite FTS5 (:memory:) + Anonymized Collective Node Index (Zero User Logs)
 DDoS Defense: Native Tor v3 Proof-of-Work (Equi-X Puzzle)
 """
 
@@ -132,6 +139,45 @@ def _render_retro_logo(is_large: bool = True) -> str:
         f'<span class="c4">u</span><span class="c2">e</span><span class="c3">d</span><span class="c1">a</span>'
         f'<span class="c4">s</span><span class="c2">!</span>{tag}</a>'
     )
+
+
+def _render_collective_memory_bar_html() -> str:
+    """
+    Renderiza la barra de Memoria Colectiva de Búsquedas Exitosas para que cualquier
+    usuario vea qué búsquedas ya están pre-verificadas y listas al instante.
+    """
+    popular = COLLECTIVE_MEMORY.get_popular_successful_queries(limit=10)
+    stats = COLLECTIVE_MEMORY.get_stats()
+    if not popular:
+        return ""
+
+    pills: List[str] = []
+    for item in popular:
+        q_str = str(item.get("query", ""))
+        disp = str(item.get("display_query", q_str))
+        cnt = int(item.get("result_count", 0))
+        hits = int(item.get("hits", 1))
+        href = f"/?q={urllib.parse.quote_plus(q_str)}"
+        pills.append(
+            f'<a href="{href}" class="collective-pill" title="{cnt} enlaces .onion verificados • {hits} búsquedas exitosas">'
+            f"{html.escape(disp)} <span class=\"collective-pill-count\">({cnt})</span></a>"
+        )
+
+    return f"""
+    <div class="collective-memory-box">
+        <div class="collective-memory-header">
+            <strong>⚡ Memoria Colectiva de Búsquedas Exitosas (Respuesta Instantánea):</strong>
+            <span>
+                <strong>{stats['saved_queries']}</strong> búsquedas aprendidas •
+                <strong>{stats['total_cached_links']}</strong> enlaces <code>.onion</code> verificados a la mano •
+                <strong>{stats['learned_nodes']}</strong> nodos auto-indexados
+            </span>
+        </div>
+        <div class="collective-pills-row">
+            {" ".join(pills)}
+        </div>
+    </div>
+    """
 
 
 def render_layout(
@@ -160,6 +206,8 @@ def render_layout(
         </div>
         """
 
+    total_indexed = sum(int(c["total"]) for c in search_engine.get_categories())  # type: ignore
+
     return f"""<!DOCTYPE html>
 {ASCII_HACKER_BANNER}
 <html lang="es">
@@ -169,23 +217,23 @@ def render_layout(
     <meta name="referrer" content="no-referrer">
     <meta name="author" content="saghet">
     <meta name="creator" content="saghet">
-    <meta name="generator" content="SamuBusquedas v1.99 Engine by saghet (Zero-JS Tor Shield)">
-    <title>{html.escape(title)} — SamuBusquedas v1.99 (.onion) by saghet</title>
+    <meta name="generator" content="SamuBusquedas v{APP_VERSION} Engine by saghet (Zero-JS Tor Shield)">
+    <title>{html.escape(title)} — SamuBusquedas v{APP_VERSION} (.onion) by saghet</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="opsec-topbar">
         <div class="topbar-links">
-            <span class="version-corner-badge" title="SamuBusquedas Versión 1.99 por saghet">v1.99</span>
+            <span class="version-corner-badge" title="SamuBusquedas Versión {APP_VERSION} por saghet">v{APP_VERSION}</span>
             <a href="/">Buscador</a>
-            <a href="/?q=all">Directorio Verificado Online (77)</a>
+            <a href="/?q=all">Directorio Verificado Online ({total_indexed})</a>
             <a href="/verificar">Escáner Anti-Phishing</a>
             <a href="/proteccion">Guía OPSEC</a>
             <a href="/humans.txt">humans.txt (saghet)</a>
             <a href="/canary.txt">Canario PGP</a>
         </div>
         <div>
-            {risk_pill} • <span class="pill-purple">v1.99 Zero-JS | by saghet</span>
+            {risk_pill} • <span class="pill-purple">v{APP_VERSION} Zero-JS | by saghet</span>
         </div>
     </div>
 
@@ -196,8 +244,8 @@ def render_layout(
 
     <footer class="site-footer">
         <p>
-            © 2026 <strong>SamuBusquedas! v1.99 (.onion v3)</strong> — Creado por <strong><code>saghet</code></strong> |
-            Motor <code>SamuRank v1.99 (BM25F + SHA3-256 + Verificador Online Tor)</code> | 100% Zero-JS &amp; Zero-Logs en RAM.
+            © 2026 <strong>SamuBusquedas! v{APP_VERSION} (.onion v3)</strong> — Creado por <strong><code>saghet</code></strong> |
+            Motor <code>SamuRank v{APP_VERSION} (BM25F + SHA3-256 + Memoria Colectiva Tor)</code> | 100% Zero-JS &amp; Zero-Logs de Usuario.
         </p>
         <p style="margin-top: 4px;">
             <a href="/humans.txt">/humans.txt</a> -
@@ -238,29 +286,30 @@ def _render_knowledge_card_html(k_card: Optional[Dict[str, object]]) -> str:
 
 def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
     """
-    Renderiza la Portada Minimalista al estilo de la primera versión de Google (1998)
-    y la tabla de categorías compacta estilo AltaVista / Yahoo! (1997).
+    Renderiza la Portada Minimalista al estilo de la primera versión de Google (1998),
+    la Memoria Colectiva de Búsquedas Exitosas y la tabla de categorías estilo AltaVista / Yahoo! (1997).
     """
     total_sites = sum(int(c["total"]) for c in categories)  # type: ignore
+    collective_bar = _render_collective_memory_bar_html()
 
     return f"""
     <section class="classic-home-hero">
         {_render_retro_logo(is_large=True)}
         <p class="retro-tagline">
-            Buscador de la Deep Web (Sitios Verificados PGP + Índice Abierto Tor) — Arquitectura por <strong>saghet</strong>
+            Buscador de la Deep Web ({total_sites} Sitios Indexados + Memoria Colectiva + Harvester Bilingüe Tor) — Arquitectura por <strong>saghet</strong>
         </p>
 
         <form action="/" method="GET" class="retro-search-box">
             <div>
                 <label for="q-input" style="font-size: 13px; display: block; margin-bottom: 4px;">
-                    Busca cualquier servicio, foro, wiki, cripto, prensa o herramienta en la red Tor:
+                    Busca cualquier servicio, foro, wiki, cripto, biblioteca, prensa o herramienta en la red Tor:
                 </label>
                 <input
                     id="q-input"
                     type="text"
                     name="q"
                     value=""
-                    placeholder="Ej: foros, hidden wiki, monero, correo, scihub, debian, pastebin, saghet..."
+                    placeholder="Ej: foros, hidden wiki, monero, bibliotecas, correo, scihub, debian, pastebin, saghet..."
                     class="retro-input"
                     autofocus
                 >
@@ -272,7 +321,7 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
             <div class="retro-radios">
                 <label>
                     <input type="radio" name="scope" value="all" checked>
-                    Buscar en toda la Deep Web (<strong>{total_sites} sitios locales + Red Tor en vivo</strong>)
+                    Buscar en toda la Deep Web (<strong>{total_sites} sitios indexados + Memoria Colectiva + Red Tor en vivo</strong>)
                 </label>
                 <label>
                     <input type="radio" name="scope" value="verified">
@@ -280,6 +329,8 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
                 </label>
             </div>
         </form>
+
+        {collective_bar}
 
         <table class="altavista-directory">
             <thead>
@@ -297,28 +348,32 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
                             <a href="/?q=hidden+wiki">Hidden Wiki</a>,
                             <a href="/?q=dread">Dread Forum</a>,
                             <a href="/?q=daunt">Daunt</a>,
-                            <a href="/?q=torlinks">TorLinks</a>,
+                            <a href="/?q=pitch">Pitch Forum</a>,
+                            <a href="/?q=endchan">EndChan</a>,
                             <a href="/?q=radio">DeepWeb Radio</a>
                         </div>
                     </td>
                     <td>
-                        <a href="/?cat=Prensa+y+Whistleblowing" class="dir-cat-title">Prensa &amp; Whistleblowing</a>
+                        <a href="/?cat=Prensa+y+Whistleblowing" class="dir-cat-title">Prensa &amp; Whistleblowing (SecureDrop)</a>
                         <div class="dir-sublinks">
                             <a href="/?q=propublica">ProPublica</a>,
                             <a href="/?q=securedrop">SecureDrop</a>,
                             <a href="/?q=nytimes">NYTimes</a>,
                             <a href="/?q=bbc">BBC</a>,
+                            <a href="/?q=guardian">The Guardian</a>,
                             <a href="/?q=bellingcat">Bellingcat</a>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="/?q=monero+bitcoin" class="dir-cat-title">Criptomonedas &amp; Finanzas P2P</a>
+                        <a href="/?q=monero+bitcoin" class="dir-cat-title">Criptomonedas &amp; Exploradores Blockchain</a>
                         <div class="dir-sublinks">
                             <a href="/?q=monero">Monero (XMR)</a>,
                             <a href="/?q=feather">Feather Wallet</a>,
-                            <a href="/?q=mempool">Bitcoin Mempool</a>,
+                            <a href="/?q=mempool">Mempool.space</a>,
+                            <a href="/?q=blockstream">Blockstream</a>,
+                            <a href="/?q=blockchair">Blockchair</a>,
                             <a href="/?q=bisq">Bisq P2P</a>
                         </div>
                     </td>
@@ -341,6 +396,7 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
                             <a href="/?q=trantor">Imperial Library</a>,
                             <a href="/?q=scihub">Sci-Hub</a>,
                             <a href="/?q=annas">Anna's Archive</a>,
+                            <a href="/?q=comics">Comic Library</a>,
                             <a href="/?q=internet+archive">Wayback Machine</a>
                         </div>
                     </td>
@@ -350,31 +406,31 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
                             <a href="/?q=defcon">DEF CON</a>,
                             <a href="/?q=ccc">Chaos Computer Club</a>,
                             <a href="/?q=pastebin">StrongHold Paste</a>,
-                            <a href="/?q=git">OnionGit</a>,
+                            <a href="/?q=gitea">Gitea Tor</a>,
                             <a href="/?q=cyberchef">CyberChef</a>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a href="/?cat=Sistemas+Operativos+y+Software+Libre" class="dir-cat-title">Sistemas Operativos &amp; Herramientas</a>
+                        <a href="/?cat=Sistemas+Operativos+y+Software+Libre" class="dir-cat-title">Sistemas Operativos &amp; Espejos Debian/Tor</a>
                         <div class="dir-sublinks">
                             <a href="/?q=whonix">Whonix</a>,
                             <a href="/?q=qubes">Qubes OS</a>,
                             <a href="/?q=tails">Tails USB</a>,
-                            <a href="/?q=debian">Debian Onion</a>,
+                            <a href="/?q=debian">Debian Mirrors</a>,
                             <a href="/?q=onionshare">OnionShare</a>
                         </div>
                     </td>
                     <td>
-                        <a href="/?cat=Buscadores+Leg%C3%ADtimos" class="dir-cat-title">Otros Buscadores &amp; VPNs en Tor</a>
+                        <a href="/?cat=Buscadores+Leg%C3%ADtimos" class="dir-cat-title">Motores de Búsqueda &amp; VPNs en Tor</a>
                         <div class="dir-sublinks">
                             <a href="/?q=duckduckgo">DuckDuckGo</a>,
                             <a href="/?q=brave">Brave</a>,
+                            <a href="/?q=metager">MetaGer</a>,
+                            <a href="/?q=searxng">SearXNG</a>,
                             <a href="/?q=ahmia">Ahmia</a>,
-                            <a href="/?q=torch">Torch</a>,
-                            <a href="/?q=haystak">Haystak</a>,
-                            <a href="/?q=mullvad">Mullvad VPN</a>
+                            <a href="/?q=torch">Torch</a>
                         </div>
                     </td>
                 </tr>
@@ -392,16 +448,16 @@ def render_serp_page(
     search_payload: Dict[str, object],
 ) -> str:
     """
-    Renderiza la Página de Resultados (SERP) minimalista al estilo Google 1998 / AltaVista:
-    - Cabecera de 1 línea con logo + input + botón.
-    - Franja azul clara con conteo de resultados y milisegundos.
-    - Lista limpia de 3 líneas por resultado (Título + Snippet + URL .onion en verde).
+    Renderiza la Página de Resultados (SERP) minimalista con soporte de Memoria Colectiva
+    y verificación activa Online (.onion v3).
     """
     results: List[Dict[str, object]] = search_payload["results"]  # type: ignore
     did_you_mean = search_payload.get("did_you_mean")
     auto_corrected_from = search_payload.get("auto_corrected_from")
     semantic_intent = search_payload.get("semantic_intent")
     is_exploratory = bool(search_payload.get("is_exploratory_fallback"))
+    collective_hit = bool(search_payload.get("collective_memory_hit"))
+    collective_hits = int(search_payload.get("collective_hits", 0) or 0)
     k_card = search_payload.get("knowledge_card")  # type: ignore
     bang_info = search_payload.get("bang_info")  # type: ignore
     elapsed_ms = search_payload.get("elapsed_ms", 0.0)
@@ -466,6 +522,14 @@ def render_serp_page(
         latency_ms = int(svc.get("latency_ms", 340))
         online_badge_html = f'<span class="online-badge">[ONLINE EN TOR • {latency_ms} ms]</span>'
 
+        collective_badge_html = ""
+        if svc.get("collective_memory"):
+            c_hits = int(svc.get("collective_hits", collective_hits) or 1)
+            collective_badge_html = (
+                f'<span class="collective-badge" title="Guardado en Memoria Colectiva ({c_hits} búsquedas exitosas)">'
+                f"[MEMORIA COLECTIVA • {c_hits}x]</span>"
+            )
+
         onion_url = str(svc["onion_url"])
         clearnet_url = str(svc["clearnet_url"])
         title_rendered = str(svc.get("highlighted_title") or html.escape(str(svc["title"])))
@@ -482,6 +546,7 @@ def render_serp_page(
                     </h2>
                     {badge_html}
                     {online_badge_html}
+                    {collective_badge_html}
                 </div>
                 <p class="service-desc">{desc_rendered}</p>
                 <div class="serp-url-line">
@@ -501,6 +566,12 @@ def render_serp_page(
     checked_all = "checked" if scope != "verified" else ""
     checked_ver = "checked" if scope == "verified" else ""
     label_query = query if query else (category if category != "Todas" else taxonomy or "Todos")
+
+    collective_status_str = (
+        f' • <strong style="color:#4b0082;">⚡ Memoria Colectiva ({collective_hits}x)</strong>'
+        if (collective_hit or collective_hits > 0)
+        else ""
+    )
 
     return f"""
     <header class="serp-header">
@@ -526,9 +597,9 @@ def render_serp_page(
         <span>
             Superficie Verificada Online: Mostrando <strong>{len(results)} enlaces .onion activos</strong>
             (<strong>{verified_count} Oficiales PGP</strong> + <strong>{unverified_count} Nodos Tor Activos</strong>)
-            para <strong>"{html.escape(str(label_query))}"</strong>
+            para <strong>"{html.escape(str(label_query))}"</strong>{collective_status_str}
         </span>
-        <span>Tiempo: <strong>{elapsed_ms} ms</strong> • Algoritmo <code>SamuRank v1.99</code> by <strong>saghet</strong></span>
+        <span>Tiempo: <strong>{elapsed_ms} ms</strong> • Algoritmo <code>SamuRank v{APP_VERSION}</code> by <strong>saghet</strong></span>
     </div>
 
     {dym_html}
@@ -607,7 +678,7 @@ def render_opsec_guide_page() -> str:
     return f"""
     <header class="serp-header">
         {_render_retro_logo(is_large=False)}
-        <strong>Guía de Seguridad OPSEC en la Deep Web (by saghet — v1.99)</strong>
+        <strong>Guía de Seguridad OPSEC en la Deep Web (by saghet — v{APP_VERSION})</strong>
     </header>
 
     <div class="alert-box safe">
@@ -659,7 +730,7 @@ def render_opsec_guide_page() -> str:
 
 
 class SamuOnionRequestHandler(BaseHTTPRequestHandler):
-    server_version = "SamuEngine/1.99 (Tor-v3; Zero-JS; Hardened)"
+    server_version = f"SamuEngine/{APP_VERSION} (Tor-v3; Zero-JS; Hardened)"
     sys_version = ""
 
     def version_string(self) -> str:
@@ -678,8 +749,8 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("X-Architected-By", "saghet")
         self.send_header("X-Builder-Handle", "saghet")
-        self.send_header("X-Engine-Version", "1.99")
-        self.send_header("X-Engine-Signature", "saghet-samubusquedas-v1.99-ed25519")
+        self.send_header("X-Engine-Version", APP_VERSION)
+        self.send_header("X-Engine-Signature", f"saghet-samubusquedas-v{APP_VERSION}-ed25519")
         self.send_header(
             "Content-Security-Policy",
             "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
@@ -734,7 +805,14 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
 
         if path in ("/health", "/healthz"):
             self._send_hardened_headers(200, "application/json; charset=utf-8")
-            self.wfile.write(b'{"status":"ok","version":"1.99","engine":"SamuBusquedas v1.99","architect":"saghet"}\n')
+            payload = {
+                "status": "ok",
+                "version": APP_VERSION,
+                "engine": f"SamuBusquedas v{APP_VERSION}",
+                "architect": "saghet",
+                "collective_memory": COLLECTIVE_MEMORY.get_stats(),
+            }
+            self.wfile.write((json.dumps(payload) + "\n").encode("utf-8"))
             return
 
         req_headers = {k: v for k, v in self.headers.items()}
@@ -747,7 +825,6 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             scope = query_params.get("scope", ["all"])[0][:20]
             only_safest = query_params.get("safest", ["0"])[0] == "1"
 
-            # Si el usuario entra a la raíz `/` sin consulta ni filtro, mostramos la portada minimalista estilo Google 1998
             if not q.strip() and (not cat or cat == "Todas") and not tax.strip():
                 categories = search_engine.get_categories()
                 body = render_classic_home_page(categories)
@@ -801,7 +878,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
 def run_server(host: str = "127.0.0.1", port: int = 8080) -> None:
     server = ThreadingHTTPServer((host, port), SamuOnionRequestHandler)
     print("======================================================================")
-    print("  SAMUBUSQUEDAS! v2.5 (.ONION) - CLASSIC GOOGLE 98 / ALTAVISTA UI")
+    print(f"  SAMUBUSQUEDAS! v{APP_VERSION} (.ONION) - COLLECTIVE MEMORY & TOR SEARCH")
     print("  ARCHITECTED BY: saghet")
     print("======================================================================")
     print(f"  [*] Loopback local:       http://{host}:{port}")

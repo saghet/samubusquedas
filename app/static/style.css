@@ -439,3 +439,65 @@ mark.hl {
   color: #555555;
   background-color: #f5f5f5;
 }
+
+/* ==========================================================================
+   MEMORIA COLECTIVA DE BÚSQUEDAS EXITOSAS (v1.99.1)
+   ========================================================================== */
+.collective-memory-box {
+  background-color: #f3f0ff;
+  border: 1px solid #b8a6e8;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.collective-memory-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  color: #311b92;
+  margin-bottom: 6px;
+  gap: 6px;
+}
+
+.collective-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.collective-pill {
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid #9575cd;
+  color: #311b92;
+  padding: 2px 8px;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.collective-pill:hover {
+  background-color: #ede7f6;
+  text-decoration: underline;
+}
+
+.collective-pill-count {
+  color: #006600;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+}
+
+.collective-badge {
+  font-size: 11px;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #f3e5f5;
+  color: #4a148c;
+  border: 1px solid #ab47bc;
+  padding: 0 5px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
