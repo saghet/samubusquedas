@@ -184,7 +184,7 @@ class OnionAlwaysOnGuardian:
             time.sleep(3.0)
             while True:
                 try:
-                    self.run_self_onion_heartbeat(timeout=8.0)
+                    self.run_self_onion_heartbeat(timeout=25.0)
                     self.ping_cloud_keepalive()
                 except Exception:
                     pass
@@ -202,8 +202,9 @@ class OnionAlwaysOnGuardian:
             "tor_socks_alive": socks_open,
             "socks5_port_19050_open": socks_open,
             "local_web_port_open": web_open,
-            "intro_points_configured": 6,
-            "keepalive_period_seconds": 45,
+            "intro_points_configured": 8,
+            "keepalive_period_seconds": 30,
+            "intro_dos_defense_disabled": True,
             "learn_circuit_build_timeout": 0,
             "last_self_probe_ok": self.last_self_probe_ok,
             "last_self_probe_latency_ms": self.last_self_probe_latency_ms,

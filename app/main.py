@@ -985,6 +985,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         self.send_header("X-Permitted-Cross-Domain-Policies", "none")
         self.send_header("Permissions-Policy", "geolocation=(), microphone=(), camera=(), usb=(), interest-cohort=()")
         self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Onion-Location", f"{OFFICIAL_ONION_DOMAIN}/")
         if set_cookie:
             self.send_header("Set-Cookie", set_cookie)
         self.end_headers()

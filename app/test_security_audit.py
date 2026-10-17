@@ -193,11 +193,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_8_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.8 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_9_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.9 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.8")
+        self.assertEqual(ENGINE_VERSION, "1.99.9")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -329,7 +329,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/api/trends") as resp:
             self.assertEqual(resp.status, 200)
             trends_json = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(trends_json["version"], "1.99.8")
+            self.assertEqual(trends_json["version"], "1.99.9")
             self.assertGreaterEqual(len(trends_json["trends"]), 5)
 
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
@@ -397,30 +397,31 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             self.assertIn(BTC_ADDRESS, pass_html)
 
     def test_IR18_onion_always_on_guardian_and_torrc_high_availability(self) -> None:
-        """[IR-18] Certifica el guardián 24/7 OnionAlwaysOnGuardian y los 6 Introduction Points anti-idle en torrc."""
+        """[IR-18] Certifica el guardián 24/7 OnionAlwaysOnGuardian y los 8 Introduction Points globales en torrc."""
         from onion_guardian import OFFICIAL_ONION_URL, ONION_GUARDIAN
 
         status = ONION_GUARDIAN.get_status()
         self.assertEqual(status["official_onion"], OFFICIAL_ONION_URL)
-        self.assertEqual(status["intro_points_configured"], 6)
+        self.assertEqual(status["intro_points_configured"], 8)
         self.assertIn("tor_socks_alive", status)
 
-        # Verificar que torrc.windows.conf tenga las directivas de Alta Disponibilidad
+        # Verificar que torrc.windows.conf tenga las directivas de Alta Disponibilidad Móvil (8 intro points)
         repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         cfg_path = os.path.join(repo_root, "config", "torrc.windows.conf")
         with open(cfg_path, "r", encoding="utf-8") as fh:
             cfg_text = fh.read()
-        self.assertIn("HiddenServiceNumIntroductionPoints 6", cfg_text)
-        self.assertIn("KeepalivePeriod 45", cfg_text)
+        self.assertIn("HiddenServiceNumIntroductionPoints 8", cfg_text)
+        self.assertIn("KeepalivePeriod 30", cfg_text)
+        self.assertIn("HiddenServiceEnableIntroDoSDefense 0", cfg_text)
         self.assertIn("LearnCircuitBuildTimeout 0", cfg_text)
 
-        # Verificar que /healthz exponga el estado del guardián Onion
+        # Verificar que /healthz exponga el estado del guardián Onion con 8 Puntos de Introducción
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/healthz") as resp:
             self.assertEqual(resp.status, 200)
             hz = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(hz["version"], "1.99.8")
+            self.assertEqual(hz["version"], "1.99.9")
             self.assertIn("onion_guardian", hz)
-            self.assertEqual(hz["onion_guardian"]["intro_points_configured"], 6)
+            self.assertEqual(hz["onion_guardian"]["intro_points_configured"], 8)
 
     def test_IR19_render_continuous_deployment_and_onion_key_sync(self) -> None:
         """[IR-19] Certifica que deploy/sync_render_live.py verifique las llaves Ed25519 .onion, Dockerfile y render.yaml."""
@@ -433,7 +434,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
 
         audit = verify_onion_keypair_and_render_config()
         self.assertTrue(audit["ok"], f"Fallo en auditoría Render/.onion: {audit}")
-        self.assertEqual(audit["version"], "1.99.8")
+        self.assertEqual(audit["version"], "1.99.9")
         self.assertEqual(
             audit["official_onion_url"],
             "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion",
@@ -460,6 +461,16 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             cloud_txt = fh.read()
         self.assertNotIn("HiddenServiceDir /var/lib/tor/samubusquedas_hs", cloud_txt)
         self.assertIn("CircuitBuildTimeout 60", cloud_txt)
+
+    def test_IR21_mobile_universal_availability_and_onion_location(self) -> None:
+        """[IR-21] Certifica la cabecera estándar Onion-Location y configuración de 8 Introduction Points para celulares."""
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
+            self.assertEqual(resp.status, 200)
+            onion_loc = resp.headers.get("Onion-Location")
+            self.assertEqual(
+                onion_loc,
+                "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion/",
+            )
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD
