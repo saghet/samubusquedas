@@ -12,6 +12,10 @@ echo "[*] Arrancando servidor web Zero-JS en 0.0.0.0:${PORT}..."
 PORT=${PORT} HOST=0.0.0.0 python3 /app/app/main.py &
 WEB_PID=$!
 
+# Sincronizar el puerto del Hidden Service de Tor con el puerto HTTP de la nube
+echo "[*] Configurando redirección del Hidden Service Tor hacia 127.0.0.1:${PORT}..."
+sed -i "s/127.0.0.1:8080/127.0.0.1:${PORT}/g" /etc/tor/torrc
+
 # Iniciar demonio oficial Tor en segundo plano bajo usuario debian-tor
 echo "[*] Arrancando demonio Tor oficial..."
 su -s /bin/bash debian-tor -c "tor -f /etc/tor/torrc" &
