@@ -796,5 +796,8 @@ def run_server(host: str = "127.0.0.1", port: int = 8080) -> None:
 
 
 if __name__ == "__main__":
-    port_arg = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
-    run_server(host="127.0.0.1", port=port_arg)
+    port_env = os.environ.get("PORT")
+    host_env = os.environ.get("HOST")
+    port_arg = int(port_env) if port_env else (int(sys.argv[1]) if len(sys.argv) > 1 else 8080)
+    host_arg = host_env if host_env else ("0.0.0.0" if port_env else "127.0.0.1")
+    run_server(host=host_arg, port=port_arg)

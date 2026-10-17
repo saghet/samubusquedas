@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
+PORT=${PORT:-8080}
+
 echo "======================================================================"
 echo "  Iniciando SamuBusquedas v3.0 (.onion v3) — Arquitectura por saghet  "
 echo "======================================================================"
 
 # Iniciar servidor web Python en segundo plano
-echo "[*] Arrancando servidor web Zero-JS en 127.0.0.1:8080..."
-python3 /app/app/main.py --host 127.0.0.1 --port 8080 &
+echo "[*] Arrancando servidor web Zero-JS en 0.0.0.0:${PORT}..."
+PORT=${PORT} HOST=0.0.0.0 python3 /app/app/main.py &
 WEB_PID=$!
 
 # Iniciar demonio oficial Tor en segundo plano bajo usuario debian-tor
