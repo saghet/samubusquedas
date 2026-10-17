@@ -192,11 +192,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_4_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.4 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_5_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.5 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.4")
+        self.assertEqual(ENGINE_VERSION, "1.99.5")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -328,13 +328,72 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/api/trends") as resp:
             self.assertEqual(resp.status, 200)
             trends_json = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(trends_json["version"], "1.99.4")
+            self.assertEqual(trends_json["version"], "1.99.5")
             self.assertGreaterEqual(len(trends_json["trends"]), 5)
 
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
             home_html = resp.read().decode("utf-8")
             self.assertIn("Lo Más Buscado en Twitter/X (Tiempo Real)", home_html)
             self.assertIn("Pre-Indexado en Deep Web con IA Anti-Basura", home_html)
+
+    def test_IR17_btc_donation_corner_qr_and_aggressive_15s_gate_after_10_searches(self) -> None:
+        """[IR-17] Certifica el QR + dirección BTC en esquina izquierda y el Muro Agresivo de 15 segundos al superar 10 búsquedas."""
+        from donation_shield import BTC_ADDRESS, DONATION_TRACKER
+
+        self.assertEqual(BTC_ADDRESS, "13CCAjcHanNyKNcR3eFSh2PEu9tBzpXq3d")
+
+        # 1. Verificar que /static/btc_qr.png sirva la imagen PNG del código QR oficial
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/static/btc_qr.png") as qr_resp:
+            self.assertEqual(qr_resp.status, 200)
+            self.assertEqual(qr_resp.headers.get("Content-Type"), "image/png")
+            qr_bytes = qr_resp.read()
+            self.assertTrue(qr_bytes.startswith(b"\x89PNG"))
+            self.assertGreater(len(qr_bytes), 5000)
+
+        # 2. Verificar que la esquina izquierda tenga el QR y la dirección BTC en portada
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as home_resp:
+            home_html = home_resp.read().decode("utf-8")
+            self.assertIn('class="btc-left-corner-box"', home_html)
+            self.assertIn(BTC_ADDRESS, home_html)
+            self.assertIn("/static/btc_qr.png", home_html)
+
+        # 3. Simular un usuario realizando 10 búsquedas -> todas entran directo sin muro de 15s
+        test_sid = "samutestsessionbtc15sgate99"
+        DONATION_TRACKER.reset_session(test_sid)
+        for i in range(1, 11):
+            req = urllib.request.Request(
+                f"http://127.0.0.1:{self.port}/?q=monero&scope=verified",
+                headers={"X-Samu-Session": test_sid},
+            )
+            with urllib.request.urlopen(req) as r_ok:
+                page_ok = r_ok.read().decode("utf-8")
+                self.assertNotIn('class="btc-aggressive-gate"', page_ok, f"No debía bloquear en búsqueda #{i}")
+                self.assertIn("Superficie Verificada Online", page_ok)
+
+        # 4. Búsqueda #11 (> 10 búsquedas): debe activar el Muro Agresivo de 15 segundos con el QR antes de mostrar resultados
+        req_11 = urllib.request.Request(
+            f"http://127.0.0.1:{self.port}/?q=monero&scope=verified",
+            headers={"X-Samu-Session": test_sid},
+        )
+        with urllib.request.urlopen(req_11) as r_gate:
+            gate_html = r_gate.read().decode("utf-8")
+            self.assertIn('class="btc-aggressive-gate"', gate_html)
+            self.assertIn('http-equiv="refresh" content="15;url=', gate_html)
+            self.assertIn(BTC_ADDRESS, gate_html)
+            self.assertIn("/static/btc_qr.png", gate_html)
+            self.assertIn("BÚSQUEDA #11", gate_html)
+
+        # 5. Tras cumplirse los 15 segundos (redirección con dpass=1), debe mostrar los resultados + el banner de spam BTC
+        req_11_after_15s = urllib.request.Request(
+            f"http://127.0.0.1:{self.port}/?q=monero&scope=verified&dpass=1",
+            headers={"X-Samu-Session": test_sid},
+        )
+        with urllib.request.urlopen(req_11_after_15s) as r_pass:
+            pass_html = r_pass.read().decode("utf-8")
+            self.assertNotIn('class="btc-aggressive-gate"', pass_html)
+            self.assertIn("Superficie Verificada Online", pass_html)
+            self.assertIn('class="btc-serp-spam-banner"', pass_html)
+            self.assertIn(BTC_ADDRESS, pass_html)
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD

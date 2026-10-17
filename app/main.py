@@ -18,10 +18,20 @@ import os
 import sys
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from collective_memory import COLLECTIVE_MEMORY
 from database import MAX_QUERY_LEN, SamuSearchEngine
+from donation_shield import (
+    BTC_ADDRESS,
+    BTC_NETWORK_NOTE,
+    BTC_QR_PATH,
+    BTC_URI,
+    COOKIE_NAME,
+    DONATION_GATE_SECONDS,
+    DONATION_TRACKER,
+    FREE_SEARCH_LIMIT,
+)
 from realtime_trends_ai import SAMU_AI_ENGINE, TWITTER_TREND_WATCHER
 from security_shield import evaluate_client_connection_security
 from verifier import audit_catalog_integrity
@@ -226,13 +236,118 @@ def _render_collective_memory_bar_html() -> str:
     """
 
 
+def _render_btc_left_corner_widget(search_count: int = 0) -> str:
+    """
+    Renderiza el recuadro fijo en la esquina izquierda con el Código QR Oficial de Bitcoin
+    y la dirección de depósito `13CCAjcHanNyKNcR3eFSh2PEu9tBzpXq3d` para mantener el proyecto.
+    """
+    if search_count > FREE_SEARCH_LIMIT:
+        usage_badge = (
+            f'<div class="btc-corner-status btc-status-alert">'
+            f'🚨 Búsquedas: <strong>{search_count}</strong> (&gt;{FREE_SEARCH_LIMIT}: Modo Espera 15s Activo)'
+            f"</div>"
+        )
+    else:
+        usage_badge = (
+            f'<div class="btc-corner-status">'
+            f"Búsquedas rápidas: <strong>{search_count}/{FREE_SEARCH_LIMIT}</strong> antes de espera de 15s"
+            f"</div>"
+        )
+
+    return f"""
+    <aside class="btc-left-corner-box" aria-label="Donaciones Bitcoin para mantener SamuBusquedas">
+        <a href="{BTC_URI}" class="btc-corner-qr-link" title="Escanear QR para donar BTC a {BTC_ADDRESS}">
+            <img src="{BTC_QR_PATH}" alt="QR Donar BTC {BTC_ADDRESS}" class="btc-corner-qr" width="76" height="76">
+        </a>
+        <div class="btc-corner-info">
+            <div class="btc-corner-title">
+                <span class="btc-symbol">₿</span> <strong>Donar BTC — Mantener Proyecto SamuBusquedas</strong>
+            </div>
+            <div class="btc-corner-addr-row">
+                <span>Dirección BTC:</span>
+                <code class="btc-addr-code" title="Dirección oficial de depósito BTC">{BTC_ADDRESS}</code>
+                <a href="{BTC_URI}" class="btc-uri-link">[Abrir Wallet]</a>
+            </div>
+            <div class="btc-corner-sub">
+                Red <strong>BTC (Bitcoin)</strong> ("1", "3", "bc1p", "bc1q") • {usage_badge}
+            </div>
+        </div>
+    </aside>
+    """
+
+
+def render_aggressive_donation_gate_page(
+    query: str,
+    target_url: str,
+    search_count: int,
+) -> str:
+    """
+    Renderiza la pantalla intersticial agresiva de 15 segundos con el código QR grande
+    cuando el usuario supera las 10 búsquedas (`search_count > 10`).
+    """
+    safe_q = html.escape(query or "toda la red Tor")
+    safe_target = html.escape(target_url)
+    return f"""
+    <section class="btc-aggressive-gate">
+        <div class="btc-gate-banner">
+            🚨 HAS SUPERADO LAS {FREE_SEARCH_LIMIT} BÚSQUEDAS GRATUITAS (BÚSQUEDA #{search_count}) — SE REQUIERE TU APORTE PARA SOSTENER EL PROYECTO 🚨
+        </div>
+        <h1 class="btc-gate-title">
+            Apoya a SamuBusquedas con Bitcoin (BTC) para mantener los nodos Tor y la IA Anti-Basura activos 24/7
+        </h1>
+        <p class="btc-gate-lead">
+            Has realizado <strong>{search_count} búsquedas</strong> en esta sesión. Operar verificadores criptográficos
+            <code>SHA3-256</code>, circuitos Tor y filtros de Inteligencia Artificial sin publicidad comercial tiene un costo continuo.
+            <strong>Tu búsqueda para «{safe_q}» se mostrará automáticamente en {DONATION_GATE_SECONDS} segundos.</strong>
+        </p>
+
+        <div class="btc-gate-card">
+            <div class="btc-gate-network-pill">Depositar BTC • Red: <strong>BTC (Bitcoin)</strong></div>
+            <div class="btc-gate-qr-wrap">
+                <img
+                    src="{BTC_QR_PATH}"
+                    alt="Código QR Bitcoin {BTC_ADDRESS}"
+                    class="btc-gate-qr-large"
+                    width="210"
+                    height="210"
+                >
+            </div>
+            <div class="btc-gate-addr-label">Dirección oficial de depósito BTC:</div>
+            <div class="btc-gate-addr-box">
+                <code>{BTC_ADDRESS}</code>
+            </div>
+            <p class="btc-gate-network-note">
+                {html.escape(BTC_NETWORK_NOTE)}
+            </p>
+        </div>
+
+        <div class="btc-countdown-container">
+            <div class="btc-countdown-label">
+                ⏳ Mostrando resultados de <strong>"{safe_q}"</strong> en <strong>{DONATION_GATE_SECONDS} segundos</strong> mientras escaneas el código QR...
+            </div>
+            <div class="btc-countdown-track">
+                <div class="btc-countdown-fill"></div>
+            </div>
+            <div class="btc-continue-wrap">
+                <a href="{safe_target}" class="btc-continue-btn">
+                    ✅ Ya habían pasado los {DONATION_GATE_SECONDS}s — Ver resultados de "{safe_q}" ahora →
+                </a>
+            </div>
+        </div>
+    </section>
+    """
+
+
 def render_layout(
     title: str,
     active_nav: str,
     security_eval: Dict[str, object],
     body_html: str,
+    search_count: int = 0,
+    meta_refresh_url: Optional[str] = None,
+    meta_refresh_seconds: int = DONATION_GATE_SECONDS,
 ) -> str:
-    """Estructura maestra HTML minimalista al estilo Google 1998 / AltaVista 1997."""
+    """Estructura maestra HTML minimalista al estilo Google 1998 / AltaVista 1997 con QR BTC en esquina izquierda."""
     risk_level = str(security_eval.get("risk_level", "SEGURO"))
     if risk_level == "CRÍTICO":
         risk_pill = '<span class="pill-danger">[ALERTA CRÍTICA: PROXY TOR2WEB DETECTADO]</span>'
@@ -252,7 +367,14 @@ def render_layout(
         </div>
         """
 
+    meta_refresh_tag = ""
+    if meta_refresh_url:
+        meta_refresh_tag = (
+            f'\n    <meta http-equiv="refresh" content="{int(meta_refresh_seconds)};url={html.escape(meta_refresh_url)}">'
+        )
+
     total_indexed = sum(int(c["total"]) for c in search_engine.get_categories())  # type: ignore
+    btc_left_corner_html = _render_btc_left_corner_widget(search_count=search_count)
 
     return f"""<!DOCTYPE html>
 {ASCII_HACKER_BANNER}
@@ -263,7 +385,7 @@ def render_layout(
     <meta name="referrer" content="no-referrer">
     <meta name="author" content="saghet">
     <meta name="creator" content="saghet">
-    <meta name="generator" content="SamuBusquedas v{APP_VERSION} Engine by saghet (Zero-JS Tor Shield)">
+    <meta name="generator" content="SamuBusquedas v{APP_VERSION} Engine by saghet (Zero-JS Tor Shield)">{meta_refresh_tag}
     <title>{html.escape(title)} — SamuBusquedas v{APP_VERSION} (.onion) by saghet</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
@@ -283,6 +405,10 @@ def render_layout(
         </div>
     </div>
 
+    <div class="btc-top-left-wrapper">
+        {btc_left_corner_html}
+    </div>
+
     <main class="container">
         {warnings_html}
         {body_html}
@@ -291,7 +417,8 @@ def render_layout(
     <footer class="site-footer">
         <p>
             © 2026 <strong>SamuBusquedas! v{APP_VERSION} (.onion v3)</strong> — Creado por <strong><code>saghet</code></strong> |
-            Motor <code>SamuRank v{APP_VERSION} (BM25F + SHA3-256 + Memoria Colectiva Tor)</code> | 100% Zero-JS &amp; Zero-Logs de Usuario.
+            Donaciones BTC: <code>{BTC_ADDRESS}</code> |
+            Motor <code>SamuRank v{APP_VERSION}</code> | 100% Zero-JS &amp; Zero-Logs de Usuario.
         </p>
         <p style="margin-top: 4px;">
             <a href="/humans.txt">/humans.txt</a> -
@@ -495,10 +622,12 @@ def render_serp_page(
     taxonomy: str,
     scope: str,
     search_payload: Dict[str, object],
+    search_count: int = 0,
 ) -> str:
     """
     Renderiza la Página de Resultados (SERP) minimalista con soporte de Memoria Colectiva,
-    Filtro IA Anti-Basura (`ai_quality_score`) y verificación activa Online (.onion v3).
+    Filtro IA Anti-Basura (`ai_quality_score`), verificación activa Online (.onion v3) y
+    banner agresivo de donaciones BTC cuando el usuario supera las 10 búsquedas.
     """
     results: List[Dict[str, object]] = search_payload["results"]  # type: ignore
     did_you_mean = search_payload.get("did_you_mean")
@@ -557,6 +686,23 @@ def render_serp_page(
         <div class="alert-box safe">
             <span class="alert-title">Salto Rápido (!Bang): {html.escape(str(bang_info.get("name", "")))}</span> —
             <a href="{b_url}" class="onion-link" rel="noreferrer noopener" target="_blank">Ir directamente a {b_url}</a>
+        </div>
+        """
+
+    aggressive_serp_spam_html = ""
+    if search_count > FREE_SEARCH_LIMIT:
+        aggressive_serp_spam_html = f"""
+        <div class="btc-serp-spam-banner">
+            <img src="{BTC_QR_PATH}" alt="QR BTC {BTC_ADDRESS}" width="64" height="64" class="btc-serp-spam-qr">
+            <div>
+                <div class="btc-serp-spam-title">
+                    🚨 Llevas {search_count} búsquedas (&gt;{FREE_SEARCH_LIMIT} gratuitas) — ¡Apoya a SamuBusquedas con BTC!
+                </div>
+                <div class="btc-serp-spam-text">
+                    Cada nueva búsqueda tendrá una espera previa de <strong>{DONATION_GATE_SECONDS} segundos</strong> con el código QR.
+                    Envía tu aporte en Bitcoin a: <code>{BTC_ADDRESS}</code> (<a href="{BTC_URI}">Abrir Wallet BTC</a>)
+                </div>
+            </div>
         </div>
         """
 
@@ -673,6 +819,7 @@ def render_serp_page(
         <span>Tiempo: <strong>{elapsed_ms} ms</strong> • Algoritmo <code>SamuRank v{APP_VERSION}</code> by <strong>saghet</strong></span>
     </div>
 
+    {aggressive_serp_spam_html}
     {dym_html}
     {bang_html}
     {_render_knowledge_card_html(k_card)}
@@ -814,7 +961,10 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         pass
 
     def _send_hardened_headers(
-        self, status_code: int = 200, content_type: str = "text/html; charset=utf-8"
+        self,
+        status_code: int = 200,
+        content_type: str = "text/html; charset=utf-8",
+        set_cookie: Optional[str] = None,
     ) -> None:
         self.send_response(status_code)
         self.send_header("Content-Type", content_type)
@@ -834,6 +984,8 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         self.send_header("X-Permitted-Cross-Domain-Policies", "none")
         self.send_header("Permissions-Policy", "geolocation=(), microphone=(), camera=(), usb=(), interest-cohort=()")
         self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        if set_cookie:
+            self.send_header("Set-Cookie", set_cookie)
         self.end_headers()
 
     def do_HEAD(self) -> None:
@@ -851,6 +1003,15 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 with open(css_path, "rb") as f:
                     content = f.read()
                 self._send_hardened_headers(200, "text/css; charset=utf-8")
+                self.wfile.write(content)
+                return
+
+        if path == "/static/btc_qr.png":
+            qr_path = os.path.join(STATIC_DIR, "btc_qr.png")
+            if os.path.exists(qr_path):
+                with open(qr_path, "rb") as f:
+                    content = f.read()
+                self._send_hardened_headers(200, "image/png")
                 self.wfile.write(content)
                 return
 
@@ -884,6 +1045,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 "total_indexed_surface": search_engine.get_total_indexed_count(),
                 "collective_memory": COLLECTIVE_MEMORY.get_stats(),
                 "twitter_trends": TWITTER_TREND_WATCHER.get_stats(),
+                "donations": DONATION_TRACKER.get_stats(),
                 "ai_filter": {
                     "engine": "SamuAIAntiGarbageEngine",
                     "min_quality_threshold": 75.0,
@@ -906,6 +1068,13 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
 
         req_headers = {k: v for k, v in self.headers.items()}
         security_eval = evaluate_client_connection_security(req_headers)
+        client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
+        session_id, is_new_session = DONATION_TRACKER.resolve_session_id(req_headers, client_ip=client_ip)
+        cookie_hdr = (
+            f"{COOKIE_NAME}={session_id}; Path=/; Max-Age=43200; HttpOnly; SameSite=Lax"
+            if is_new_session
+            else None
+        )
 
         if path == "/":
             q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
@@ -913,13 +1082,61 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             tax = query_params.get("tax", [""])[0][:40]
             scope = query_params.get("scope", ["all"])[0][:20]
             only_safest = query_params.get("safest", ["0"])[0] == "1"
+            dpass = query_params.get("dpass", ["0"])[0] == "1"
 
             if not q.strip() and (not cat or cat == "Todas") and not tax.strip():
+                current_cnt = DONATION_TRACKER.get_search_count(session_id)
                 categories = search_engine.get_categories()
                 body = render_classic_home_page(categories)
-                page = render_layout("Buscador de la Deep Web", "search", security_eval, body)
-                self._send_hardened_headers(200)
+                page = render_layout(
+                    "Buscador de la Deep Web",
+                    "search",
+                    security_eval,
+                    body,
+                    search_count=current_cnt,
+                )
+                self._send_hardened_headers(200, set_cookie=cookie_hdr)
                 self.wfile.write(page.encode("utf-8"))
+                return
+
+            gate_eval = DONATION_TRACKER.register_search_and_evaluate_gate(
+                session_id=session_id,
+                is_real_search=True,
+                dpass_completed=dpass,
+            )
+            current_cnt = int(gate_eval["search_count"])
+
+            if gate_eval["should_gate"]:
+                forward_params: List[Tuple[str, str]] = []
+                if q:
+                    forward_params.append(("q", q))
+                if cat and cat != "Todas":
+                    forward_params.append(("cat", cat))
+                if tax:
+                    forward_params.append(("tax", tax))
+                if scope and scope != "all":
+                    forward_params.append(("scope", scope))
+                if only_safest:
+                    forward_params.append(("safest", "1"))
+                forward_params.append(("dpass", "1"))
+                target_url = "/?" + urllib.parse.urlencode(forward_params)
+
+                gate_body = render_aggressive_donation_gate_page(
+                    query=q or cat or tax,
+                    target_url=target_url,
+                    search_count=current_cnt,
+                )
+                gate_page = render_layout(
+                    f"Apoya a SamuBusquedas ({DONATION_GATE_SECONDS}s) — {q or cat}",
+                    "search",
+                    security_eval,
+                    gate_body,
+                    search_count=current_cnt,
+                    meta_refresh_url=target_url,
+                    meta_refresh_seconds=DONATION_GATE_SECONDS,
+                )
+                self._send_hardened_headers(200, set_cookie=cookie_hdr)
+                self.wfile.write(gate_page.encode("utf-8"))
                 return
 
             actual_q = "" if q.strip().lower() == "all" else q
@@ -931,25 +1148,51 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 only_safest_js=only_safest,
                 include_unverified=include_unverified,
             )
-            body = render_serp_page(actual_q, cat, tax, scope, search_payload)
-            page = render_layout(f"{q or cat} - Buscar con SamuBusquedas", "search", security_eval, body)
-            self._send_hardened_headers(200)
+            body = render_serp_page(
+                actual_q,
+                cat,
+                tax,
+                scope,
+                search_payload,
+                search_count=current_cnt,
+            )
+            page = render_layout(
+                f"{q or cat} - Buscar con SamuBusquedas",
+                "search",
+                security_eval,
+                body,
+                search_count=current_cnt,
+            )
+            self._send_hardened_headers(200, set_cookie=cookie_hdr)
             self.wfile.write(page.encode("utf-8"))
             return
 
+        current_cnt = DONATION_TRACKER.get_search_count(session_id)
         if path == "/verificar":
             onion_param = query_params.get("onion", [""])[0][:MAX_QUERY_LEN]
             report = search_engine.inspect_onion_url(onion_param) if onion_param.strip() else None
             body = render_verify_page(onion_param, report)
-            page = render_layout("Verificador Anti-Phishing SHA3-256", "verify", security_eval, body)
-            self._send_hardened_headers(200)
+            page = render_layout(
+                "Verificador Anti-Phishing SHA3-256",
+                "verify",
+                security_eval,
+                body,
+                search_count=current_cnt,
+            )
+            self._send_hardened_headers(200, set_cookie=cookie_hdr)
             self.wfile.write(page.encode("utf-8"))
             return
 
         if path == "/proteccion":
             body = render_opsec_guide_page()
-            page = render_layout("Guía OPSEC en la Deep Web", "opsec", security_eval, body)
-            self._send_hardened_headers(200)
+            page = render_layout(
+                "Guía OPSEC en la Deep Web",
+                "opsec",
+                security_eval,
+                body,
+                search_count=current_cnt,
+            )
+            self._send_hardened_headers(200, set_cookie=cookie_hdr)
             self.wfile.write(page.encode("utf-8"))
             return
 
@@ -959,8 +1202,8 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             <p><a href="/">Volver al buscador SamuBusquedas!</a></p>
         </div>
         """
-        page = render_layout("404 No Encontrado", "", security_eval, not_found_body)
-        self._send_hardened_headers(404)
+        page = render_layout("404 No Encontrado", "", security_eval, not_found_body, search_count=current_cnt)
+        self._send_hardened_headers(404, set_cookie=cookie_hdr)
         self.wfile.write(page.encode("utf-8"))
 
 

@@ -556,4 +556,271 @@ mark.hl {
   font-weight: bold;
 }
 
+/* ==========================================================================
+   SISTEMA DE DONACIONES BITCOIN EN ESQUINA IZQUIERDA + MURO 15s (v1.99.5)
+   ========================================================================== */
+.btc-top-left-wrapper {
+  width: 100%;
+  padding: 6px 14px 0 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btc-left-corner-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #181a20;
+  color: #f0b90b;
+  border: 2px solid #f0b90b;
+  padding: 6px 10px;
+  font-size: 11px;
+  max-width: 560px;
+  box-shadow: 2px 2px 0px #d4a000;
+}
+
+.btc-corner-qr {
+  width: 68px;
+  height: 68px;
+  border: 2px solid #ffffff;
+  background-color: #ffffff;
+  display: block;
+}
+
+.btc-corner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #eaecef;
+}
+
+.btc-corner-title {
+  color: #f0b90b;
+  font-size: 12px;
+}
+
+.btc-symbol {
+  background-color: #f7931a;
+  color: #ffffff;
+  padding: 0 4px;
+  font-weight: bold;
+}
+
+.btc-corner-addr-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.btc-addr-code {
+  background-color: #2b3139;
+  color: #f0b90b;
+  border: 1px solid #f0b90b;
+  padding: 1px 6px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  font-weight: bold;
+  user-select: all;
+}
+
+.btc-uri-link {
+  color: #fcd535;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.btc-uri-link:hover {
+  text-decoration: underline;
+}
+
+.btc-corner-sub {
+  font-size: 11px;
+  color: #b7bdc6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.btc-corner-status {
+  display: inline;
+  color: #70e000;
+}
+
+.btc-status-alert {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* Pantalla Agresiva de 15 Segundos (> 10 búsquedas) */
+.btc-aggressive-gate {
+  max-width: 680px;
+  margin: 14px auto 24px;
+  background-color: #181a20;
+  color: #eaecef;
+  border: 3px solid #f0b90b;
+  padding: 18px 20px;
+  text-align: center;
+}
+
+.btc-gate-banner {
+  background-color: #cc0000;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+}
+
+.btc-gate-title {
+  color: #f0b90b;
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.btc-gate-lead {
+  font-size: 13px;
+  color: #d8dde6;
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+
+.btc-gate-card {
+  background-color: #202630;
+  border: 1px solid #3c4452;
+  padding: 14px;
+  max-width: 440px;
+  margin: 0 auto 14px;
+}
+
+.btc-gate-network-pill {
+  font-size: 12px;
+  color: #b7bdc6;
+  margin-bottom: 10px;
+}
+
+.btc-gate-qr-wrap {
+  margin: 6px auto 10px;
+}
+
+.btc-gate-qr-large {
+  width: 210px;
+  height: 210px;
+  border: 4px solid #ffffff;
+  background-color: #ffffff;
+}
+
+.btc-gate-addr-label {
+  font-size: 12px;
+  color: #9aa4b2;
+  margin-bottom: 4px;
+}
+
+.btc-gate-addr-box {
+  background-color: #0b0e11;
+  border: 1px solid #f0b90b;
+  padding: 8px 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #f0b90b;
+  word-break: break-all;
+  user-select: all;
+  margin-bottom: 8px;
+}
+
+.btc-gate-network-note {
+  font-size: 11px;
+  color: #f6465d;
+}
+
+.btc-countdown-container {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.btc-countdown-label {
+  font-size: 13px;
+  color: #fcd535;
+  margin-bottom: 6px;
+}
+
+.btc-countdown-track {
+  width: 100%;
+  height: 14px;
+  background-color: #2b3139;
+  border: 1px solid #f0b90b;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.btc-countdown-fill {
+  height: 100%;
+  width: 100%;
+  background-color: #f0b90b;
+  animation: btcWait15s 15s linear forwards;
+}
+
+@keyframes btcWait15s {
+  0% { width: 100%; background-color: #f7931a; }
+  80% { background-color: #f0b90b; }
+  100% { width: 0%; background-color: #00c853; }
+}
+
+.btc-continue-wrap {
+  margin-top: 8px;
+}
+
+.btc-continue-btn {
+  display: inline-block;
+  background-color: #f0b90b;
+  color: #181a20;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 7px 14px;
+  text-decoration: none;
+  border: 1px solid #ffffff;
+}
+
+.btc-continue-btn:hover {
+  background-color: #fcd535;
+  text-decoration: underline;
+}
+
+/* Banner de Spam Persistente en la SERP (> 10 búsquedas) */
+.btc-serp-spam-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #fff3cd;
+  border: 2px solid #ff9800;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #332200;
+}
+
+.btc-serp-spam-qr {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #333;
+  background-color: #fff;
+}
+
+.btc-serp-spam-title {
+  font-weight: bold;
+  color: #b71c1c;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.btc-serp-spam-text code {
+  background-color: #181a20;
+  color: #f0b90b;
+  padding: 1px 5px;
+  font-weight: bold;
+}
+
+
 
