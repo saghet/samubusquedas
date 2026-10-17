@@ -32,7 +32,8 @@ RUN mkdir -p /var/lib/tor/samubusquedas_hs && \
 
 # Copiar las claves criptográficas para mantener la dirección .onion oficial de saghet
 COPY .tor_runtime/samubusquedas_hs/ /var/lib/tor/samubusquedas_hs/
-RUN chmod 700 /var/lib/tor/samubusquedas_hs && \
+RUN sed -i 's/\r$//' /app/entrypoint.sh /etc/tor/torrc && \
+    chmod 700 /var/lib/tor/samubusquedas_hs && \
     chmod 600 /var/lib/tor/samubusquedas_hs/* && \
     chown -R debian-tor:debian-tor /var/lib/tor/samubusquedas_hs && \
     chmod +x /app/entrypoint.sh

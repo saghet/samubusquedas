@@ -1,4 +1,5 @@
 .tor_runtime/data/
+.tor_runtime/data_client/
 .tor_runtime/*.log
 __pycache__/
 *.pyc
