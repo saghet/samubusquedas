@@ -32,6 +32,7 @@ from donation_shield import (
     DONATION_TRACKER,
     FREE_SEARCH_LIMIT,
 )
+from onion_guardian import ONION_GUARDIAN
 from realtime_trends_ai import SAMU_AI_ENGINE, TWITTER_TREND_WATCHER
 from security_shield import evaluate_client_connection_security
 from verifier import audit_catalog_integrity
@@ -1046,6 +1047,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 "collective_memory": COLLECTIVE_MEMORY.get_stats(),
                 "twitter_trends": TWITTER_TREND_WATCHER.get_stats(),
                 "donations": DONATION_TRACKER.get_stats(),
+                "onion_guardian": ONION_GUARDIAN.get_status(),
                 "ai_filter": {
                     "engine": "SamuAIAntiGarbageEngine",
                     "min_quality_threshold": 75.0,
@@ -1208,6 +1210,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
 
 
 def run_server(host: str = "127.0.0.1", port: int = 8080) -> None:
+    ONION_GUARDIAN.start_guardian_daemon(heartbeat_interval_seconds=45)
     TWITTER_TREND_WATCHER.start_background_daemon(
         lambda q: search_engine.search_v2(query=q, enable_live_tor=True)
     )

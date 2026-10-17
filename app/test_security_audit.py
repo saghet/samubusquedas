@@ -15,6 +15,7 @@ Certifica los 3 Bloques de la Matriz de Auditoría:
 """
 
 import json
+import os
 import threading
 import time
 import unittest
@@ -192,11 +193,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_5_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.5 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_7_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.7 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.5")
+        self.assertEqual(ENGINE_VERSION, "1.99.7")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -328,7 +329,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/api/trends") as resp:
             self.assertEqual(resp.status, 200)
             trends_json = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(trends_json["version"], "1.99.5")
+            self.assertEqual(trends_json["version"], "1.99.7")
             self.assertGreaterEqual(len(trends_json["trends"]), 5)
 
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
@@ -394,6 +395,56 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             self.assertIn("Superficie Verificada Online", pass_html)
             self.assertIn('class="btc-serp-spam-banner"', pass_html)
             self.assertIn(BTC_ADDRESS, pass_html)
+
+    def test_IR18_onion_always_on_guardian_and_torrc_high_availability(self) -> None:
+        """[IR-18] Certifica el guardián 24/7 OnionAlwaysOnGuardian y los 6 Introduction Points anti-idle en torrc."""
+        from onion_guardian import OFFICIAL_ONION_URL, ONION_GUARDIAN
+
+        status = ONION_GUARDIAN.get_status()
+        self.assertEqual(status["official_onion"], OFFICIAL_ONION_URL)
+        self.assertEqual(status["intro_points_configured"], 6)
+        self.assertIn("tor_socks_alive", status)
+
+        # Verificar que torrc.windows.conf y torrc.cloud.conf tengan las directivas de Alta Disponibilidad
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for cfg_name in ("torrc.windows.conf", "torrc.cloud.conf"):
+            cfg_path = os.path.join(repo_root, "config", cfg_name)
+            with open(cfg_path, "r", encoding="utf-8") as fh:
+                cfg_text = fh.read()
+            self.assertIn("HiddenServiceNumIntroductionPoints 6", cfg_text, f"Falta 6 intro points en {cfg_name}")
+            self.assertIn("KeepalivePeriod 45", cfg_text, f"Falta KeepalivePeriod 45 en {cfg_name}")
+            self.assertIn("LearnCircuitBuildTimeout 0", cfg_text, f"Falta LearnCircuitBuildTimeout 0 en {cfg_name}")
+
+        # Verificar que /healthz exponga el estado del guardián Onion
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/healthz") as resp:
+            self.assertEqual(resp.status, 200)
+            hz = json.loads(resp.read().decode("utf-8"))
+            self.assertEqual(hz["version"], "1.99.7")
+            self.assertIn("onion_guardian", hz)
+            self.assertEqual(hz["onion_guardian"]["intro_points_configured"], 6)
+
+    def test_IR19_render_continuous_deployment_and_onion_key_sync(self) -> None:
+        """[IR-19] Certifica que deploy/sync_render_live.py verifique las llaves Ed25519 .onion, Dockerfile y render.yaml."""
+        import sys
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        deploy_dir = os.path.join(repo_root, "deploy")
+        if deploy_dir not in sys.path:
+            sys.path.insert(0, deploy_dir)
+        from sync_render_live import verify_onion_keypair_and_render_config
+
+        audit = verify_onion_keypair_and_render_config()
+        self.assertTrue(audit["ok"], f"Fallo en auditoría Render/.onion: {audit}")
+        self.assertEqual(audit["version"], "1.99.7")
+        self.assertEqual(
+            audit["official_onion_url"],
+            "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion",
+        )
+        self.assertTrue(audit["hostname_matches"])
+        self.assertTrue(audit["ed25519_secret_key_present"])
+        self.assertTrue(audit["ed25519_public_key_present"])
+        self.assertTrue(audit["dockerfile_copies_hs"])
+        self.assertTrue(audit["render_autodeploy_enabled"])
+        self.assertTrue(audit["entrypoint_supervises_tor"])
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD
