@@ -1,6 +1,11 @@
 .tor_runtime/data/
 .tor_runtime/data_client/
 .tor_runtime/*.log
+.tor_runtime/*.pem
+.tor_runtime/*.pfx
+.tor_runtime/key.pem
+.tor_runtime/cert.pem
 __pycache__/
 *.pyc
 app/__pycache__/
+

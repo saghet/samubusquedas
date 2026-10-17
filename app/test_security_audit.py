@@ -193,11 +193,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_9_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.9 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_10_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.10 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.9")
+        self.assertEqual(ENGINE_VERSION, "1.99.10")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -329,7 +329,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/api/trends") as resp:
             self.assertEqual(resp.status, 200)
             trends_json = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(trends_json["version"], "1.99.9")
+            self.assertEqual(trends_json["version"], "1.99.10")
             self.assertGreaterEqual(len(trends_json["trends"]), 5)
 
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
@@ -419,7 +419,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/healthz") as resp:
             self.assertEqual(resp.status, 200)
             hz = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(hz["version"], "1.99.9")
+            self.assertEqual(hz["version"], "1.99.10")
             self.assertIn("onion_guardian", hz)
             self.assertEqual(hz["onion_guardian"]["intro_points_configured"], 8)
 
@@ -434,7 +434,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
 
         audit = verify_onion_keypair_and_render_config()
         self.assertTrue(audit["ok"], f"Fallo en auditoría Render/.onion: {audit}")
-        self.assertEqual(audit["version"], "1.99.9")
+        self.assertEqual(audit["version"], "1.99.10")
         self.assertEqual(
             audit["official_onion_url"],
             "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion",
@@ -471,6 +471,24 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 onion_loc,
                 "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion/",
             )
+
+    def test_IR22_dual_port_80_443_and_lan_binding(self) -> None:
+        """[IR-22] Certifica el soporte dual de puertos 80 y 443 en torrc.windows.conf y generación de certificados SSL."""
+        from main import ensure_onion_ssl_certificates
+
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        cfg_path = os.path.join(repo_root, "config", "torrc.windows.conf")
+        with open(cfg_path, "r", encoding="utf-8") as fh:
+            cfg_text = fh.read()
+
+        self.assertIn("HiddenServicePort 80 127.0.0.1:8080", cfg_text)
+        self.assertIn("HiddenServicePort 443 127.0.0.1:8443", cfg_text)
+
+        cert_p, key_p = ensure_onion_ssl_certificates()
+        self.assertIsNotNone(cert_p)
+        self.assertIsNotNone(key_p)
+        self.assertTrue(os.path.exists(cert_p))
+        self.assertTrue(os.path.exists(key_p))
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD

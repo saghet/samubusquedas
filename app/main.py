@@ -13,9 +13,11 @@ Características:
 """
 
 import html
+import ipaddress
 import json
 import os
 import sys
+import threading
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Dict, List, Optional, Tuple
@@ -1210,18 +1212,80 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(page.encode("utf-8"))
 
 
-def run_server(host: str = "127.0.0.1", port: int = 8080) -> None:
+def ensure_onion_ssl_certificates() -> Tuple[Optional[str], Optional[str]]:
+    """Garantiza la existencia de un certificado X.509 SSL para soportar conexiones HTTPS (puerto 443) en Tor Browser Móvil."""
+    repo_root = os.path.dirname(BASE_DIR)
+    runtime_dir = os.path.join(repo_root, ".tor_runtime")
+    os.makedirs(runtime_dir, exist_ok=True)
+    cert_path = os.path.join(runtime_dir, "onion_cert.pem")
+    key_path = os.path.join(runtime_dir, "onion_key.pem")
+    if os.path.exists(cert_path) and os.path.exists(key_path):
+        return cert_path, key_path
+    try:
+        import datetime
+        from cryptography import x509
+        from cryptography.hazmat.primitives import hashes, serialization
+        from cryptography.hazmat.primitives.asymmetric import rsa
+        from cryptography.x509.oid import NameOID
+
+        key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        name = x509.Name([
+            x509.NameAttribute(NameOID.COMMON_NAME, "x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion")
+        ])
+        san = x509.SubjectAlternativeName([
+            x509.DNSName("x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion"),
+            x509.DNSName("localhost"),
+            x509.IPAddress(ipaddress.IPv4Address("127.0.0.1")),
+        ])
+        cert = (
+            x509.CertificateBuilder()
+            .subject_name(name)
+            .issuer_name(name)
+            .public_key(key.public_key())
+            .serial_number(x509.random_serial_number())
+            .not_valid_before(datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=1))
+            .not_valid_after(datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=3650))
+            .add_extension(san, critical=False)
+            .sign(key, hashes.SHA256())
+        )
+        with open(cert_path, "wb") as f:
+            f.write(cert.public_bytes(serialization.Encoding.PEM))
+        with open(key_path, "wb") as f:
+            f.write(key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8, serialization.NoEncryption()))
+        return cert_path, key_path
+    except Exception:
+        return None, None
+
+
+def run_server(host: str = "0.0.0.0", port: int = 8080, https_port: int = 8443) -> None:
+    import ssl
     ONION_GUARDIAN.start_guardian_daemon(heartbeat_interval_seconds=45)
     TWITTER_TREND_WATCHER.start_background_daemon(
         lambda q: search_engine.search_v2(query=q, enable_live_tor=True)
     )
+
+    # 1. Listener HTTPS (Puerto 443 en Tor -> 8443 interno) para Tor Browser Móvil
+    cert_path, key_path = ensure_onion_ssl_certificates()
+    if cert_path and key_path and https_port:
+        try:
+            ssl_ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            ssl_ctx.load_cert_chain(cert_path, key_path)
+            https_server = ThreadingHTTPServer(("127.0.0.1", https_port), SamuOnionRequestHandler)
+            https_server.socket = ssl_ctx.wrap_socket(https_server.socket, server_side=True)
+            https_thread = threading.Thread(target=https_server.serve_forever, daemon=True)
+            https_thread.start()
+            print(f"  [*] Listener HTTPS Activo (Tor port 443): https://127.0.0.1:{https_port}")
+        except Exception as exc:
+            print(f"  [!] No se pudo iniciar listener HTTPS ({exc})")
+
+    # 2. Listener HTTP (Wi-Fi LAN + Tor port 80)
     server = ThreadingHTTPServer((host, port), SamuOnionRequestHandler)
     print("======================================================================")
-    print(f"  SAMUBUSQUEDAS! v{APP_VERSION} (.ONION) - COLLECTIVE MEMORY & TOR SEARCH")
+    print(f"  SAMUBUSQUEDAS! v{APP_VERSION} (.ONION) - DUAL HTTP/HTTPS & RED WI-FI")
     print("  ARCHITECTED BY: saghet")
     print("======================================================================")
-    print(f"  [*] Loopback local:       http://{host}:{port}")
-    print(f"  [*] Dominio Tor Onion v3: {OFFICIAL_ONION_DOMAIN}")
+    print(f"  [*] Red Wi-Fi Local / HTTP: http://{host}:{port}")
+    print(f"  [*] Dominio Tor Onion v3:   {OFFICIAL_ONION_DOMAIN}")
     print("======================================================================")
     try:
         server.serve_forever()
@@ -1233,5 +1297,5 @@ if __name__ == "__main__":
     port_env = os.environ.get("PORT")
     host_env = os.environ.get("HOST")
     port_arg = int(port_env) if port_env else (int(sys.argv[1]) if len(sys.argv) > 1 else 8080)
-    host_arg = host_env if host_env else ("0.0.0.0" if port_env else "127.0.0.1")
+    host_arg = host_env if host_env else "0.0.0.0"
     run_server(host=host_arg, port=port_arg)

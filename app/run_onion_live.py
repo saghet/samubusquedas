@@ -25,11 +25,11 @@ def main() -> None:
     os.makedirs(os.path.join(BASE_DIR, ".tor_runtime", "data"), exist_ok=True)
     os.makedirs(os.path.join(BASE_DIR, ".tor_runtime", "samubusquedas_hs"), exist_ok=True)
 
-    # 1. Iniciar servidor web en hilo daemon (127.0.0.1:8080) — incluye ONION_GUARDIAN
+    # 1. Iniciar servidor web dual (HTTP 0.0.0.0:8080 para LAN Wi-Fi y HTTPS 127.0.0.1:8443 para Tor Mobile)
     if not is_local_port_open("127.0.0.1", 8080):
         web_thread = threading.Thread(
             target=run_server,
-            kwargs={"host": "127.0.0.1", "port": 8080},
+            kwargs={"host": "0.0.0.0", "port": 8080, "https_port": 8443},
             daemon=True,
         )
         web_thread.start()
