@@ -14,6 +14,7 @@ Certifica los 3 Bloques de la Matriz de Auditoría:
   Banner ASCII Art, Cabeceras HTTP (`X-Architected-By: saghet`) y Knowledge Card sin fugas de OPSEC.
 """
 
+import json
 import threading
 import time
 import unittest
@@ -191,11 +192,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_3_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.3 en la esquina superior izquierda y los badges [ONLINE EN TOR] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_4_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.4 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.3")
+        self.assertEqual(ENGINE_VERSION, "1.99.4")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -204,6 +205,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
             self.assertIn(f">v{ENGINE_VERSION}</span>", html_doc)
             self.assertIn("ONLINE EN TOR", html_doc)
             self.assertIn("VÁLIDO ONLINE", html_doc)
+            self.assertIn("IA CALIDAD:", html_doc)
 
     def test_IR12_collective_search_memory_persistence_and_auto_indexing(self) -> None:
         """[IR-12] Verifica que búsquedas exitosas se guarden en Memoria Colectiva y sirvan al instante a otros usuarios."""
@@ -281,6 +283,58 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 self.assertIn("petro", combined, f"El resultado '{item['title']}' no menciona 'petro'")
                 self.assertTrue(is_valid_v3_onion(str(item["onion_url"])))
                 self.assertTrue(item.get("online_verified"))
+
+    def test_IR16_realtime_twitter_trends_and_ai_anti_garbage_filter(self) -> None:
+        """[IR-16] Certifica el Radar en Tiempo Real de Twitter/X -> Deep Web y el Motor IA Anti-Basura (SamuAIAntiGarbageEngine)."""
+        from realtime_trends_ai import SAMU_AI_ENGINE, TWITTER_TREND_WATCHER
+
+        # 1. Evaluar clasificador IA de tendencias de Twitter/X
+        valid_trend = SAMU_AI_ENGINE.evaluate_trend_quality("#GustavoPetro", "Colombia")
+        self.assertTrue(valid_trend["is_valid"])
+        self.assertEqual(valid_trend["query"], "gustavo petro")
+        self.assertGreaterEqual(float(valid_trend["ai_score"]), 85.0)
+
+        garbage_trend_1 = SAMU_AI_ENGINE.evaluate_trend_quality("#SorteoGratisBuenJueves", "Global")
+        self.assertFalse(garbage_trend_1["is_valid"])
+        garbage_trend_2 = SAMU_AI_ENGINE.evaluate_trend_quality("Shakira", "Colombia")
+        self.assertFalse(garbage_trend_2["is_valid"])
+
+        # 2. Evaluar filtro IA Anti-Basura sobre resultados de Deep Web
+        scam_item = {
+            "title": "DarkVaultX Live Credit Card Dumps & Cloned Cards",
+            "description": "Buy 10x Bitcoin Multiplier and Western Union Hack",
+            "onion_url": "http://2gzyxa5ihm7nsggfxnu52rck2vv4rvmdlkiu3zzui5du4xyclen53wid.onion",
+            "verification_tier": "UNVERIFIED",
+        }
+        scam_eval = SAMU_AI_ENGINE.evaluate_search_result_ai("gustavo petro", scam_item)
+        self.assertTrue(scam_eval["is_garbage"])
+        self.assertLess(float(scam_eval["ai_quality_score"]), 25.0)
+
+        legit_item = {
+            "title": "ProPublica Whistleblower — Investigación sobre Gustavo Petro",
+            "description": "Archivo periodístico cifrado en Tor sobre Gustavo Petro y América Latina.",
+            "onion_url": "http://p53lf57qovyuvwsc6xnrppyply3vtqm7l6pcobkmyqsiofyeznfu5uqd.onion",
+            "verification_tier": "VERIFIED",
+            "safety_score": 98,
+        }
+        legit_eval = SAMU_AI_ENGINE.evaluate_search_result_ai("gustavo petro", legit_item)
+        self.assertFalse(legit_eval["is_garbage"])
+        self.assertGreaterEqual(float(legit_eval["ai_quality_score"]), 85.0)
+
+        # 3. Verificar que el Watcher de Twitter/X tenga tendencias activas y que /api/trends y la portada funcionen
+        active_trends = TWITTER_TREND_WATCHER.get_active_trends(limit=8)
+        self.assertGreaterEqual(len(active_trends), 5)
+
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/api/trends") as resp:
+            self.assertEqual(resp.status, 200)
+            trends_json = json.loads(resp.read().decode("utf-8"))
+            self.assertEqual(trends_json["version"], "1.99.4")
+            self.assertGreaterEqual(len(trends_json["trends"]), 5)
+
+        with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
+            home_html = resp.read().decode("utf-8")
+            self.assertIn("Lo Más Buscado en Twitter/X (Tiempo Real)", home_html)
+            self.assertIn("Pre-Indexado en Deep Web con IA Anti-Basura", home_html)
 
     # =========================================================================
     # BLOQUE B: PRUEBAS DE RESISTENCIA A ATAQUES, FUZZING Y CIBERSEGURIDAD

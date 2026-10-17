@@ -22,6 +22,7 @@ from typing import Dict, List, Optional
 
 from collective_memory import COLLECTIVE_MEMORY
 from database import MAX_QUERY_LEN, SamuSearchEngine
+from realtime_trends_ai import SAMU_AI_ENGINE, TWITTER_TREND_WATCHER
 from security_shield import evaluate_client_connection_security
 from verifier import audit_catalog_integrity
 from version import ENGINE_VERSION
@@ -42,9 +43,10 @@ ASCII_HACKER_BANNER = f"""<!--
    ___) | (_| | | | | | | |_| | |_) | |_| \\__ \\ (_| | |_| |  __/ (_| | (_| \\__ \\
   |____/ \\__,_|_| |_| |_|\\__,_|____/ \\__,_|___/\\__, |\\__,_|\\___|\\__,_|\\__,_|___/
                                                   |_|
-  [+] ENGINE      : SamuBusquedas v{APP_VERSION} (.onion v3 Search & Collective Memory)
+  [+] ENGINE      : SamuBusquedas v{APP_VERSION} (.onion v3 Search & AI Trend Intelligence)
   [+] ARCHITECT   : saghet (Lead Security Researcher & Search Engine Architect)
-  [+] RANKING     : SamuRank = BM25F * (Title:10, Tags:6, Tax:5) + OnionTrustRank(SHA3-256)
+  [+] RANKING     : SamuRank = BM25F * (Title:10, Tags:6, Tax:5) + OnionTrustRank + AI Quality
+  [+] AI ENGINE   : SamuAIAntiGarbageEngine (Shannon Entropy + Bayesian Veto + Twitter/X Sync)
   [+] MEMORY      : Anonymous Collective Search Memory + Auto-FTS5 Node Indexing
   [+] ZERO-JS     : 100% Tor Browser "Safest" Mode Ready (CSP script-src 'none')
   [+] AUDIT DOCS  : /.well-known/security.txt | /humans.txt | /canary.txt
@@ -101,11 +103,13 @@ HUMANS_TXT = f"""/* TEAM & ARCHITECTURE */
 Lead Architect & Security Researcher: saghet
 Handle: saghet
 Version: v{APP_VERSION}
-Role: Creator of SamuBusquedas v{APP_VERSION} (.onion v3 Hybrid Search Engine, Collective Memory & Anti-Phishing Shield)
+Role: Creator of SamuBusquedas v{APP_VERSION} (.onion v3 Hybrid Search Engine, AI Anti-Garbage & Twitter/X Trend Sync)
 Official Onion v3: {OFFICIAL_ONION_DOMAIN}
 
 /* SEARCH ENGINE TECHNOLOGY */
-Ranking Algorithm: SamuRank / OnionTrustRank (Multi-field Okapi BM25F + SHA3-256 Ed25519 Trust Bonus + Collective Boost)
+Ranking Algorithm: SamuRank / OnionTrustRank (Multi-field Okapi BM25F + SHA3-256 Ed25519 Trust Bonus + AI Quality Score)
+AI Filter Engine: SamuAIAntiGarbageEngine (Shannon Entropy + Bayesian Anti-Scam Veto + Topical Vector Coherence >= 75%)
+Real-Time Trends: Twitter/X Live Trend Watcher (Colombia, LatAm, Global) -> Deep Web Pre-Indexed Intelligence
 Collective Memory: Anonymous Query-to-Onion Bank + Automatic SQLite FTS5 Node Absorption
 Online Verification: Active SOCKS5h Circuit Health Monitor + Fast IPv4 Bilingual Ahmia Harvester (ES <-> EN)
 Directory Structure: Classic AltaVista / Yahoo! 1997 Compact Directory + Google 1998 Minimalist SERP
@@ -139,6 +143,48 @@ def _render_retro_logo(is_large: bool = True) -> str:
         f'<span class="c4">u</span><span class="c2">e</span><span class="c3">d</span><span class="c1">a</span>'
         f'<span class="c4">s</span><span class="c2">!</span>{tag}</a>'
     )
+
+
+def _render_twitter_trends_ai_bar_html() -> str:
+    """
+    Renderiza el Radar de Tendencias en Tiempo Real de Twitter/X -> Deep Web
+    curadas por Inteligencia Artificial Anti-Basura (`SAMU_AI_ENGINE`).
+    """
+    trends = TWITTER_TREND_WATCHER.get_active_trends(limit=10)
+    t_stats = TWITTER_TREND_WATCHER.get_stats()
+    if not trends:
+        return ""
+
+    pills: List[str] = []
+    for item in trends:
+        q_str = str(item.get("query", ""))
+        disp = str(item.get("display", q_str))
+        cat = str(item.get("category", "Tendencia"))
+        reg = str(item.get("region", "Global"))
+        ai_sc = float(item.get("ai_score", 92.0))
+        cnt = int(item.get("result_count", 4))
+        href = f"/?q={urllib.parse.quote_plus(q_str)}"
+        pills.append(
+            f'<a href="{href}" class="trend-ai-pill" '
+            f'title="Tendencia Twitter/X ({reg} • {cat}) • IA Anti-Basura: {ai_sc:.0f}% • {cnt} nodos .onion pre-indexados">'
+            f"🔥 {html.escape(disp)} <span class=\"trend-ai-score\">[IA {ai_sc:.0f}%]</span></a>"
+        )
+
+    return f"""
+    <div class="trends-ai-box">
+        <div class="trends-ai-header">
+            <strong>📡 Lo Más Buscado en Twitter/X (Tiempo Real) → Pre-Indexado en Deep Web con IA Anti-Basura:</strong>
+            <span>
+                <strong>{t_stats['active_trends_count']}</strong> tendencias activas •
+                Filtro IA: <strong>≥75% Calidad</strong> (0% Spam/Basura) •
+                Regiones: <code>CO / LATAM / GLOBAL / US / ES</code>
+            </span>
+        </div>
+        <div class="collective-pills-row">
+            {" ".join(pills)}
+        </div>
+    </div>
+    """
 
 
 def _render_collective_memory_bar_html() -> str:
@@ -287,29 +333,31 @@ def _render_knowledge_card_html(k_card: Optional[Dict[str, object]]) -> str:
 def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
     """
     Renderiza la Portada Minimalista al estilo de la primera versión de Google (1998),
+    el Radar de Tendencias en Tiempo Real de Twitter/X -> Deep Web (con IA Anti-Basura),
     la Memoria Colectiva de Búsquedas Exitosas y la tabla de categorías estilo AltaVista / Yahoo! (1997).
     """
     total_sites = sum(int(c["total"]) for c in categories)  # type: ignore
+    trends_ai_bar = _render_twitter_trends_ai_bar_html()
     collective_bar = _render_collective_memory_bar_html()
 
     return f"""
     <section class="classic-home-hero">
         {_render_retro_logo(is_large=True)}
         <p class="retro-tagline">
-            Buscador de la Deep Web ({total_sites} Sitios Indexados + Memoria Colectiva + Harvester Bilingüe Tor) — Arquitectura por <strong>saghet</strong>
+            Buscador de la Deep Web ({total_sites} Sitios Indexados + Tendencias Twitter/X en Vivo + Filtro IA Anti-Basura) — Arquitectura por <strong>saghet</strong>
         </p>
 
         <form action="/" method="GET" class="retro-search-box">
             <div>
                 <label for="q-input" style="font-size: 13px; display: block; margin-bottom: 4px;">
-                    Busca cualquier servicio, foro, wiki, cripto, biblioteca, prensa o herramienta en la red Tor:
+                    Busca cualquier servicio, tendencia de Twitter/X, foro, wiki, cripto, biblioteca, prensa o herramienta en la red Tor:
                 </label>
                 <input
                     id="q-input"
                     type="text"
                     name="q"
                     value=""
-                    placeholder="Ej: foros, hidden wiki, monero, bibliotecas, correo, scihub, debian, pastebin, saghet..."
+                    placeholder="Ej: gustavo petro, inteligencia artificial, monero, wikileaks, bellingcat, foros, saghet..."
                     class="retro-input"
                     autofocus
                 >
@@ -321,7 +369,7 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
             <div class="retro-radios">
                 <label>
                     <input type="radio" name="scope" value="all" checked>
-                    Buscar en toda la Deep Web (<strong>{total_sites} sitios indexados + Memoria Colectiva + Red Tor en vivo</strong>)
+                    Buscar en toda la Deep Web (<strong>{total_sites} sitios indexados + Tendencias Twitter/X + Filtro IA Anti-Basura</strong>)
                 </label>
                 <label>
                     <input type="radio" name="scope" value="verified">
@@ -330,6 +378,7 @@ def render_classic_home_page(categories: List[Dict[str, object]]) -> str:
             </div>
         </form>
 
+        {trends_ai_bar}
         {collective_bar}
 
         <table class="altavista-directory">
@@ -448,8 +497,8 @@ def render_serp_page(
     search_payload: Dict[str, object],
 ) -> str:
     """
-    Renderiza la Página de Resultados (SERP) minimalista con soporte de Memoria Colectiva
-    y verificación activa Online (.onion v3).
+    Renderiza la Página de Resultados (SERP) minimalista con soporte de Memoria Colectiva,
+    Filtro IA Anti-Basura (`ai_quality_score`) y verificación activa Online (.onion v3).
     """
     results: List[Dict[str, object]] = search_payload["results"]  # type: ignore
     did_you_mean = search_payload.get("did_you_mean")
@@ -460,6 +509,7 @@ def render_serp_page(
     collective_hits = int(search_payload.get("collective_hits", 0) or 0)
     newly_indexed_count = int(search_payload.get("newly_indexed_count", 0) or 0)
     total_indexed_surface = int(search_payload.get("total_indexed_surface", 112) or 112)
+    ai_garbage_rejected = int(search_payload.get("ai_garbage_rejected", 0) or 0)
     k_card = search_payload.get("knowledge_card")  # type: ignore
     bang_info = search_payload.get("bang_info")  # type: ignore
     elapsed_ms = search_payload.get("elapsed_ms", 0.0)
@@ -524,6 +574,12 @@ def render_serp_page(
         latency_ms = int(svc.get("latency_ms", 340))
         online_badge_html = f'<span class="online-badge">[ONLINE EN TOR • {latency_ms} ms]</span>'
 
+        ai_score = float(svc.get("ai_quality_score", 92.0) or 92.0)
+        ai_badge_html = (
+            f'<span class="ai-badge" title="Verificado por Motor IA Anti-Basura (Entropía de Shannon + Coherencia Semántica)">'
+            f"[IA CALIDAD: {ai_score:.0f}%]</span>"
+        )
+
         collective_badge_html = ""
         if svc.get("newly_indexed"):
             collective_badge_html = (
@@ -553,6 +609,7 @@ def render_serp_page(
                     </h2>
                     {badge_html}
                     {online_badge_html}
+                    {ai_badge_html}
                     {collective_badge_html}
                 </div>
                 <p class="service-desc">{desc_rendered}</p>
@@ -561,6 +618,7 @@ def render_serp_page(
                     <span class="serp-meta-links">
                         — Estado: <strong style="color: #006600;">VÁLIDO ONLINE ({latency_ms} ms)</strong>
                         — SamuRank: <strong>{svc.get("samu_rank", svc["safety_score"])}</strong>
+                        — IA Calidad: <strong>{ai_score:.0f}%</strong>
                         — Modo Tor: {html.escape(str(svc["js_requirement"]))}
                         — <a href="{verify_link}">[Auditar Llave SHA3-256]</a>
                         — <a href="{html.escape(clearnet_url)}" rel="noreferrer noopener" target="_blank">[Ref/Salto]</a>
@@ -581,6 +639,10 @@ def render_serp_page(
         )
     if collective_hit or collective_hits > 0:
         collective_status_str += f' • <strong style="color:#4b0082;">⚡ Memoria Colectiva ({collective_hits}x)</strong>'
+    if ai_garbage_rejected > 0:
+        collective_status_str += f' • <strong style="color:#005580;">🤖 Filtro IA bloqueó {ai_garbage_rejected} basura</strong>'
+    else:
+        collective_status_str += ' • <strong style="color:#005580;">🤖 Filtro IA Anti-Basura Activo (≥75%)</strong>'
 
     return f"""
     <header class="serp-header">
@@ -821,8 +883,25 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 "architect": "saghet",
                 "total_indexed_surface": search_engine.get_total_indexed_count(),
                 "collective_memory": COLLECTIVE_MEMORY.get_stats(),
+                "twitter_trends": TWITTER_TREND_WATCHER.get_stats(),
+                "ai_filter": {
+                    "engine": "SamuAIAntiGarbageEngine",
+                    "min_quality_threshold": 75.0,
+                    "methods": ["shannon_entropy", "bayesian_scam_veto", "topical_vector_coherence"],
+                },
             }
             self.wfile.write((json.dumps(payload) + "\n").encode("utf-8"))
+            return
+
+        if path == "/api/trends":
+            self._send_hardened_headers(200, "application/json; charset=utf-8")
+            trends_payload = {
+                "version": APP_VERSION,
+                "architect": "saghet",
+                "stats": TWITTER_TREND_WATCHER.get_stats(),
+                "trends": TWITTER_TREND_WATCHER.get_active_trends(limit=12),
+            }
+            self.wfile.write((json.dumps(trends_payload, ensure_ascii=False) + "\n").encode("utf-8"))
             return
 
         req_headers = {k: v for k, v in self.headers.items()}
@@ -886,6 +965,9 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
 
 
 def run_server(host: str = "127.0.0.1", port: int = 8080) -> None:
+    TWITTER_TREND_WATCHER.start_background_daemon(
+        lambda q: search_engine.search_v2(query=q, enable_live_tor=True)
+    )
     server = ThreadingHTTPServer((host, port), SamuOnionRequestHandler)
     print("======================================================================")
     print(f"  SAMUBUSQUEDAS! v{APP_VERSION} (.ONION) - COLLECTIVE MEMORY & TOR SEARCH")

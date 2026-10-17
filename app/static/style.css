@@ -501,3 +501,59 @@ mark.hl {
   font-weight: bold;
 }
 
+/* ==========================================================================
+   RADAR EN TIEMPO REAL DE TWITTER/X + FILTRO IA ANTI-BASURA (v1.99.4)
+   ========================================================================== */
+.trends-ai-box {
+  background-color: #eef8ff;
+  border: 1px solid #5c9ded;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.trends-ai-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  color: #003366;
+  margin-bottom: 6px;
+  gap: 6px;
+}
+
+.trend-ai-pill {
+  display: inline-block;
+  background-color: #ffffff;
+  border: 1px solid #1d9bf0;
+  color: #003366;
+  padding: 2px 8px;
+  font-size: 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.trend-ai-pill:hover {
+  background-color: #e1f2fe;
+  text-decoration: underline;
+}
+
+.trend-ai-score {
+  color: #006644;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+}
+
+.ai-badge {
+  font-size: 11px;
+  font-family: "Courier New", Courier, monospace;
+  background-color: #e6f7ff;
+  color: #004d73;
+  border: 1px solid #3399cc;
+  padding: 0 5px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+
