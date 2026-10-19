@@ -8,6 +8,12 @@ import socket
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "app"))
+try:
+    from version import ENGINE_VERSION
+except ImportError:
+    ENGINE_VERSION = "1.99.12"
+
 
 def is_port_open(host: str, port: int) -> bool:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,7 +29,7 @@ def is_port_open(host: str, port: int) -> bool:
 def main() -> None:
     print("=" * 72)
     print("  SamuBusquedas (.onion v3) — Diagnostico de Estado y Salud del Servicio")
-    print("  Arquitecto: saghet | Version: 1.99.11")
+    print(f"  Arquitecto: saghet | Version: {ENGINE_VERSION}")
     print("=" * 72)
     print()
 
