@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tor \
     ca-certificates \
     procps \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --no-cache-dir cryptography
 
 WORKDIR /app
 

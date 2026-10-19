@@ -68,9 +68,20 @@ def verify_onion_keypair_and_render_config() -> Dict[str, object]:
         with open(entrypoint_path, "r", encoding="utf-8") as fh:
             entrypoint_text = fh.read()
 
+    torrc_cloud_path = os.path.join(REPO_ROOT, "config", "torrc.cloud.conf")
+    torrc_cloud_text = ""
+    if os.path.exists(torrc_cloud_path):
+        with open(torrc_cloud_path, "r", encoding="utf-8") as fh:
+            torrc_cloud_text = fh.read()
+
     dockerfile_present = os.path.exists(dockerfile_path)
     render_autodeploy = "autoDeploy: true" in render_yaml_text and "healthCheckPath: /healthz" in render_yaml_text
     entrypoint_supervises_tor = "debian-tor" in entrypoint_text and "tor -f /etc/tor/torrc" in entrypoint_text
+    cloud_hs_enabled = (
+        "HiddenServiceDir /var/lib/tor/samubusquedas_hs" in torrc_cloud_text
+        and "HiddenServicePort 80" in torrc_cloud_text
+        and "HiddenServicePort 443" in torrc_cloud_text
+    )
 
     all_ok = bool(
         hostname_val == OFFICIAL_ONION_HOST
@@ -79,6 +90,7 @@ def verify_onion_keypair_and_render_config() -> Dict[str, object]:
         and dockerfile_present
         and render_autodeploy
         and entrypoint_supervises_tor
+        and cloud_hs_enabled
     )
 
     return {
@@ -92,6 +104,7 @@ def verify_onion_keypair_and_render_config() -> Dict[str, object]:
         "dockerfile_present": dockerfile_present,
         "render_autodeploy_enabled": render_autodeploy,
         "entrypoint_supervises_tor": entrypoint_supervises_tor,
+        "cloud_hs_enabled": cloud_hs_enabled,
     }
 
 
