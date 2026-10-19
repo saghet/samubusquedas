@@ -968,9 +968,13 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         status_code: int = 200,
         content_type: str = "text/html; charset=utf-8",
         set_cookie: Optional[str] = None,
+        content_length: Optional[int] = None,
     ) -> None:
         self.send_response(status_code)
         self.send_header("Content-Type", content_type)
+        if content_length is not None:
+            self.send_header("Content-Length", str(content_length))
+        self.send_header("Connection", "close")
         self.send_header("X-Architected-By", "saghet")
         self.send_header("X-Builder-Handle", "saghet")
         self.send_header("X-Engine-Version", APP_VERSION)
@@ -992,6 +996,25 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Set-Cookie", set_cookie)
         self.end_headers()
 
+    def _send_response_bytes(
+        self,
+        status_code: int,
+        content_bytes: bytes,
+        content_type: str = "text/html; charset=utf-8",
+        set_cookie: Optional[str] = None,
+    ) -> None:
+        self._send_hardened_headers(
+            status_code=status_code,
+            content_type=content_type,
+            set_cookie=set_cookie,
+            content_length=len(content_bytes),
+        )
+        self.wfile.write(content_bytes)
+        try:
+            self.wfile.flush()
+        except Exception:
+            pass
+
     def do_HEAD(self) -> None:
         self._send_hardened_headers(200)
 
@@ -1006,8 +1029,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             if os.path.exists(css_path):
                 with open(css_path, "rb") as f:
                     content = f.read()
-                self._send_hardened_headers(200, "text/css; charset=utf-8")
-                self.wfile.write(content)
+                self._send_response_bytes(200, content, "text/css; charset=utf-8")
                 return
 
         if path == "/static/btc_qr.png":
@@ -1015,32 +1037,26 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             if os.path.exists(qr_path):
                 with open(qr_path, "rb") as f:
                     content = f.read()
-                self._send_hardened_headers(200, "image/png")
-                self.wfile.write(content)
+                self._send_response_bytes(200, content, "image/png")
                 return
 
         if path == "/canary.txt":
-            self._send_hardened_headers(200, "text/plain; charset=utf-8")
-            self.wfile.write(CANARY_TEXT.encode("utf-8"))
+            self._send_response_bytes(200, CANARY_TEXT.encode("utf-8"), "text/plain; charset=utf-8")
             return
 
         if path in ("/security.txt", "/.well-known/security.txt"):
-            self._send_hardened_headers(200, "text/plain; charset=utf-8")
-            self.wfile.write(SECURITY_TXT.encode("utf-8"))
+            self._send_response_bytes(200, SECURITY_TXT.encode("utf-8"), "text/plain; charset=utf-8")
             return
 
         if path == "/humans.txt":
-            self._send_hardened_headers(200, "text/plain; charset=utf-8")
-            self.wfile.write(HUMANS_TXT.encode("utf-8"))
+            self._send_response_bytes(200, HUMANS_TXT.encode("utf-8"), "text/plain; charset=utf-8")
             return
 
         if path == "/robots.txt":
-            self._send_hardened_headers(200, "text/plain; charset=utf-8")
-            self.wfile.write(ROBOTS_TXT.encode("utf-8"))
+            self._send_response_bytes(200, ROBOTS_TXT.encode("utf-8"), "text/plain; charset=utf-8")
             return
 
         if path in ("/health", "/healthz"):
-            self._send_hardened_headers(200, "application/json; charset=utf-8")
             payload = {
                 "status": "ok",
                 "version": APP_VERSION,
@@ -1057,18 +1073,17 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                     "methods": ["shannon_entropy", "bayesian_scam_veto", "topical_vector_coherence"],
                 },
             }
-            self.wfile.write((json.dumps(payload) + "\n").encode("utf-8"))
+            self._send_response_bytes(200, (json.dumps(payload) + "\n").encode("utf-8"), "application/json; charset=utf-8")
             return
 
         if path == "/api/trends":
-            self._send_hardened_headers(200, "application/json; charset=utf-8")
             trends_payload = {
                 "version": APP_VERSION,
                 "architect": "saghet",
                 "stats": TWITTER_TREND_WATCHER.get_stats(),
                 "trends": TWITTER_TREND_WATCHER.get_active_trends(limit=12),
             }
-            self.wfile.write((json.dumps(trends_payload, ensure_ascii=False) + "\n").encode("utf-8"))
+            self._send_response_bytes(200, (json.dumps(trends_payload, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
             return
 
         req_headers = {k: v for k, v in self.headers.items()}
@@ -1100,8 +1115,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                     body,
                     search_count=current_cnt,
                 )
-                self._send_hardened_headers(200, set_cookie=cookie_hdr)
-                self.wfile.write(page.encode("utf-8"))
+                self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
                 return
 
             gate_eval = DONATION_TRACKER.register_search_and_evaluate_gate(
@@ -1140,8 +1154,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                     meta_refresh_url=target_url,
                     meta_refresh_seconds=DONATION_GATE_SECONDS,
                 )
-                self._send_hardened_headers(200, set_cookie=cookie_hdr)
-                self.wfile.write(gate_page.encode("utf-8"))
+                self._send_response_bytes(200, gate_page.encode("utf-8"), set_cookie=cookie_hdr)
                 return
 
             actual_q = "" if q.strip().lower() == "all" else q
@@ -1168,8 +1181,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 body,
                 search_count=current_cnt,
             )
-            self._send_hardened_headers(200, set_cookie=cookie_hdr)
-            self.wfile.write(page.encode("utf-8"))
+            self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
             return
 
         current_cnt = DONATION_TRACKER.get_search_count(session_id)
@@ -1184,8 +1196,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 body,
                 search_count=current_cnt,
             )
-            self._send_hardened_headers(200, set_cookie=cookie_hdr)
-            self.wfile.write(page.encode("utf-8"))
+            self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
             return
 
         if path == "/proteccion":
@@ -1197,8 +1208,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 body,
                 search_count=current_cnt,
             )
-            self._send_hardened_headers(200, set_cookie=cookie_hdr)
-            self.wfile.write(page.encode("utf-8"))
+            self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
             return
 
         not_found_body = """
@@ -1208,8 +1218,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         </div>
         """
         page = render_layout("404 No Encontrado", "", security_eval, not_found_body, search_count=current_cnt)
-        self._send_hardened_headers(404, set_cookie=cookie_hdr)
-        self.wfile.write(page.encode("utf-8"))
+        self._send_response_bytes(404, page.encode("utf-8"), set_cookie=cookie_hdr)
 
 
 def ensure_onion_ssl_certificates() -> Tuple[Optional[str], Optional[str]]:
