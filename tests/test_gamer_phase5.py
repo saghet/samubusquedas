@@ -52,7 +52,7 @@ class TestGamerPhase5UIAndHTTP(unittest.TestCase):
 
     def test_02_home_view_and_navigation(self):
         """Verifica la portada con el buscador principal y las 9 secciones en la barra de navegación."""
-        status, html_content, _ = self._get("/")
+        status, html_content, _ = self._get("/gamer")
         self.assertEqual(status, 200)
         self.assertIn("GAMER SEARCH ENGINE", html_content)
         self.assertIn("/juegos", html_content)
@@ -64,7 +64,7 @@ class TestGamerPhase5UIAndHTTP(unittest.TestCase):
 
     def test_03_smart_search_unified_view(self):
         """Verifica la búsqueda inteligente unificada con tarjeta de análisis de IA."""
-        status, html_content, _ = self._get("/?q=Zelda+Tears+of+the+Kingdom")
+        status, html_content, _ = self._get("/gamer?q=Zelda+Tears+of+the+Kingdom")
         self.assertEqual(status, 200)
         self.assertIn("Inteligencia Semántica Gamer", html_content)
         self.assertIn("Tears of the Kingdom", html_content)

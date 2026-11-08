@@ -193,11 +193,11 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
                 )
                 self.assertTrue(item.get("online_verified"))
 
-    def test_IR11_version_1_99_14_top_left_and_online_badges_in_serp(self) -> None:
-        """[IR-11] Verifica la versión v1.99.14 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
+    def test_IR11_version_1_99_15_top_left_and_online_badges_in_serp(self) -> None:
+        """[IR-11] Verifica la versión v1.99.15 en la esquina superior izquierda y los badges [ONLINE EN TOR], [IA CALIDAD] y [MEMORIA COLECTIVA]."""
         from version import ENGINE_VERSION
 
-        self.assertEqual(ENGINE_VERSION, "1.99.14")
+        self.assertEqual(ENGINE_VERSION, "1.99.15")
         url = f"http://127.0.0.1:{self.port}/?q=monero"
         with urllib.request.urlopen(url) as resp:
             self.assertEqual(resp.headers.get("X-Engine-Version"), ENGINE_VERSION)
@@ -329,7 +329,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/api/trends") as resp:
             self.assertEqual(resp.status, 200)
             trends_json = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(trends_json["version"], "1.99.14")
+            self.assertEqual(trends_json["version"], "1.99.15")
             self.assertGreaterEqual(len(trends_json["trends"]), 5)
 
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/") as resp:
@@ -419,7 +419,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         with urllib.request.urlopen(f"http://127.0.0.1:{self.port}/healthz") as resp:
             self.assertEqual(resp.status, 200)
             hz = json.loads(resp.read().decode("utf-8"))
-            self.assertEqual(hz["version"], "1.99.14")
+            self.assertEqual(hz["version"], "1.99.15")
             self.assertIn("onion_guardian", hz)
             self.assertEqual(hz["onion_guardian"]["intro_points_configured"], 8)
 
@@ -434,7 +434,7 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
 
         audit = verify_onion_keypair_and_render_config()
         self.assertTrue(audit["ok"], f"Fallo en auditoría Render/.onion: {audit}")
-        self.assertEqual(audit["version"], "1.99.14")
+        self.assertEqual(audit["version"], "1.99.15")
         self.assertEqual(
             audit["official_onion_url"],
             "http://x4wgcuog7p6i3gh5t2mcshhfe5cjlkiygl24vf4ac6xmqm5g62jkehyd.onion",
@@ -455,12 +455,12 @@ class TestSamuBusquedasV2CertificationSuite(unittest.TestCase):
         alive = ONION_GUARDIAN.ensure_tor_daemon_running(force_restart=False)
         self.assertTrue(alive)
 
-        # 2. Verificar que torrc.cloud.conf no sobreescriba los descriptores de samubusquedas_hs
+        # 2. Verificar que torrc.cloud.conf configure el HiddenService oficial 24/7 en la nube
         repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         cloud_cfg_path = os.path.join(repo_root, "config", "torrc.cloud.conf")
         with open(cloud_cfg_path, "r", encoding="utf-8") as fh:
             cloud_txt = fh.read()
-        self.assertNotIn("HiddenServiceDir /var/lib/tor/samubusquedas_hs", cloud_txt)
+        self.assertIn("HiddenServiceDir /var/lib/tor/samubusquedas_hs", cloud_txt)
         self.assertIn("CircuitBuildTimeout 60", cloud_txt)
 
     def test_IR21_mobile_universal_availability_and_onion_location(self) -> None:

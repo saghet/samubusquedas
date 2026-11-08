@@ -966,7 +966,7 @@ class SamuSearchEngine:
             filter_params.append(q_info["tier_filter"])
 
         if eff_cat and str(eff_cat).strip() != "Todas":
-            base_filters_sql += " AND LOWER(s.norm_searchable) LIKE ?"
+            base_filters_sql += " AND LOWER(s.category) LIKE ?"
             filter_params.append(f"%{normalize_accents(str(eff_cat).strip().lower())}%")
 
         if eff_tax:

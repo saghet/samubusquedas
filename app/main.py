@@ -415,6 +415,7 @@ def render_layout(
             <span class="version-corner-badge" title="SamuBusquedas Versión {APP_VERSION} por saghet">v{APP_VERSION}</span>
             <a href="/">Buscador</a>
             <a href="/?q=all">Directorio Verificado Online ({total_indexed})</a>
+            <a href="/juegos">Catálogo Gamer</a>
             <a href="/verificar">Escáner Anti-Phishing</a>
             <a href="/proteccion">Guía OPSEC</a>
             <a href="/humans.txt">humans.txt (saghet)</a>
@@ -1093,6 +1094,16 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self._send_response_bytes(200, (json.dumps(payload) + "\n").encode("utf-8"), "application/json; charset=utf-8")
             return
 
+        if path == "/api/trends":
+            trends_payload = {
+                "version": APP_VERSION,
+                "architect": "saghet",
+                "stats": TWITTER_TREND_WATCHER.get_stats(),
+                "trends": TWITTER_TREND_WATCHER.get_active_trends(limit=12),
+            }
+            self._send_response_bytes(200, (json.dumps(trends_payload, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
+            return
+
         # --- API ROUTES ---
         if path == "/api/search":
             q = query_params.get("q", [""])[0]
@@ -1111,10 +1122,108 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self._send_response_bytes(200, (json.dumps(stats, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
             return
 
+        req_headers = {k: v for k, v in self.headers.items()}
+        security_eval = evaluate_client_connection_security(req_headers)
+        client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
+        session_id, is_new_session = DONATION_TRACKER.resolve_session_id(req_headers, client_ip=client_ip)
+        cookie_hdr = (
+            f"{COOKIE_NAME}={session_id}; Path=/; Max-Age=43200; HttpOnly; SameSite=Lax"
+            if is_new_session
+            else None
+        )
+        current_cnt = DONATION_TRACKER.get_search_count(session_id)
         filter_opts = GAMER_SERVICE.get_filter_options()
 
-        # --- SECCIÓN 1: BUSCADOR PRINCIPAL Y RESULTADOS UNIFICADOS CON IA ---
+        # --- SAMUBUSQUEDAS PORTADA PRINCIPAL (ESTILO RETRO GOOGLE 1995 / 1998 PERMANENTE) ---
         if path == "/":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            cat = query_params.get("cat", ["Todas"])[0][:80]
+            tax = query_params.get("tax", [""])[0][:40]
+            scope = query_params.get("scope", ["all"])[0][:20]
+            only_safest = query_params.get("safest", ["0"])[0] == "1"
+            dpass = query_params.get("dpass", ["0"])[0] == "1"
+
+            if not q.strip() and (not cat or cat == "Todas") and not tax.strip():
+                categories = search_engine.get_categories()
+                body = render_classic_home_page(categories)
+                page = render_layout(
+                    "Buscador de la Deep Web",
+                    "search",
+                    security_eval,
+                    body,
+                    search_count=current_cnt,
+                )
+                self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
+                return
+
+            gate_eval = DONATION_TRACKER.register_search_and_evaluate_gate(
+                session_id=session_id,
+                is_real_search=True,
+                dpass_completed=dpass,
+            )
+            current_cnt = int(gate_eval["search_count"])
+
+            if gate_eval["should_gate"]:
+                forward_params: List[Tuple[str, str]] = []
+                if q:
+                    forward_params.append(("q", q))
+                if cat and cat != "Todas":
+                    forward_params.append(("cat", cat))
+                if tax:
+                    forward_params.append(("tax", tax))
+                if scope and scope != "all":
+                    forward_params.append(("scope", scope))
+                if only_safest:
+                    forward_params.append(("safest", "1"))
+                forward_params.append(("dpass", "1"))
+                target_url = "/?" + urllib.parse.urlencode(forward_params)
+
+                gate_body = render_aggressive_donation_gate_page(
+                    query=q or cat or tax,
+                    target_url=target_url,
+                    search_count=current_cnt,
+                )
+                gate_page = render_layout(
+                    f"Apoya a SamuBusquedas ({DONATION_GATE_SECONDS}s) — {q or cat}",
+                    "search",
+                    security_eval,
+                    gate_body,
+                    search_count=current_cnt,
+                    meta_refresh_url=target_url,
+                    meta_refresh_seconds=DONATION_GATE_SECONDS,
+                )
+                self._send_response_bytes(200, gate_page.encode("utf-8"), set_cookie=cookie_hdr)
+                return
+
+            actual_q = "" if q.strip().lower() == "all" else q
+            include_unverified = scope != "verified"
+            search_payload = search_engine.search_v2(
+                query=actual_q,
+                category=cat,
+                taxonomy=tax if tax else None,
+                only_safest_js=only_safest,
+                include_unverified=include_unverified,
+            )
+            body = render_serp_page(
+                actual_q,
+                cat,
+                tax,
+                scope,
+                search_payload,
+                search_count=current_cnt,
+            )
+            page = render_layout(
+                f"{q or cat} — Buscar con SamuBusquedas",
+                "search",
+                security_eval,
+                body,
+                search_count=current_cnt,
+            )
+            self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
+            return
+
+        # --- PORTAL GAMER SEARCH ENGINE ---
+        if path in ("/gamer", "/portal-gamer"):
             q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
             plat = query_params.get("platform", ["Todas"])[0]
             if q.strip():
@@ -1245,7 +1354,6 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
                 self._send_response_bytes(404, page.encode("utf-8"))
             return
 
-        current_cnt = DONATION_TRACKER.get_search_count(session_id)
         if path == "/verificar":
             onion_param = query_params.get("onion", [""])[0][:MAX_QUERY_LEN]
             report = search_engine.inspect_onion_url(onion_param) if onion_param.strip() else None
