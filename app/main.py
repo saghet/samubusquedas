@@ -40,6 +40,23 @@ from security_shield import evaluate_client_connection_security
 from verifier import audit_catalog_integrity
 from version import ENGINE_VERSION
 
+# Gamer Search Engine Core Modules
+from gamer_service import GAMER_SERVICE
+from gamer_security import GAMER_SECURITY
+from gamer_connectors import OSINT_AGGREGATOR
+from gamer_views import (
+    render_layout as render_gamer_layout,
+    render_home_view,
+    render_smart_search_results_view,
+    render_game_detail_view,
+    render_favorites_history_view,
+    render_games_module_view,
+    render_cheats_module_view,
+    render_preservation_module_view,
+    render_communities_module_view,
+    render_osint_investigation_view,
+)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
@@ -981,7 +998,7 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
         self.send_header("X-Engine-Signature", f"saghet-samubusquedas-v{APP_VERSION}-ed25519")
         self.send_header(
             "Content-Security-Policy",
-            "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
+            "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
         )
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("X-Content-Type-Options", "nosniff")
@@ -1076,112 +1093,156 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self._send_response_bytes(200, (json.dumps(payload) + "\n").encode("utf-8"), "application/json; charset=utf-8")
             return
 
-        if path == "/api/trends":
-            trends_payload = {
-                "version": APP_VERSION,
-                "architect": "saghet",
-                "stats": TWITTER_TREND_WATCHER.get_stats(),
-                "trends": TWITTER_TREND_WATCHER.get_active_trends(limit=12),
-            }
-            self._send_response_bytes(200, (json.dumps(trends_payload, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
+        # --- API ROUTES ---
+        if path == "/api/search":
+            q = query_params.get("q", [""])[0]
+            plat = query_params.get("platform", ["Todas"])[0]
+            results = GAMER_SERVICE.search_smart(q, platform_override=plat)
+            self._send_response_bytes(200, (json.dumps(results, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
             return
 
-        req_headers = {k: v for k, v in self.headers.items()}
-        security_eval = evaluate_client_connection_security(req_headers)
-        client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
-        session_id, is_new_session = DONATION_TRACKER.resolve_session_id(req_headers, client_ip=client_ip)
-        cookie_hdr = (
-            f"{COOKIE_NAME}={session_id}; Path=/; Max-Age=43200; HttpOnly; SameSite=Lax"
-            if is_new_session
-            else None
-        )
+        if path == "/api/filters":
+            opts = GAMER_SERVICE.get_filter_options()
+            self._send_response_bytes(200, (json.dumps(opts, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
+            return
 
+        if path == "/api/stats":
+            stats = GAMER_SERVICE.db.get_database_stats()
+            self._send_response_bytes(200, (json.dumps(stats, ensure_ascii=False) + "\n").encode("utf-8"), "application/json; charset=utf-8")
+            return
+
+        filter_opts = GAMER_SERVICE.get_filter_options()
+
+        # --- SECCIÓN 1: BUSCADOR PRINCIPAL Y RESULTADOS UNIFICADOS CON IA ---
         if path == "/":
             q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
-            cat = query_params.get("cat", ["Todas"])[0][:80]
-            tax = query_params.get("tax", [""])[0][:40]
-            scope = query_params.get("scope", ["all"])[0][:20]
-            only_safest = query_params.get("safest", ["0"])[0] == "1"
-            dpass = query_params.get("dpass", ["0"])[0] == "1"
+            plat = query_params.get("platform", ["Todas"])[0]
+            if q.strip():
+                smart_res = GAMER_SERVICE.search_smart(q, platform_override=plat)
+                body = render_smart_search_results_view(q, smart_res, platform_filter=plat)
+                page = render_gamer_layout(f"{q} — Gamer Search Engine", "home", body)
+            else:
+                stats = GAMER_SERVICE.db.get_database_stats()
+                featured_games = GAMER_SERVICE.db.search_games(limit=6)
+                featured_cheats = GAMER_SERVICE.db.search_cheats(limit=4)
+                top_communities = GAMER_SERVICE.db.search_communities(limit=4)
+                body = render_home_view(stats, featured_games, featured_cheats, top_communities)
+                page = render_gamer_layout("Buscador Inteligente de Videojuegos & Comunidades Gamer", "home", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
 
-            if not q.strip() and (not cat or cat == "Todas") and not tax.strip():
-                current_cnt = DONATION_TRACKER.get_search_count(session_id)
-                categories = search_engine.get_categories()
-                body = render_classic_home_page(categories)
-                page = render_layout(
-                    "Buscador de la Deep Web",
-                    "search",
-                    security_eval,
-                    body,
-                    search_count=current_cnt,
-                )
-                self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
-                return
+        # --- SECCIÓN 2: VIDEOJUEGOS ---
+        if path == "/juegos":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            genre = query_params.get("genre", ["Todos"])[0]
+            year = query_params.get("year", ["Todos"])[0]
+            sort_by = query_params.get("sort", ["relevance"])[0]
+            cur_f = {"platform": plat, "genre": genre, "year": year, "sort_by": sort_by}
+            payload = GAMER_SERVICE.search_games_module(q, platform=plat, genre=genre, year=year, sort_by=sort_by)
+            body = render_games_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Videojuegos — Nintendo, PS5, Xbox Series X/S", "juegos", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
 
-            gate_eval = DONATION_TRACKER.register_search_and_evaluate_gate(
-                session_id=session_id,
-                is_real_search=True,
-                dpass_completed=dpass,
-            )
-            current_cnt = int(gate_eval["search_count"])
+        # --- SECCIÓN 3: TRUCOS Y SECRETOS ---
+        if path == "/trucos":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            cat = query_params.get("category", ["Todas"])[0]
+            cur_f = {"platform": plat, "category": cat}
+            payload = GAMER_SERVICE.search_cheats_module(q, platform=plat, category=cat)
+            body = render_cheats_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Buscador de Trucos, Glitches y Secretos", "trucos", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
 
-            if gate_eval["should_gate"]:
-                forward_params: List[Tuple[str, str]] = []
-                if q:
-                    forward_params.append(("q", q))
-                if cat and cat != "Todas":
-                    forward_params.append(("cat", cat))
-                if tax:
-                    forward_params.append(("tax", tax))
-                if scope and scope != "all":
-                    forward_params.append(("scope", scope))
-                if only_safest:
-                    forward_params.append(("safest", "1"))
-                forward_params.append(("dpass", "1"))
-                target_url = "/?" + urllib.parse.urlencode(forward_params)
+        # --- SECCIÓN 4: PRESERVACIÓN Y ROMS LEGALES ---
+        if path == "/preservacion":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            item_type = query_params.get("type", ["Todos"])[0]
+            cur_f = {"platform": plat, "item_type": item_type}
+            payload = GAMER_SERVICE.search_preservation_module(q, platform=plat, item_type=item_type, legal_only=True)
+            body = render_preservation_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Preservación Digital, ROMs Legales & Homebrew", "preservacion", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
 
-                gate_body = render_aggressive_donation_gate_page(
-                    query=q or cat or tax,
-                    target_url=target_url,
-                    search_count=current_cnt,
-                )
-                gate_page = render_layout(
-                    f"Apoya a SamuBusquedas ({DONATION_GATE_SECONDS}s) — {q or cat}",
-                    "search",
-                    security_eval,
-                    gate_body,
-                    search_count=current_cnt,
-                    meta_refresh_url=target_url,
-                    meta_refresh_seconds=DONATION_GATE_SECONDS,
-                )
-                self._send_response_bytes(200, gate_page.encode("utf-8"), set_cookie=cookie_hdr)
-                return
+        # --- SECCIÓN 5: EMULADORES OFICIALES ---
+        if path == "/emuladores":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            cur_f = {"platform": plat, "item_type": "emulator"}
+            payload = GAMER_SERVICE.search_preservation_module(q, platform=plat, item_type="emulator", legal_only=True)
+            body = render_preservation_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Emuladores Oficiales Verificados (GPL / MIT)", "emuladores", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
 
-            actual_q = "" if q.strip().lower() == "all" else q
-            include_unverified = scope != "verified"
-            search_payload = search_engine.search_v2(
-                query=actual_q,
-                category=cat,
-                taxonomy=tax if tax else None,
-                only_safest_js=only_safest,
-                include_unverified=include_unverified,
-            )
-            body = render_serp_page(
-                actual_q,
-                cat,
-                tax,
-                scope,
-                search_payload,
-                search_count=current_cnt,
-            )
-            page = render_layout(
-                f"{q or cat} - Buscar con SamuBusquedas",
-                "search",
-                security_eval,
-                body,
-                search_count=current_cnt,
-            )
-            self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
+        # --- SECCIÓN 6: MODS & PARCHES ---
+        if path == "/mods":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            cur_f = {"platform": plat, "item_type": "translation_patch"}
+            payload = GAMER_SERVICE.search_preservation_module(q, platform=plat, item_type="translation_patch", legal_only=True)
+            body = render_preservation_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Mods, Parches de Traducción y Mejoras", "mods", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
+
+        # --- SECCIÓN 7: COMUNIDADES GAMER (PRIORITARIO) ---
+        if path == "/comunidades":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            p_type = query_params.get("type", ["Todos"])[0]
+            cur_f = {"platform": plat, "platform_type": p_type}
+            payload = GAMER_SERVICE.search_communities_module(q, platform=plat, platform_type=p_type)
+            body = render_communities_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Buscador de Comunidades Gamer (Discord, Reddit, Foros)", "comunidades", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
+
+        # --- SECCIÓN 8: GUÍAS COMPLETAS Y 100% ---
+        if path == "/guias":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            plat = query_params.get("platform", ["Todas"])[0]
+            cur_f = {"platform": plat, "category": "walkthroughs"}
+            payload = GAMER_SERVICE.search_cheats_module(q, platform=plat, category="walkthroughs")
+            body = render_cheats_module_view(q, payload, filter_opts, cur_f)
+            page = render_gamer_layout("Guías Completas y Walkthroughs al 100%", "guias", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
+
+        # --- SECCIÓN 9: INVESTIGACIÓN AVANZADA OSINT ---
+        if path == "/investigacion":
+            q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
+            osint_payload = OSINT_AGGREGATOR.search_all(q) if q.strip() else {"query": "", "results": [], "total": 0}
+            body = render_osint_investigation_view(q, osint_payload)
+            page = render_gamer_layout("Investigación Avanzada OSINT — Fuentes Abiertas", "investigacion", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
+
+        # --- SECCIÓN 10: FAVORITOS E HISTORIAL ---
+        if path == "/favoritos":
+            favs = GAMER_SERVICE.db.get_favorites()
+            hist = GAMER_SERVICE.db.get_search_history(limit=25)
+            body = render_favorites_history_view(favs, hist)
+            page = render_gamer_layout("Favoritos e Historial de Búsquedas", "favoritos", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
+
+        # --- FICHA TÉCNICA Y COMPARADOR DE VERSIONES ---
+        if path == "/juego":
+            game_id = query_params.get("id", [""])[0]
+            detail = GAMER_SERVICE.get_game_detail(game_id)
+            if detail:
+                body = render_game_detail_view(detail)
+                page = render_gamer_layout(f"{detail['game']['title']} — Ficha Técnica", "juegos", body)
+                self._send_response_bytes(200, page.encode("utf-8"))
+            else:
+                page = render_gamer_layout("Videojuego No Encontrado", "juegos", '<div class="security-alert-box">Videojuego no encontrado en el catálogo.</div>')
+                self._send_response_bytes(404, page.encode("utf-8"))
             return
 
         current_cnt = DONATION_TRACKER.get_search_count(session_id)
