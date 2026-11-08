@@ -1,3 +1,13 @@
+---
+title: Gamer Search Engine
+emoji: 🎮
+colorFrom: purple
+colorTo: indigo
+sdk: docker
+app_port: 8080
+pinned: false
+---
+
 # GAMER SEARCH ENGINE
 ## Motor de Búsqueda Inteligente de Videojuegos, Trucos, Preservación y Comunidades Gamer
 
