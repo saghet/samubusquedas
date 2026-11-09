@@ -1,0 +1,210 @@
+[
+  {
+    "index": 1,
+    "game": "Grand Theft Auto V",
+    "query": "GTA V trucos secretos",
+    "elapsed_ms": 5976.4,
+    "total_hits": 9,
+    "categories_covered": "Juegos, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "wikipedia, wikidata, github",
+    "avg_quality_score": 56.5,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://es.wikipedia.org/wiki/Grand_Theft_Auto_V",
+      "https://www.speedrun.com/gtav",
+      "https://es.wikipedia.org/wiki/Grand_Theft_Auto_VI"
+    ],
+    "findings_count": 3
+  },
+  {
+    "index": 2,
+    "game": "Grand Theft Auto VI",
+    "query": "GTA VI trailer analysis",
+    "elapsed_ms": 5044.8,
+    "total_hits": 9,
+    "categories_covered": "Juegos, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "steam_community, wikipedia, wikidata",
+    "avg_quality_score": 62.7,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://es.wikipedia.org/wiki/Grand_Theft_Auto_VI",
+      "https://www.speedrun.com/gtavc",
+      "https://es.wikipedia.org/wiki/Grand_Theft_Auto:_Vice_City"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 3,
+    "game": "Grand Theft Auto: San Andreas",
+    "query": "GTA San Andreas trucos ps2",
+    "elapsed_ms": 4986.9,
+    "total_hits": 8,
+    "categories_covered": "Juegos, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "steam_community, github, wikidata",
+    "avg_quality_score": 63.7,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://es.wikipedia.org/wiki/Grand_Theft_Auto:_San_Andreas",
+      "https://www.speedrun.com/gtasa",
+      "http://www.wikidata.org/entity/Q55675394"
+    ],
+    "findings_count": 7
+  },
+  {
+    "index": 4,
+    "game": "Grand Theft Auto: Vice City",
+    "query": "GTA Vice City cheat codes",
+    "elapsed_ms": 4926.8,
+    "total_hits": 12,
+    "categories_covered": "Juegos, Preservación/Código, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "steam_community, wikidata, internet_archive",
+    "avg_quality_score": 65.5,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://en.wikipedia.org/wiki/Grand_Theft_Auto:_Vice_City",
+      "https://github.com/ViceCity63/vice-hub",
+      "https://www.speedrun.com/gtavc"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 5,
+    "game": "The Legend of Zelda: Tears of the Kingdom",
+    "query": "Zelda Tears of the Kingdom secrets",
+    "elapsed_ms": 8257.5,
+    "total_hits": 10,
+    "categories_covered": "Juegos, Trucos/Guías, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "speedrun_com, steam_community, wikidata",
+    "avg_quality_score": 77.4,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://www.reddit.com/r/tearsofthekingdom/",
+      "http://www.wikidata.org/entity/Q134726574",
+      "https://es.wikipedia.org/wiki/The_Legend_of_Zelda:_Tears_of_the_Kingdom"
+    ],
+    "findings_count": 2
+  },
+  {
+    "index": 6,
+    "game": "The Legend of Zelda: Breath of the Wild",
+    "query": "Zelda BOTW shrines walkthrough",
+    "elapsed_ms": 7885.2,
+    "total_hits": 3,
+    "categories_covered": "Juegos, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "steam_community, wikidata, github",
+    "avg_quality_score": 52.7,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://www.speedrun.com/botw"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 7,
+    "game": "The Legend of Zelda: Ocarina of Time",
+    "query": "Zelda Ocarina of Time decompilation GitHub",
+    "elapsed_ms": 6657.2,
+    "total_hits": 8,
+    "categories_covered": "Juegos, Preservación/Código, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "wikidata, steam_community, github",
+    "avg_quality_score": 72.0,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://www.speedrun.com/ootmq",
+      "https://www.speedrun.com/oot"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 8,
+    "game": "The Legend of Zelda: Twilight Princess",
+    "query": "Zelda Twilight Princess decompilation zeldaret",
+    "elapsed_ms": 6617.4,
+    "total_hits": 3,
+    "categories_covered": "Juegos",
+    "successful_providers": 10,
+    "providers_sample": "speedrun_com, wikidata, steam_community",
+    "avg_quality_score": 73.2,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://es.wikipedia.org/wiki/The_Legend_of_Zelda:_Twilight_Princess",
+      "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Twilight_Princess"
+    ],
+    "findings_count": 2
+  },
+  {
+    "index": 9,
+    "game": "The Legend of Zelda: Skyward Sword",
+    "query": "Zelda Skyward Sword HD Switch",
+    "elapsed_ms": 7472.8,
+    "total_hits": 2,
+    "categories_covered": "Juegos, Preservación/Código",
+    "successful_providers": 10,
+    "providers_sample": "speedrun_com, wikidata, steam_community",
+    "avg_quality_score": 70.2,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Skyward_Sword",
+      "https://github.com/Libra2393/SSWeb-Editor"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 10,
+    "game": "Super Mario Odyssey",
+    "query": "Super Mario Odyssey power moons guide",
+    "elapsed_ms": 8086.7,
+    "total_hits": 6,
+    "categories_covered": "Juegos, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "speedrun_com, steam_community, github",
+    "avg_quality_score": 70.4,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://es.wikipedia.org/wiki/Super_Mario_Odyssey",
+      "https://en.wikipedia.org/wiki/Super_Mario_Odyssey"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 11,
+    "game": "Red Dead Redemption 2",
+    "query": "Red Dead Redemption 2 easter eggs",
+    "elapsed_ms": 7251.3,
+    "total_hits": 1,
+    "categories_covered": "Preservación/Código",
+    "successful_providers": 10,
+    "providers_sample": "speedrun_com, steam_community, wikidata",
+    "avg_quality_score": 75.2,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://github.com/jonathanortiz-hub/GAMEeastereggs.com-"
+    ],
+    "findings_count": 0
+  },
+  {
+    "index": 12,
+    "game": "Elden Ring",
+    "query": "Elden Ring rune farm guide",
+    "elapsed_ms": 7625.9,
+    "total_hits": 10,
+    "categories_covered": "Juegos, Trucos/Guías, Preservación/Código, Comunidades",
+    "successful_providers": 10,
+    "providers_sample": "speedrun_com, steam_community, wikipedia",
+    "avg_quality_score": 66.4,
+    "epistemic_state": "Confirmado",
+    "sample_urls": [
+      "https://eldenring.wiki.fextralife.com/",
+      "https://github.com/avyayam/EldenRing-ArcaneToolkit",
+      "https://es.wikipedia.org/wiki/Elden_Ring"
+    ],
+    "findings_count": 0
+  }
+]

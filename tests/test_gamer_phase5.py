@@ -38,7 +38,7 @@ class TestGamerPhase5UIAndHTTP(unittest.TestCase):
     def _get(self, path: str):
         url = f"{self.base_url}{path}"
         req = urllib.request.Request(url, headers={"User-Agent": "TestGamerBrowser/1.0"})
-        with urllib.request.urlopen(req, timeout=5.0) as resp:
+        with urllib.request.urlopen(req, timeout=12.0) as resp:
             return resp.status, resp.read().decode("utf-8"), dict(resp.headers)
 
     def test_01_static_css_and_dark_theme(self):

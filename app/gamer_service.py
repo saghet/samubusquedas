@@ -166,22 +166,85 @@ class GamerSearchService:
         }
 
     def get_game_detail(self, game_id: str) -> Optional[Dict[str, Any]]:
-        """Obtiene la ficha técnica completa de un videojuego junto a sus trucos y comunidades relacionadas."""
-        all_games = self.db.search_games(query="", limit=200)
-        matched_game = next((g for g in all_games if g["id"] == game_id), None)
+        """Obtiene la ficha técnica completa con las 8 dimensiones y búsquedas complementarias."""
+        matched_game = self.db.get_game_by_id(game_id)
+        if not matched_game:
+            all_games = self.db.search_games(query="", limit=2000)
+            matched_game = next((g for g in all_games if g["id"] == game_id), None)
         if not matched_game:
             return None
 
-        # Trucos y guías del mismo juego
-        related_cheats = self.db.search_cheats(query=matched_game["title"], limit=10)
+        # 1. Trucos y comunidades en DB local
+        related_cheats = self.db.search_cheats(query=matched_game.get("title", ""), limit=10)
+        related_communities = self.db.search_communities(query=matched_game.get("title", ""), limit=10)
 
-        # Comunidades relacionadas
-        related_communities = self.db.search_communities(query=matched_game["title"], limit=6)
+        # 2. Motor de Investigación Complementaria (Fase 7)
+        from gamer_complementary import GAMER_COMPLEMENTARY
+        comp_data = GAMER_COMPLEMENTARY.get_complementary_data(matched_game)
+
+        # 3. Expansión Multilingüe de Consultas (Fase 8 / Sección 9)
+        from query_expander import QUERY_EXPANDER
+        multilingual = QUERY_EXPANDER.expand_multilingual_game_queries(
+            title=matched_game.get("title", ""),
+            aliases=matched_game.get("aliases", []),
+            platform=matched_game.get("canonical_platform_id", "")
+        )
 
         return {
             "game": matched_game,
             "cheats": related_cheats,
-            "communities": related_communities
+            "communities": related_communities,
+            "complementary": comp_data,
+            "multilingual": multilingual
+        }
+
+    def get_gaming_library(
+        self,
+        sub_section: str = "nintendo",
+        console_id: Optional[str] = None,
+        criteria: str = "ranking_general",
+        limit: int = 30
+    ) -> Dict[str, Any]:
+        """Controlador principal de la GAMING LIBRARY (Sección 11)."""
+        from console_inventory import CONSOLE_INVENTORY
+
+        # Mapeo de subsecciones
+        if sub_section == "nintendo":
+            consoles = [c for c in CONSOLE_INVENTORY.get_consoles_by_manufacturer("Nintendo") if not c.is_retro_handheld_catalogue]
+            default_console = "nintendo_switch"
+        elif sub_section == "playstation":
+            consoles = [c for c in CONSOLE_INVENTORY.get_consoles_by_manufacturer("Sony PlayStation") if not c.is_retro_handheld_catalogue]
+            default_console = "playstation_5"
+        elif sub_section == "xbox":
+            consoles = CONSOLE_INVENTORY.get_consoles_by_manufacturer("Microsoft Xbox")
+            default_console = "xbox_series_xs"
+        elif sub_section == "retro":
+            consoles = CONSOLE_INVENTORY.get_retro_and_handheld_catalogue()
+            default_console = "nintendo_64"
+        elif sub_section == "comunidades":
+            consoles = []
+            for m in ["Nintendo", "Sony PlayStation", "Microsoft Xbox"]:
+                consoles.extend(CONSOLE_INVENTORY.get_home_consoles_current_and_previous(m))
+            default_console = "nintendo_switch"
+        else:
+            consoles = []
+            for m in ["Nintendo", "Sony PlayStation", "Microsoft Xbox"]:
+                consoles.extend(CONSOLE_INVENTORY.get_home_consoles_current_and_previous(m))
+            default_console = "nintendo_switch"
+
+        selected_console_id = console_id or default_console
+        selected_console = CONSOLE_INVENTORY.get_console(selected_console_id)
+
+        # Obtener los 30 juegos de la consola seleccionada con el criterio 5D
+        games = self.db.get_top_games_by_console(selected_console_id, criteria=criteria, limit=limit)
+
+        return {
+            "sub_section": sub_section,
+            "selected_console": selected_console.to_dict() if selected_console else None,
+            "available_consoles": [c.to_dict() for c in consoles],
+            "criteria": criteria,
+            "games_count": len(games),
+            "games": games
         }
 
     def compare_game_versions(self, game_id: str) -> Optional[Dict[str, Any]]:

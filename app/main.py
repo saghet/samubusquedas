@@ -55,6 +55,7 @@ from gamer_views import (
     render_preservation_module_view,
     render_communities_module_view,
     render_osint_investigation_view,
+    render_gaming_library_view,
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -1222,6 +1223,23 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self._send_response_bytes(200, page.encode("utf-8"), set_cookie=cookie_hdr)
             return
 
+        # --- SECCIÓN 1: GAMING LIBRARY (FASE 10 / SECCIÓN 11) ---
+        if path in ("/library", "/gaming-library"):
+            sub = query_params.get("sub", ["nintendo"])[0]
+            console_id = query_params.get("console", [None])[0]
+            criteria = query_params.get("criteria", ["ranking_general"])[0]
+            lib_data = GAMER_SERVICE.get_gaming_library(sub_section=sub, console_id=console_id, criteria=criteria, limit=30)
+            body = render_gaming_library_view(
+                sub_section=lib_data["sub_section"],
+                selected_console=lib_data["selected_console"],
+                available_consoles=lib_data["available_consoles"],
+                criteria=lib_data["criteria"],
+                games=lib_data["games"]
+            )
+            page = render_gamer_layout("GAMING LIBRARY — Top 30 Videojuegos por Consola", "library", body)
+            self._send_response_bytes(200, page.encode("utf-8"))
+            return
+
         # --- PORTAL GAMER SEARCH ENGINE ---
         if path in ("/gamer", "/portal-gamer"):
             q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
@@ -1323,12 +1341,17 @@ class SamuOnionRequestHandler(BaseHTTPRequestHandler):
             self._send_response_bytes(200, page.encode("utf-8"))
             return
 
-        # --- SECCIÓN 9: INVESTIGACIÓN AVANZADA OSINT ---
-        if path == "/investigacion":
+        # --- SECCIÓN 9: MODO INVESTIGADOR GAMER & OSINT AVANZADO ---
+        if path in ("/investigacion", "/investigador"):
             q = query_params.get("q", [""])[0][:MAX_QUERY_LEN]
-            osint_payload = OSINT_AGGREGATOR.search_all(q) if q.strip() else {"query": "", "results": [], "total": 0}
+            status_f = query_params.get("status", ["Todos"])[0]
+            if q.strip():
+                from gamer_investigator import GAMER_INVESTIGATOR
+                osint_payload = GAMER_INVESTIGATOR.investigate(q, status_filter=status_f)
+            else:
+                osint_payload = {"query": "", "findings": [], "results": [], "total": 0, "stats": {}}
             body = render_osint_investigation_view(q, osint_payload)
-            page = render_gamer_layout("Investigación Avanzada OSINT — Fuentes Abiertas", "investigacion", body)
+            page = render_gamer_layout("Modo Investigador Gamer — Secretos, Mitos y Evidencias", "investigacion", body)
             self._send_response_bytes(200, page.encode("utf-8"))
             return
 

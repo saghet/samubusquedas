@@ -85,28 +85,48 @@ class GamerSearchEngineDB:
     def _init_schema(self) -> None:
         with _DB_LOCK:
             cur = self._conn.cursor()
-            # Tablas relacionales estructuradas
+            # Tablas relacionales estructuradas con los 24 atributos requeridos
             cur.executescript("""
                 CREATE TABLE IF NOT EXISTS games (
                     id TEXT PRIMARY KEY,
                     title TEXT NOT NULL,
                     aliases_json TEXT,
                     platforms_json TEXT,
+                    canonical_platform_id TEXT,
+                    generation TEXT,
+                    generation_number INTEGER,
                     release_year INTEGER,
                     release_date TEXT,
                     developer TEXT,
                     publisher TEXT,
                     genres_json TEXT,
-                    editions_json TEXT,
+                    languages_json TEXT,
+                    regions_released_json TEXT,
+                    critic_score REAL DEFAULT 0.0,
+                    user_score REAL DEFAULT 0.0,
+                    sales_documented TEXT,
+                    units_sold_millions REAL,
+                    rank_position INTEGER DEFAULT 0,
+                    summary TEXT,
+                    features_json TEXT,
                     dlcs_json TEXT,
+                    expansions_json TEXT,
+                    versions_json TEXT,
+                    remasters_json TEXT,
+                    remakes_json TEXT,
+                    backward_compatibility_json TEXT,
+                    score_5d_json TEXT,
+                    consulted_sources_json TEXT,
+                    updated_date TEXT,
+                    editions_json TEXT,
                     updates_patches_json TEXT,
                     compatibility TEXT,
                     technical_requirements TEXT,
                     rating REAL,
                     rating_source TEXT,
                     price_status TEXT,
-                    summary TEXT,
                     cover_url TEXT,
+                    screenshots_json TEXT,
                     tags_json TEXT,
                     region TEXT
                 );
@@ -178,6 +198,35 @@ class GamerSearchEngineDB:
                     data_json TEXT
                 );
             """)
+
+            # Migración no destructiva de columnas añadidas para bases de datos existentes
+            cur.execute("PRAGMA table_info(games);")
+            existing_cols = {row[1] for row in cur.fetchall()}
+            new_cols = [
+                ("canonical_platform_id", "TEXT"),
+                ("generation", "TEXT"),
+                ("generation_number", "INTEGER"),
+                ("screenshots_json", "TEXT"),
+                ("languages_json", "TEXT"),
+                ("regions_released_json", "TEXT"),
+                ("critic_score", "REAL DEFAULT 0.0"),
+                ("user_score", "REAL DEFAULT 0.0"),
+                ("sales_documented", "TEXT"),
+                ("units_sold_millions", "REAL"),
+                ("rank_position", "INTEGER DEFAULT 0"),
+                ("features_json", "TEXT"),
+                ("expansions_json", "TEXT"),
+                ("versions_json", "TEXT"),
+                ("remasters_json", "TEXT"),
+                ("remakes_json", "TEXT"),
+                ("backward_compatibility_json", "TEXT"),
+                ("score_5d_json", "TEXT"),
+                ("consulted_sources_json", "TEXT"),
+                ("updated_date", "TEXT"),
+            ]
+            for col_name, col_type in new_cols:
+                if col_name not in existing_cols:
+                    cur.execute(f"ALTER TABLE games ADD COLUMN {col_name} {col_type};")
 
             # Tablas virtuales FTS5 para búsqueda de texto completo con BM25
             cur.executescript("""
@@ -262,16 +311,36 @@ class GamerSearchEngineDB:
             cur = self._conn.cursor()
             cur.execute("""
                 INSERT OR REPLACE INTO games (
-                    id, title, aliases_json, platforms_json, release_year, release_date,
-                    developer, publisher, genres_json, editions_json, dlcs_json,
-                    updates_patches_json, compatibility, technical_requirements,
-                    rating, rating_source, price_status, summary, cover_url, tags_json, region
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    id, title, aliases_json, platforms_json, canonical_platform_id,
+                    generation, generation_number, release_year, release_date,
+                    developer, publisher, genres_json, languages_json, regions_released_json,
+                    critic_score, user_score, sales_documented, units_sold_millions,
+                    rank_position, summary, features_json, dlcs_json, expansions_json,
+                    versions_json, remasters_json, remakes_json, backward_compatibility_json,
+                    score_5d_json, consulted_sources_json, updated_date, editions_json,
+                    updates_patches_json, compatibility, technical_requirements, rating,
+                    rating_source, price_status, cover_url, screenshots_json, tags_json, region
+                ) VALUES (
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?
+                );
             """, (
-                g.id, g.title, json.dumps(g.aliases), json.dumps(g.platforms), g.release_year, g.release_date,
-                g.developer, g.publisher, json.dumps(g.genres), json.dumps(g.editions), json.dumps(g.dlcs),
-                json.dumps(g.updates_patches), g.compatibility, g.technical_requirements,
-                g.rating, g.rating_source, g.price_status, g.summary, g.cover_url, json.dumps(g.tags), g.region
+                g.id, g.title, json.dumps(g.aliases), json.dumps(g.platforms), g.canonical_platform_id,
+                g.generation, g.generation_number, g.release_year, g.release_date,
+                g.developer, g.publisher, json.dumps(g.genres), json.dumps(g.languages), json.dumps(g.regions_released),
+                g.critic_score, g.user_score, g.sales_documented, g.units_sold_millions,
+                g.rank_position, g.summary, json.dumps(g.features), json.dumps(g.dlcs), json.dumps(g.expansions),
+                json.dumps(g.versions), json.dumps(g.remasters), json.dumps(g.remakes), json.dumps(g.backward_compatibility),
+                json.dumps(g.score_5d), json.dumps(g.consulted_sources), g.updated_date, json.dumps(getattr(g, 'editions', [])),
+                json.dumps(getattr(g, 'updates_patches', [])), g.compatibility, g.technical_requirements, g.rating or g.critic_score,
+                g.rating_source or "Metacritic / OpenCritic", g.price_status, g.cover_url, json.dumps(g.screenshots), json.dumps(g.tags), g.region
             ))
             # Sincronizar FTS5
             cur.execute("DELETE FROM games_fts WHERE id = ?;", (g.id,))
@@ -403,19 +472,68 @@ class GamerSearchEngineDB:
             cur.execute(query_sql, params)
             rows = cur.fetchall()
 
-            results: List[Dict[str, Any]] = []
-            for r in rows:
-                d = dict(r)
-                d["aliases"] = json.loads(d.get("aliases_json") or "[]")
-                d["platforms"] = json.loads(d.get("platforms_json") or "[]")
-                d["genres"] = json.loads(d.get("genres_json") or "[]")
-                d["editions"] = json.loads(d.get("editions_json") or "[]")
-                d["dlcs"] = json.loads(d.get("dlcs_json") or "[]")
-                d["updates_patches"] = json.loads(d.get("updates_patches_json") or "[]")
-                d["tags"] = json.loads(d.get("tags_json") or "[]")
-                d["highlighted_summary"] = highlight_safe_snippet(d.get("summary", ""), tokens)
-                results.append(d)
+            results: List[Dict[str, Any]] = [self._row_to_game_dict(r, tokens) for r in rows]
             return results
+
+    def _row_to_game_dict(self, r: sqlite3.Row, tokens: Optional[List[str]] = None) -> Dict[str, Any]:
+        """Convierte una fila de la base de datos a un diccionario completo con los 24 atributos."""
+        d = dict(r)
+        d["aliases"] = json.loads(d.get("aliases_json") or "[]")
+        d["platforms"] = json.loads(d.get("platforms_json") or "[]")
+        d["genres"] = json.loads(d.get("genres_json") or "[]")
+        d["languages"] = json.loads(d.get("languages_json") or "[]")
+        d["regions_released"] = json.loads(d.get("regions_released_json") or "[]")
+        d["screenshots"] = json.loads(d.get("screenshots_json") or "[]")
+        d["features"] = json.loads(d.get("features_json") or "[]")
+        d["dlcs"] = json.loads(d.get("dlcs_json") or "[]")
+        d["expansions"] = json.loads(d.get("expansions_json") or "[]")
+        d["versions"] = json.loads(d.get("versions_json") or "[]")
+        d["remasters"] = json.loads(d.get("remasters_json") or "[]")
+        d["remakes"] = json.loads(d.get("remakes_json") or "[]")
+        d["backward_compatibility"] = json.loads(d.get("backward_compatibility_json") or "{}")
+        d["score_5d"] = json.loads(d.get("score_5d_json") or "{}")
+        d["consulted_sources"] = json.loads(d.get("consulted_sources_json") or "[]")
+        d["editions"] = json.loads(d.get("editions_json") or "[]")
+        d["updates_patches"] = json.loads(d.get("updates_patches_json") or "[]")
+        d["tags"] = json.loads(d.get("tags_json") or "[]")
+        if tokens:
+            d["highlighted_summary"] = highlight_safe_snippet(d.get("summary", ""), tokens)
+        return d
+
+    def get_game_by_id(self, game_id_or_title: str) -> Optional[Dict[str, Any]]:
+        """Recupera la ficha individual completa de 24 atributos por ID o título."""
+        with _DB_LOCK:
+            cur = self._conn.cursor()
+            cur.execute("SELECT * FROM games WHERE id = ? OR LOWER(title) = LOWER(?);", (game_id_or_title, game_id_or_title))
+            row = cur.fetchone()
+            if row:
+                return self._row_to_game_dict(row)
+            return None
+
+    def get_top_games_by_console(
+        self,
+        console_id_or_name: str,
+        criteria: str = "ranking_general",
+        limit: int = 30
+    ) -> List[Dict[str, Any]]:
+        """Recupera los mejores videojuegos clasificados de una consola mediante el motor 5D."""
+        with _DB_LOCK:
+            cur = self._conn.cursor()
+            cur.execute("""
+                SELECT * FROM games
+                WHERE canonical_platform_id = ?
+                   OR platforms_json LIKE ?;
+            """, (console_id_or_name, f"%{console_id_or_name}%"))
+            rows = cur.fetchall()
+            games = [self._row_to_game_dict(r) for r in rows]
+
+            from gamer_ranker import GAMER_RANKER, RankingCriteria
+            try:
+                crit_enum = RankingCriteria(criteria)
+            except Exception:
+                crit_enum = RankingCriteria.RANKING_GENERAL
+
+            return GAMER_RANKER.sort_games(games, criteria=crit_enum, limit=limit)
 
     def search_cheats(
         self,

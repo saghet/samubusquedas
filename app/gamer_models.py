@@ -16,25 +16,48 @@ import datetime
 
 @dataclass
 class GameRecord:
+    """Ficha técnica individual exhaustiva de videojuego con los 24 atributos requeridos."""
     id: str
-    title: str
-    aliases: List[str] = field(default_factory=list)
-    platforms: List[str] = field(default_factory=list)
+    title: str  # 1. Nombre oficial
+    aliases: List[str] = field(default_factory=list)  # 2. Nombre alternativo y títulos multilingües
+    cover_url: str = ""  # 3. Portada
+    screenshots: List[str] = field(default_factory=list)  # 4. Capturas de pantalla
+    platforms: List[str] = field(default_factory=list)  # 5. Plataforma
+    canonical_platform_id: str = ""  # ID de consola en console_inventory
+    generation: str = ""  # 6. Generación (ej. "9ª Generación")
+    generation_number: int = 0
+    release_date: str = ""  # 7. Fecha de lanzamiento exacta
     release_year: int = 0
-    release_date: str = ""
-    developer: str = ""
-    publisher: str = ""
-    genres: List[str] = field(default_factory=list)
-    editions: List[str] = field(default_factory=list)
-    dlcs: List[str] = field(default_factory=list)
+    developer: str = ""  # 8. Desarrollador
+    publisher: str = ""  # 9. Distribuidor
+    genres: List[str] = field(default_factory=list)  # 10. Género
+    languages: List[str] = field(default_factory=list)  # 11. Idiomas
+    regions_released: List[str] = field(default_factory=list)  # 12. Regiones
+    critic_score: float = 0.0  # 13. Valoración de crítica (0-100)
+    user_score: float = 0.0  # 14. Valoración de usuarios (0-100)
+    sales_documented: str = "No reportada oficialmente"  # 15. Ventas documentadas
+    units_sold_millions: Optional[float] = None
+    rank_position: int = 0  # 16. Posición en el ranking
+    summary: str = ""  # 17. Descripción
+    features: List[str] = field(default_factory=list)  # 18. Características
+    dlcs: List[str] = field(default_factory=list)  # 19. DLC
+    expansions: List[str] = field(default_factory=list)  # 20. Expansiones
+    versions: List[str] = field(default_factory=list)  # 21. Versiones / Ediciones
+    editions: List[str] = field(default_factory=list)  # Compatibilidad con semillas existentes
     updates_patches: List[str] = field(default_factory=list)
-    compatibility: str = ""
-    technical_requirements: str = ""
+    remasters: List[str] = field(default_factory=list)  # 22. Remasterizaciones
+    remakes: List[str] = field(default_factory=list)  # 23. Remakes
+    backward_compatibility: Dict[str, Any] = field(default_factory=dict)  # 24. Compatibilidad retroactiva
+    
+    # Metadatos analíticos y de auditoría
+    score_5d: Dict[str, Any] = field(default_factory=dict)  # Desglose del algoritmo 5D
+    consulted_sources: List[Dict[str, str]] = field(default_factory=list)  # Mínimo 3 fuentes independientes
+    updated_date: str = ""
     rating: float = 0.0
     rating_source: str = ""
     price_status: str = ""
-    summary: str = ""
-    cover_url: str = ""
+    compatibility: str = ""
+    technical_requirements: str = ""
     tags: List[str] = field(default_factory=list)
     region: str = "Global"
 
